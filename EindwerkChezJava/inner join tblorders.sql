@@ -1,0 +1,1 @@
+SELECT * FROM tblorders inner JOIN tblliquids ON tblorders.idLiquid = tblliquids.idLiquid inner join tblober on tblober.id = tblorders.idOber ;
