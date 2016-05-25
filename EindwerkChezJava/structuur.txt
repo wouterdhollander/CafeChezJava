@@ -1,0 +1,7 @@
+Café
+	lstObers
+		=> ober: lstTables, makeOrder(table, 1 order) => table.addOrder
+			==> table : lstOrders + 1/0 obers
+				=>  Order: liquid, aantal
+	lstLiquids
+	
