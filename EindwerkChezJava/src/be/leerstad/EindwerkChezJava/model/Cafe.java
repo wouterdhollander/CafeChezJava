@@ -19,16 +19,14 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMultipart;
+import javax.sql.rowset.serial.SerialException;
 
 import org.apache.log4j.Logger;
 
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
+
 public class Cafe {
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private ChezJavaDAO ChezJavaDAOimpl;
@@ -39,88 +37,55 @@ public class Cafe {
 	private List<Table> tables =  new ArrayList<>();
 	
 	public  Cafe() throws DAOException {
+		this.activeOber = new Ober();
 		// TODO Auto-generated constructor stub
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 		Serializer ser = new Serializer();
-		List<Table> setDesialiseTables = ser.deserialise();
-		if (setDesialiseTables != null)
-		{
+		List<Table> setDesialiseTables;
+		try {
+			setDesialiseTables = ser.deserialise();
 			this.tables = setDesialiseTables;
-		}
-		else
-		{
+		} catch (SerialException e) {
+			// TODO Auto-generated catch block
 			for (int i = 0; i < 9; i++) {
 				this.tables.add(new Table(i));
 			}
 		}
-		setLiquids(ChezJavaDAOimpl.getLiquids());
+		this.setLiquids(ChezJavaDAOimpl.getLiquids());
 	}
 	
 	public OrderSet getDailyIncome(LocalDate lc) throws DAOException
 	{
 		return ChezJavaDAOimpl.getOrder(lc);
 	}
-	
-	public List<Integer> getTablesIds() throws ActiveOberNotSetException {
+	//getest
+	public List<Table> getTables() throws ActiveOberNotSetException {
 		oberAllowed();
 		tables.sort((t1,t2) -> t1.getId()-t2.getId());
-		List<Integer> lstid = new ArrayList<>();
-		for (Table t: tables)
-		{
-			lstid.add(t.getId());
-		}
-		return lstid;
+		return tables;
 	}
-
-//	private void setTables(List<Table> lstTables) {
-//		this.tables = lstTables;
-//	}
-
-	///makes the table with the Id the active table
-	
-	public Table makeTableActive(int id) throws ActiveOberNotSetException
+	//getest
+	public void setActiveTable(Table t) throws ActiveOberNotSetException, TableNotAllowedException
 	{
 		oberAllowed();
-		Table table = tables.get(id);
-		if (table == null)
+		if (tables.contains(t))
 		{
-			return null;
+			if (t.getActiveOber().equals(new Ober()) || t.getActiveOber().equals(activeOber)){
+				activeTable = tables.stream().filter(table -> table.equals(t)).findFirst().get();
+			}
+			else
+				throw new TableNotAllowedException();
 		}
-//		if (tables.contains(table))
-//		{
-			if (table.getActiveOber() == null || table.getActiveOber().equals(activeOber)){
-				activeTable = table;//tables.stream().filter(t -> t.equals(t)).findFirst().get();
-			}
-			else{
-				return null; // als de tafel niet bestaat of niet toegelaten is
-			}
-				//throw new TableNotAllowedException();
-//		}
-//		else
-//		{
-//			//throw new TableNotAllowedException();
-//			System.out.println("FOUT");
-//		}
+		else
+		{
+			System.out.println("FOUT");
+		}
+	}
+
+	public Table getActiveTable() throws ActiveOberNotSetException {
+		oberAllowed();
 		return activeTable;
 	}
-	
-	public Ober getOberOfTableId(int id)
-	{
-		Table table = tables.get(id);
-		if (table == null)
-		{
-			return null;
-		}
-		return table.getActiveOber();
-				
-	}
-	
-	
-//	public Table getActiveTable() throws ActiveOberNotSetException {
-//		oberAllowed();
-//		return activeTable;
-//	}
-	
 	
 	private  void tableAllowed() throws TableNotAllowedException
 	{
@@ -136,36 +101,25 @@ public class Cafe {
 	
 	private  void oberAllowed() throws ActiveOberNotSetException
 	{
-		if (this.activeOber == null)
+		Ober nulober = new Ober();
+		if (this.activeOber.equals(nulober))
 		{
 			throw new ActiveOberNotSetException();
 		}
 	}
-
+//getest
 	public Ober getActiveOber() 
 	{
 		return activeOber;
 	}
-	
+	//getest
 	public double calculateUnpayedOrders(Ober ober)
 	{	
-		return tables.stream().filter(t -> t.getActiveOber().equals(ober)).mapToDouble(t -> t.calcutateOrders()).sum();
+		return tables.stream().filter(t -> t.getActiveOber().equals(ober)).mapToDouble(t -> t.getOrders().calcutateOrders()).sum();
 	}
-	
-	public OrderSet getUnpayedOrder(Ober ober) //throws ActiveOberNotSetException 
-	{
-		OrderSet orderset = new OrderSet();
-		for(Table table: tables)
-		{
-			if ( table.getActiveOber() !=null &&  table.getActiveOber().equals(ober))
-			{
-				orderset.addAll(table.getOrders());
-			}
-		}
-		return orderset ;
-	}
-	
-	public double calculateAllUnpayedOrders() throws ActiveOberNotSetException
+
+	//getest
+	public double calculateUnpayedOrders() throws ActiveOberNotSetException
 	{
 		oberAllowed();
 		double totaal = 0;
@@ -175,19 +129,44 @@ public class Cafe {
 		}
 		return totaal;
 	}
-	
-	public Set<Order> getAllUnpayedOrders() throws ActiveOberNotSetException
+	//getest
+	public OrderSet getUnpayedOrders(Ober ober) //throws ActiveOberNotSetException 
+	{
+		OrderSet orderset = new OrderSet();
+		for(Table table: tables)
+		{
+			if (table.getActiveOber().equals(ober))
+			{
+				orderset.addAll(table.getOrders());
+			}
+		}
+		return orderset ;
+	}
+	//getest
+	public OrderSet getUnpayedOrders() throws ActiveOberNotSetException
 	{
 		oberAllowed();
-		Set<Order> orders = new HashSet<>();
+		OrderSet orders = new OrderSet();
 		for (Table table : tables)
 		{
 			orders.addAll(table.getOrders());
 		}
 		return orders;
 	}
-	
-	public double calculateAllPayedOrders() throws ActiveOberNotSetException
+		
+
+	//getest
+	public Set<Order> getPayedOrders() 
+	{
+		Set<Order> orders = new HashSet<>();
+		for (Ober ober : obers)
+		{
+			orders.addAll(ober.getPayedOrders());
+		}
+		return orders;
+	}
+	//getest
+	public double calculatePayedOrders() throws ActiveOberNotSetException
 	{
 		oberAllowed();
 		double totaal = 0;
@@ -196,16 +175,6 @@ public class Cafe {
 			totaal += ober.getPayedOrders().calcutateOrders();
 		}
 		return totaal;
-	}
-	
-	public Set<Order> getAllPayedOrders() 
-	{
-		Set<Order> orders = new HashSet<>();
-		for (Ober ober : obers)
-		{
-			orders.addAll(ober.getPayedOrders());
-		}
-		return orders;
 	}
 	
 	public void SendMail(String attachment, Ober ober) throws MessagingException
@@ -255,17 +224,23 @@ public class Cafe {
 	
 	public void logOut() {
 		activeTable = null;
-		activeOber = null;
+		this.activeOber = new Ober();
+	}
+	
+	private void removePayedOrders()
+	{
+		for (Ober ober : obers) {
+			ober.getPayedOrders().clear();
+		}
 	}
 	
 	public void close() throws DAOException
 	{
 		logOut();
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
+		ChezJavaDAOimpl.insertOrders(getPayedOrders());
 
-		ChezJavaDAOimpl.insertOrders(getAllPayedOrders());
-
-		getAllPayedOrders().clear();
+		removePayedOrders();
 		
 		Serializer ser = new Serializer();
 		ser.serialise(tables);	

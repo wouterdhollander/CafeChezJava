@@ -59,7 +59,7 @@ public class Order implements Serializable{
 	}
 
 
-	private void setOber(Ober ober) {
+	public void setOber(Ober ober) {
 		this.ober = ober;
 	}
 	

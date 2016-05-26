@@ -17,6 +17,11 @@ public class OrderSet extends HashSet<Order> {
 	{
 		super();
 	}
+	
+	public OrderSet(Collection col)
+	{
+		this.addAll(col);
+	}
 	/**
 	 * 
 	 */
@@ -33,9 +38,9 @@ public class OrderSet extends HashSet<Order> {
 	public String printOutPayment()
 	{
 		StringBuilder b = new StringBuilder();
-		if (this == null)
+		if (this.size() == 0)
 		{
-			return b.toString();
+			return "geen bestellingen!";
 		}
 		b.append("Tafel besteld door ").append(this.iterator().next().getOber()).append("\n");
 
@@ -50,12 +55,12 @@ public class OrderSet extends HashSet<Order> {
 	@Override
 	public boolean add(Order o)
 	{
-		
 		if (o == null)
 		{
 			return false;
 		}
-		if (!this.contains(o))
+
+		if (!super.contains(o))
 		{
 			return super.add(o);
 		}
@@ -77,7 +82,6 @@ public class OrderSet extends HashSet<Order> {
 					}
 				}
 			}
-			
 		}
 		return true;
 	}
@@ -85,35 +89,82 @@ public class OrderSet extends HashSet<Order> {
 	@Override
 	public boolean remove(Object obj)
 	{
-		if (!this.contains(obj))
+		if (!super.contains(obj))
 		{
-			return super.remove(obj);
+			boolean bool = super.remove(obj);
+			return bool;
 		}
 	
-		for (Order order : this) {
+		for (Order order : this) 
+		{
+			if (order.equals(obj))
 			{
-				if (order.equals(obj))
-				{
-					Order o2 = (Order) obj;
-
-					try {
-						Order order2 = new Order(o2.getLiquid(), order.getQuantity() - o2.getQuantity(), o2.getOber(), o2.getDate());
-						
-						super.remove(order);
-						super.add(order2);
+				Order o2 = (Order) obj;
+				try {
+					Order order2 = new Order(o2.getLiquid(), order.getQuantity() - o2.getQuantity(), o2.getOber(), o2.getDate());	
+					super.remove(order);
+					super.add(order2);
 //						order.setQuantity(order.getQuantity() - o2.getQuantity());//niet gebruiken want dan wordt het object zelf ook veranderd!
-						return true;
-					} catch (QuantityToLowException e) {
-						// TODO Auto-generated catch block
-						return false;
-					} catch (QuantityZeroException e) {
-						super.remove(o2);
-						return true;
-					}
+					return true;
+				} catch (QuantityToLowException e) {
+					// TODO Auto-generated catch block
+					return false;
+				} catch (QuantityZeroException e) {
+					super.remove(o2);
+					return true;
 				}
 			}
 		}
+
 		return false; //als orderset object leeg is
+	}
+	
+	@Override
+	public boolean addAll(Collection col)
+	{
+		return super.addAll(col);
+	}
+	
+	@Override
+	public boolean contains(Object obj) 
+	{
+		if (!(obj instanceof  Order))
+		{
+			return false;
+		}
+		
+		for (Order order : this) 
+		{
+			Order o = (Order) obj;
+			if (!(order.equals(o) && order.getQuantity() == o.getQuantity()))
+			{
+				return false;
+			}
+		}	
+		return true;	
+	}
+	
+	@Override
+	public boolean containsAll(Collection col)
+	{
+		OrderSet orders = new OrderSet();
+		orders.addAll(col);//we maken van de collectie een orderset.
+		for (Order order : orders)
+		{
+			if (!this.contains(order))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		
+		return obj.toString().equals(this.toString());
 	}
 	
 	@Override
@@ -125,7 +176,7 @@ public class OrderSet extends HashSet<Order> {
 		//eerst kijken of we wel alles kunnen verwijderen, als dit niet zo is wordt er niets verwijderd!
 		for (Order order : orders)
 		{
-			if (this.contains(order))
+			if (super.contains(order))
 			{
 				int aantal =this.stream().filter(o -> o.equals(order)).findFirst().get().getQuantity();
 				if (aantal<order.getQuantity())

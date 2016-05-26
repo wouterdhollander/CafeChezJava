@@ -159,20 +159,17 @@ public class View extends Application {
 		}
 		return null;
 	}
-	public ObservableList<Order> getOrdersData() throws TableNotAllowedException {
-		return  FXCollections.observableArrayList(cafe.getOrdersActiveTable());//
+	public ObservableList<Order> getOrdersData() throws ActiveOberNotSetException {
+		return  FXCollections.observableArrayList(cafe.getActiveTable().getOrders());//
 	}
 	public ObservableList<Order> getOrdersUnpayedActiveOber() throws ActiveOberNotSetException {
-
-		return FXCollections.observableArrayList(cafe.getUnpayedOrderActiveOber());
+		return  FXCollections.observableArrayList(cafe.getActiveTable().getOrders());//
 	}
 	
 	public ObservableList<Order> getOrdersPayedActiveOber() throws ActiveOberNotSetException {
-
-		return FXCollections.observableArrayList(cafe.getPayedOrderActiveOber());
+		return FXCollections.observableArrayList(cafe.getActiveOber().getPayedOrders());
 	}
 
-	
 	public ObservableList<Table> getTablesData() {
 		ObservableList<Table> tables = null;
 		try {

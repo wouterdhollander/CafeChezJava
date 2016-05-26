@@ -92,15 +92,11 @@ public class CafeLayoutController {
     		return;
     	}
 
-			try {
-				lblTotaal.setText(String.format("%.2f",cafe.calculateOrdersActiveTable()));
-			} catch (ActiveOberNotSetException e) {
-				// TODO Auto-generated catch block
-				
-			} catch (TableNotAllowedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			lblTotaal.setText(String.format("%.2f",cafe.getActiveTable().getOrders().calcutateOrders()));
+		} catch (ActiveOberNotSetException e) {
+			// TODO Auto-generated catch block
+		}
 
 
     	Liquid liq = orderSelected.getLiquid();
@@ -167,7 +163,7 @@ public class CafeLayoutController {
     			circleCount++;	
     		}
 		}
-    	unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();
+    	unPayedOrdersActiveOber =  view.getOrdersUnpayedActiveOber();
     	tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
     	
     	payedOrdersActiveOber = view.getOrdersPayedActiveOber();
@@ -213,7 +209,8 @@ public class CafeLayoutController {
 			 try {
 				circles.get(cafe.getActiveTable().getId()).setFill(Color.DODGERBLUE);
 				orders.clear();
-				cafe.payOrders();
+				
+				cafe.getActiveOber().payOrders(cafe.getActiveTable());
 				tableBestelling.setItems(orders);//?? best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
 				
 				unPayedOrdersActiveOber.clear();
@@ -223,7 +220,7 @@ public class CafeLayoutController {
 				payedOrdersActiveOber.clear();
 				payedOrdersActiveOber = view.getOrdersPayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
 				tableOverviewPayed.setItems(payedOrdersActiveOber);
-			} catch (ActiveOberNotSetException | TableNotAllowedException e) {
+			} catch (ActiveOberNotSetException e) {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("WARNING");
 				alert.setContentText(e.getMessage());// .printStackTrace();
@@ -270,14 +267,14 @@ public class CafeLayoutController {
     @FXML
     private void removeOrder() {
     	try {
-    		Order o = tableBestelling.getSelectionModel().getSelectedItem();
-			cafe.removeOrder(o);
-			orders.remove(o);
+    		Order order = tableBestelling.getSelectionModel().getSelectedItem();
+    		cafe.getActiveOber().removeOrder(order , cafe.getActiveTable());
+			orders.remove(order);
 			
 			unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
 			payedOrdersActiveOber = view.getOrdersPayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
 			
-    	} catch (TableNotAllowedException | ActiveOberNotSetException | QuantityToLowException e) {
+    	} catch (ActiveOberNotSetException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();
@@ -288,23 +285,22 @@ public class CafeLayoutController {
 	@FXML
 	private void editOrder() {
 		Liquid m = cmbLiquids.getSelectionModel().getSelectedItem();
-		Order order;
 		try {
-			order = new Order(m,txtFieldQuantity.getInt(), cafe.getActiveOber());
-			cafe.removeOrder(order);
+			Order order = new Order(m,txtFieldQuantity.getInt(), cafe.getActiveOber());
+			cafe.getActiveOber().removeOrder(order,cafe.getActiveTable());
 			//bestellingsTable.setItems(orders);
 			orders.clear();
 			orders = view.getOrdersData();
 			tableBestelling.setItems(orders);
 
-				unPayedOrdersActiveOber.clear();
-				unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
-				tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
+			unPayedOrdersActiveOber.clear();
+			unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
+			tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
 				
 //				unPayedOrdersActiveOber.clear();
 //				unPayedOrdersActiveOber = getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
 //				tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
-		} catch (QuantityToLowException | QuantityZeroException | TableNotAllowedException | ActiveOberNotSetException e) {
+		} catch (QuantityToLowException | QuantityZeroException | ActiveOberNotSetException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();
@@ -317,7 +313,7 @@ public class CafeLayoutController {
     	Liquid m = cmbLiquids.getSelectionModel().getSelectedItem();
     	Order order;
 		try {
-			order = new Order(m,txtFieldQuantity.getInt(), cafe.getActiveOber());
+			//order = new Order(m,txtFieldQuantity.getInt(), cafe.getActiveOber());
 			//slechte manier maar het werkt,
 			//doordat ik de equals methode van order overschreven heb (order met verschillende hoeveelheid is toch gelijk)
 			//geeft dit problemen bij de observablearralist (de .add methode werkt enkel bij niet gelijke objecten (dus niet als de hoeveelheid verschillend is!)
@@ -341,16 +337,16 @@ public class CafeLayoutController {
 //				tableBestelling.setItems(orders);
 //			}
 			
-			cafe.addOrder(order);
+			cafe.getActiveOber().makeOrder(m,txtFieldQuantity.getInt(), cafe.getActiveTable());
 			orders.clear();
 			orders = view.getOrdersData();
 			tableBestelling.setItems(orders);
 
-				unPayedOrdersActiveOber.clear();
-				unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
-				tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
+			unPayedOrdersActiveOber.clear();
+			unPayedOrdersActiveOber = view.getOrdersUnpayedActiveOber();//best opnieuw te berekenen want als er maar een deel van een bestelling verwijderd wordt, is dit niet compleet weergegeven in de overview table
+			tableOverViewUnPayed.setItems(unPayedOrdersActiveOber);
 			txtFieldQuantity.clear();
-		} catch (QuantityToLowException | QuantityZeroException | TableNotAllowedException | ActiveOberNotSetException e) {
+		} catch (QuantityToLowException | ActiveOberNotSetException e) {
 			// TODO Auto-generated catch block
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");

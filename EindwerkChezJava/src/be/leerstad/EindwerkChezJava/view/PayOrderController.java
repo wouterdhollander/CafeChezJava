@@ -33,7 +33,7 @@ private boolean okClicked = false;
     public void setDialogStage(Stage dialogStage) throws TableNotAllowedException, ActiveOberNotSetException {
         this.dialogStage = dialogStage;
 
-			lblPayOrders.setText(cafe.printOutPayment());
+		lblPayOrders.setText(cafe.getActiveOber().payOrders(cafe.getActiveTable()));
 
     }
     @FXML

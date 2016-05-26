@@ -1,5 +1,4 @@
 package be.leerstad.EindwerkChezJava.model.test;
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.model.OrderSet;
 
 public class OrderSetTest {
+	private static final float PRECISION = 0.01F;
 	private Liquid l1;
 	private Liquid l2;
 	private Order o1;
@@ -35,16 +35,35 @@ public class OrderSetTest {
 		l1 = new Liquid(1, "Cola", 2.0);
 		l2 = new Liquid(2, "Bier", 3.0); 
 
-			o1 = new Order(l1, 2, ober1);
-			o1_2 = new Order(l1, 3, ober1);
-			o2 = new Order(l2, 2, ober1);
-			o3 = new Order(l1, 1, ober2);
+		o1 = new Order(l1, 2, ober1);
+		o1_2 = new Order(l1, 3, ober1);
+		o2 = new Order(l2, 2, ober1);
+		o3 = new Order(l1, 1, ober2);
 
 		orders = new OrderSet();
-		
+	}
+	
+	@Test
+	public void testCalculateOrders() {
+		orders.add(o1);
+		assertEquals(4, orders.calcutateOrders(),PRECISION);
+		orders.add(o1);
+		assertEquals(8, orders.calcutateOrders(),PRECISION);
+		orders.add(o2);
+		assertEquals(14, orders.calcutateOrders(),PRECISION);
 		
 	}
 
+	@Test
+	public void testPrintOutPayment() {
+		assertEquals("geen bestellingen!", orders.printOutPayment());
+		orders.add(o1);
+		orders.add(o1);
+		orders.add(o2);
+		String expected = "Tafel besteld door Ober: Peters Wout" + "\n" + "4 x Cola(2.0€) = 8.0€" + "\n" + "2 x Bier(3.0€) = 6.0€"+ "\n" + "totaal (€) = 14.0";
+		
+		assertEquals(expected, orders.printOutPayment());	
+	}
 	
 	@Test
 	public void testAdd() {
@@ -69,8 +88,8 @@ public class OrderSetTest {
 		assertFalse(orders.remove(null));
 		assertFalse(orders.remove(l1));
 		assertTrue(orders.remove(o1_2));
-		//assertEquals(2, orders.get(0).getQuantity());
-
+		//orders.add(o1);
+		assertFalse(orders.remove(o1_2)); //men kan niet meer verwijderen dan wat erin zit.
 	}
 	
 	@Test
@@ -119,5 +138,12 @@ public class OrderSetTest {
 		
 		//assertEquals(5, orders.get(0).getQuantity());
 	}
-
+	@Test
+	public void testContains()
+	{
+		orders.add(o1);
+		
+		
+		assertFalse(orders.contains(o1_2));
+	}
 }

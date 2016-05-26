@@ -21,23 +21,13 @@ public class Table implements Serializable{
 	private int id;
 	private OrderSet orders = new OrderSet();
 
-	private Ober activeOber;
+	
 	
 	/**
 	 * @param id
 	 */
 	public Table(int id) {
 		this.setId(id);
-		//activeOber = new o
-	}
-	
-	public Ober getActiveOber() {
-		return activeOber;
-	}
-
-
-	public void setActiveOber(Ober activeOber) {
-		this.activeOber = activeOber;
 	}
 
 
@@ -45,35 +35,27 @@ public class Table implements Serializable{
 		return orders;
 	}
 	
-	public void setOrders(OrderSet orders) {
+	private void setOrders(OrderSet orders) {
 		this.orders = orders;
 	}
 	
-	
-	public String printOutPayment()
+	public Ober getActiveOber()
 	{
-		StringBuilder b = new StringBuilder();
-		b.append("tableID: ").append(this.getId()).append("\n Besteld door ").append(this.getActiveOber()).append("\n");
+		System.out.println(orders);
+		if (orders.size() != 0)
+		{
+			return orders.iterator().next().getOber();
+		}
+		else
+		{
+			return new Ober();
+		}
+	}
 
-		Set<Order> orders = this.getOrders();
-		orders.stream()
-		.forEach(e -> b.append(e).append("\n"));
-		b.append("totaal (€) = " + this.orders.calcutateOrders());
-		logger.info(b);
-		
-		return b.toString();
-	}
-	
-	public void payOrders()
-	{
-		activeOber.getPayedOrders().addAll(orders);
-		this.orders.clear();
-		this.setActiveOber(null);
-	}
 	
 	@Override
 	public String toString() {
-		return "Table [id=" + id + ", orders=" + orders + ", activeOber=" + activeOber + "]";
+		return "Table [id=" + id + ", orders=" + orders + ", activeOber=" + getActiveOber() + "]";
 	}
 
 
