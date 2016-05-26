@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.model.*;
 
 public class OberTest
@@ -14,13 +15,69 @@ public class OberTest
 	private Ober ober1;
 	private Ober ober2;
 	private Ober ober3;
+	private Table table1;
+	private Order o1;
+	private Order o2;
+	private Order o3;
+	private Liquid l1;
+	private Liquid l2;
 	@Before
 	public void setUp() throws Exception {
 		ober1 = new Ober(1, "D'hollander", "Wouter", "password");
 		ober2 = new Ober(2, "Demuynck", "Fleur", "password");
 		ober3 = new Ober(1, "Dhollander", "Wouter", "password");
+		
+		l1 = new Liquid(1, "Cola", 2.0);
+		l2 = new Liquid(2, "Bier", 3.0); 
+		
+		o1 = new Order(l1, 2, ober1);
+		o2 = new Order(l2, 2, ober1);
+		o3 = new Order(l1, 1, ober2);	
+		table1 = new Table(1);
+	}
+	
+	@Test
+	public void testMakeOrder() throws QuantityToLowException
+	{
+		boolean isAllowed = ober1.makeOrder(l1, 2, table1);
+		assertTrue(isAllowed);
+		isAllowed = ober1.makeOrder(l1, 2, table1);
+		assertTrue(isAllowed);
+		isAllowed = ober1.makeOrder(l1, 2, table1);
+		assertTrue(isAllowed);
+		boolean isNotAllowed = ober2.makeOrder(l1, 2, table1);
+		assertFalse(isNotAllowed);
+	}
+	
+	@Test
+	public void testRemoveOrder() throws QuantityToLowException
+	{
+		ober1.makeOrder(l1, 2, table1);
+		ober1.makeOrder(l1, 2, table1);
+		boolean isAllowed = ober1.removeOrder(o1, table1);
+		assertTrue(isAllowed);
+		
+		boolean isNotAllowed = ober1.removeOrder(o1, table1);
+		assertTrue(isNotAllowed);
+	}
+	
+	@Test
+	public void testPayOrders() throws QuantityToLowException
+	{
+		OrderSet orders = new OrderSet();
+		orders.add(o1);
+		orders.add(o1);
+		orders.add(o2);
+		ober1.makeOrder(l1, 2, table1);
+		ober1.makeOrder(l1, 2, table1);
+		ober1.makeOrder(l2, 2, table1);
 
-
+		assertEquals(orders.printOutPayment(), ober1.payOrders(table1));
+		OrderSet ordersetOber1 = ober1.getPayedOrders();
+		System.out.println(ordersetOber1.toString().equals(orders.toString()));
+		System.out.println(orders.equals(ordersetOber1));
+		assertEquals(ordersetOber1, orders);
+		assertEquals(0, table1.getOrders().size());
 	}
 
 	@Test

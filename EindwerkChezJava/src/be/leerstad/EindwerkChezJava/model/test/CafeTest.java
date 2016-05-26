@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.mail.MessagingException;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.database.test.DBInitialiser;
 import be.leerstad.EindwerkChezJava.model.*;
 
 
@@ -58,118 +60,23 @@ public class CafeTest {
 	}
 	
 	@Test
+	public void testGetTables() throws ActiveOberNotSetException
+	{
+		assertEquals(9, cafe.getTables().size());	 
+	}
+	
+	@Test
 	public void testSetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
-	
+
 	@Test
-	public void testAddOrder() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException {
-
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o1);
-		assertEquals(1,Tables.get(1).getOrders().size());
-		Order o2 = new Order(l2, 1, ober1);
-		cafe.addOrder(o2);
-		assertEquals(2, Tables.get(1).getOrders().size());
-		Order o3 = new Order(l2, 3, ober1);
-		cafe.addOrder(o3);
-		assertEquals(2, Tables.get(1).getOrders().size());
-
-	}
-	
-	@Test(expected = TableNotAllowedException.class)
-	public void testAddOrderInvallid() throws  TableNotAllowedException, ActiveOberNotSetException, DAOException, DAOloginNotAllowed{
-
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o1);
-	
-		cafe.login("Segers", "Nathalie", "password");
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o1);
-
-	}
-	
-	@Test
-	public void testRemoveOrder() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException {
-		Set<Order> orders = new HashSet<>();
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o1);
-		cafe.removeOrder(o1);
-		cafe.addOrder(o1);
-		orders.add(o1);
-			
-		assertEquals(orders, Tables.get(1).getOrders());
-	}
-	
-	@Test
-	public void testPrintOutPayment() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException {
-
-		Order o = new Order(l1, 1, ober1);
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o);
-		Order o2 = new Order(l2, 1, ober1);
-		cafe.addOrder(o2);
-		Order o3 = new Order(l1, 3, ober1);
-		cafe.addOrder(o3);
-
-		String payorder = cafe.printOutPayment();
-
-		String payString = "tableID: 1\n Besteld door Ober: Peters Wout\n4 x Cola(2.0€) = 8.0€\n1 x Bier(3.0€) = 3.0€\ntotaal (€) = 11.0";
-		assertEquals(payString, payorder);
-		//assertTrue(payString.equals(payorder));
-
-
-	}
-	
-	@Test
-	public void testPayOrder() throws QuantityToLowException, QuantityZeroException, TableNotAllowedException, ActiveOberNotSetException
+	public void testGetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
 	{
-
-		Order o = new Order(l1, 1, ober1);
 		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o);
-		Order o2 = new Order(l2, 1, ober1);
-		cafe.addOrder(o2);
-		Order o3 = new Order(l1, 3, ober1);
-		cafe.addOrder(o3);
-
-		Table t = cafe.getActiveTable();
-		cafe.payOrders();
-		assertEquals(0, t.getOrders().size());
-
-	}
-	@Test (expected = TableNotAllowedException.class)
-	public void testPayOrdersinvalid() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed {
-
-			Order o = new Order(l1, 1, ober1);
-			cafe.setActiveTable(Tables.get(1));
-			cafe.addOrder(o);
-			Order o2 = new Order(l2, 1, ober1);
-			cafe.addOrder(o2);
-			Order o3 = new Order(l2, 3, ober1);
-			cafe.addOrder(o3);
-			
-			cafe.login("Segers", "Nathalie", "password");
-			cafe.setActiveTable(Tables.get(1));
-			cafe.payOrders();
-		
-	}
-	@Test
-	public void testCalculateOrdersActiveTable() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
-	{
-
-		Order o = new Order(l1, 1, ober1);
-		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o);
-		Order o2 = new Order(l2, 1, ober1);
-		cafe.addOrder(o2);
-		Order o3 = new Order(l1, 3, ober1);
-		cafe.addOrder(o3);
-
-		
-		assertEquals(11, cafe.calculateOrdersActiveTable(),PRECISION);
+		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
 	
 	@Test
@@ -179,86 +86,153 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testCalculateUnpayedOrderActiveOber() throws ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, TableNotAllowedException
+	public void testCalculateUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
 	{
-
-		Order o = new Order(l1, 1, ober1);
 		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o);
-		Order o2 = new Order(l2, 1, ober1);
-		cafe.addOrder(o2);
-		Order o3 = new Order(l2, 3, ober1);
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		assertEquals(8, cafe.calculateUnpayedOrders(),PRECISION);
+		assertEquals(8, cafe.calculateUnpayedOrders(ober1),PRECISION);
 		
-		cafe.addOrder(o3);
-
-
-	  double result = cafe.calculateUnpayedOrderActiveOber();
-		//System.out.println(result);
-		assertEquals(14.0 ,result ,PRECISION);
-		//assertTrue(result == 14.0);
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		assertEquals(12, cafe.calculateUnpayedOrders(),PRECISION);
+		assertEquals(12, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		assertEquals(16, cafe.calculateUnpayedOrders(),PRECISION);
+		assertEquals(12, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		assertEquals(4, cafe.calculateUnpayedOrders(ober2),PRECISION);
 		
-
-	}
-
-	@Test
-	public void testGetTablesActiveOber() throws QuantityToLowException, QuantityZeroException, ActiveOberNotSetException, TableNotAllowedException
-	{
-		List<Table> tables = new ArrayList<>();
-		tables.add(Tables.get(1));
-		tables.add(Tables.get(2));
-		tables.add(Tables.get(5));
-
-		Order o = new Order(l1, 1, ober1);
-		for (Table table : tables) {
-			cafe.setActiveTable(table);
-			cafe.addOrder(o);
-		}
-
-
-		List<Table> tablesActiveOber =cafe.getTablesActiveOber();
-		assertEquals(tables, tablesActiveOber);
+		ober2.removeOrder(tableActive.getOrders().iterator().next(), tableActive);
+		assertEquals(0, cafe.calculateUnpayedOrders(ober2),PRECISION);
+		
+		assertEquals(12, cafe.calculateUnpayedOrders(),PRECISION);
+		
+		
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.payOrders(tableActive);
+		assertEquals(8, cafe.calculateUnpayedOrders(),PRECISION);
+		assertEquals(8, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		
+		ober1.payOrders(Tables.get(1));
+		assertEquals(0, cafe.calculateUnpayedOrders(),PRECISION);
+		assertEquals(0, cafe.calculateUnpayedOrders(ober1),PRECISION);
 	}
 	
-	@Test
-	public void getUsedTables() throws ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed, TableNotAllowedException
+	@Test 	
+	public void testGetUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
 	{
-		Set<Table> tablesOber1 = new HashSet<>();
-		List<Table> lstAllTables = new ArrayList<>();
-		lstAllTables.addAll(Tables);
-		tablesOber1.add(Tables.get(1));
-		tablesOber1.add(Tables.get(2));
-		tablesOber1.add(Tables.get(5));
+		OrderSet ordersTotal = new OrderSet();
+		OrderSet ordersOber1 = new OrderSet();
+		OrderSet ordersOber2 = new OrderSet();
+		cafe.setActiveTable(Tables.get(1));
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		Order order1 = new Order(l1,2,ober1);
+		ordersTotal.add(order1);
+		ordersTotal.add(order1);
+		ordersOber1.add(order1);
+		ordersOber1.add(order1);
 		
-		List<Table> tablesOber2 = new ArrayList<>();
-		tablesOber2.add(Tables.get(3));
-		tablesOber2.add(Tables.get(4));
+		assertEquals(ordersTotal, cafe.getUnpayedOrders());
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
 
-		Order o = new Order(l1, 1, ober1);
-		for (Table table : tablesOber1) {
-			cafe.setActiveTable(table);
-			cafe.addOrder(o);
-		}
-		cafe.login("Segers", "Nathalie", "password");
-		for (Table table : tablesOber2) {
-			cafe.setActiveTable(table);
-			cafe.addOrder(o);
-		}
-
-
-		List<Table> usedTables =cafe.getUsedTables();
-		//sorting with lambda! zoniet is de output eventueel wel hetzelfde maar de strings ervan niet
-		usedTables.sort((Table t1, Table t2) -> t1.getId()-t2.getId());
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		ordersTotal.add(order1);
+		ordersOber1.add(order1);
+		assertEquals(ordersTotal, cafe.getUnpayedOrders());
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		Order order2 = new Order(l1,2,ober2);
+		ordersTotal.add(order2);
+		ordersOber2.add(order2);
+		assertEquals(ordersTotal, cafe.getUnpayedOrders());
+		assertEquals(ordersOber2, cafe.getUnpayedOrders(ober2));
 		
-		//sorting with lambda
-		List<Table> usedActual = new ArrayList<>();
-		usedActual.addAll(tablesOber1);
-		usedActual.addAll(tablesOber2);
-		usedActual.sort((Table t1, Table t2) -> t1.getId()-t2.getId());
+		ober1.payOrders(Tables.get(1));
+		ordersTotal.remove(order1);
+		ordersTotal.remove(order1);
+		ordersOber1.remove(order1);
+		ordersOber1.remove(order1);
+		assertEquals(ordersTotal, cafe.getUnpayedOrders());
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
+	}
+
+	@Test 	
+	public void testGetPayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	{
+		OrderSet ordersTotal = new OrderSet();
+		cafe.setActiveTable(Tables.get(1));
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		Order order1 = new Order(l1,2,ober1);
+		ordersTotal.add(order1);
+		ordersTotal.add(order1);
+		ober1.payOrders(tableActive);
+		assertEquals(ordersTotal, cafe.getPayedOrders());
+
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 3, tableActive);
+		Order order2 = new Order(l1,3,ober1);
+		ordersTotal.add(order2);
+		ober1.payOrders(tableActive);
+		OrderSet payedOrders = new OrderSet(cafe.getPayedOrders());
+		assertEquals(ordersTotal, payedOrders);
+
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l2, 2, tableActive);
+		Order order3 = new Order(l2,2,ober2);
+		ordersTotal.add(order3);
+
+		assertNotEquals(ordersTotal, cafe.getPayedOrders());
+	}
+	
+	@Test 	
+	public void testCalculatePayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	{
+		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
+		cafe.setActiveTable(Tables.get(1));
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.payOrders(tableActive);
+		assertEquals(8, cafe.calculatePayedOrders(),PRECISION);
 		
-		//assertTrue(usedActual.equals(usedTables));
-		assertEquals(usedActual, usedTables);
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.payOrders(tableActive);
+		assertEquals(12, cafe.calculatePayedOrders(),PRECISION);
+
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		ober1.payOrders(tableActive);//not allowed
+		assertEquals(12, cafe.calculatePayedOrders(),PRECISION);
+		
+		ober2.removeOrder(tableActive.getOrders().iterator().next(), tableActive);
+		assertEquals(12, cafe.calculatePayedOrders(),PRECISION);
 
 	}
+	
+
 	
 	
 	//@Test
@@ -272,28 +246,39 @@ public class CafeTest {
 	@Test
 	public void testLogout(){
 		cafe.logOut();
-		assertTrue(null == cafe.getActiveOber());
+		assertTrue(new Ober().equals(cafe.getActiveOber()));
 	}
 	
 	@Test
 	public void testClose() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
-		List<Table> TablesCafe = new ArrayList<>();
 
+		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
-		cafe.addOrder(o1);
-		Order o2 = new Order(l1, 1, ober1);
-		cafe.addOrder(o2);
-		Order o3 = new Order(l2, 3, ober1);
-		cafe.addOrder(o3);
-		TablesCafe = cafe.getTables();
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.payOrders(tableActive);
+		assertEquals(8, cafe.calculatePayedOrders(),PRECISION);
+		
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.payOrders(tableActive);
+		assertEquals(12, cafe.calculatePayedOrders(),PRECISION);
 
-			cafe.close();
-
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		
+		double unpayedOrders = cafe.calculateUnpayedOrders();
+		double unpayedOber1 = cafe.calculateUnpayedOrders(ober1);
+		cafe.close();
 		Cafe cafe2 = new Cafe();
 		cafe2.login("Segers", "Nathalie", "password");
-		assertEquals(cafe2.getTables(), TablesCafe);
+		assertEquals(unpayedOrders, cafe2.calculateUnpayedOrders(),PRECISION);
+		assertEquals(cafe.calculateUnpayedOrders(ober1), cafe2.calculateUnpayedOrders(ober1),PRECISION);
 		//assertTrue(cafe2.getTables().equals(setTables));
-
 	}
 	
 	@Test
@@ -307,7 +292,6 @@ public class CafeTest {
 
 		cafe.login("Peters", "Wout","password");
 		assertEquals(cafe.getActiveOber(), ober1);
-
 	}
 
 	@After
@@ -317,6 +301,12 @@ public class CafeTest {
 		ser.MakeSerialiseClean();
 
 	}
+	
+    @AfterClass
+    public static void after() throws DAOException {
+		DBInitialiser dbInitialiser = new DBInitialiser();
+		dbInitialiser.Initialise();
+    }	
 
 
 

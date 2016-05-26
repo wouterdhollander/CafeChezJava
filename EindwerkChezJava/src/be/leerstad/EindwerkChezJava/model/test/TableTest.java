@@ -32,17 +32,14 @@ public class TableTest {
 	
 	@Test
 	public void testGetActiveOber(){
-		t1.setActiveOber(ober1);
+		System.out.println(t1.getActiveOber());
+		assertTrue(new Ober().equals(t1.getActiveOber()));
+		t1.getOrders().add(o1);
 
 		assertTrue(ober1.equals(t1.getActiveOber()));
 	}
 	
-	@Test
-	public void testSetActiveOber(){
-		t1.setActiveOber(ober1);
 
-		assertTrue(ober1.equals(t1.getActiveOber()));
-	}
 	
 	@Test
 	public void testGetOrders() {
@@ -59,15 +56,14 @@ public class TableTest {
 			e.printStackTrace();
 		}
 	}
+
 	
 	@Test
 	public void testToString()
 	{
 		t1.getOrders().add(o1);
-		t1.setActiveOber(ober1);
-		System.out.println(t1);
-		assertTrue(t1.toString().equals("Table [id=1, orders=[1 x Cola(2.0€) = 2.0€], activeOber=Ober: Peters Wout]"));
 
+		assertEquals("Table [id=1, orders=[1 x Cola(2.0€) = 2.0€], activeOber=Ober: Peters Wout]", t1.toString());
 	}
 
 	@Test

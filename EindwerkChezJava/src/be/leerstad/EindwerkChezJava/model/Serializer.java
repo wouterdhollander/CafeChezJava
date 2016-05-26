@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.sql.rowset.serial.SerialException;
+
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 
@@ -29,23 +31,23 @@ public class Serializer {
 		}
 	}
 
-	public List<Table> deserialise()
+	@SuppressWarnings("unchecked")
+	public List<Table> deserialise() throws SerialException
 	{
 		List<Table> tables = null;
 
 			FileInputStream fis;
+
 			try {
 				fis = new FileInputStream(PATH);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				tables = (List<Table>) ois.readObject();
 				ois.close();
-			} catch (FileNotFoundException e1) {
+			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
-				//als het bestand niet gevonden is, wil dit zeggen dat er een nieuw café gemaakt moet worden
-			} catch (IOException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+				throw new SerialException();
+			}
+
 		return tables;
 	}
 	

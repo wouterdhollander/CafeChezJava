@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.sql.rowset.serial.SerialException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,19 +48,11 @@ public class SerializerTest {
 		
 		t1.getOrders().add(o1);
 		t1.getOrders().add(o2);
-		t1.setActiveOber(ober1);
-
 		t2.getOrders().add(o2);
-		t2.setActiveOber(ober2);
-		
+
 		setTables.add(t1);
 		setTables.add(t2);
 		setTables.add(t3);
-	}
-
-	//@Test
-	public void testSerializer() {
-		fail("Not yet implemented");
 	}
 
 	@Test
@@ -68,24 +62,28 @@ public class SerializerTest {
 	}
 
 	@Test
-	public void testDeserialise() {
+	public void testDeserialise() throws SerialException 
+	{
 		Serializer ser = new Serializer();
 		ser.serialise(setTables);
+
 		List<Table> setDesialiseTables;
 
-			setDesialiseTables = ser.deserialise();
-
-		//System.out.println("before :" + Arrays.toString(setTables.toArray()));
+		setDesialiseTables = ser.deserialise();
 		assertEquals(setTables, setDesialiseTables);
-		//System.out.println("after :" + Arrays.toString(setDesialiseTables.toArray()));
-
+	}
+	
+	@Test(expected = SerialException.class)
+	public void testDeserialiseInvallid() throws SerialException 
+	{
+		Serializer ser = new Serializer();
+		List<Table> setDesialiseTables = ser.deserialise();
 	}
 	@After
 	public void MakeSerialiseClean()
 	{
 		Serializer ser = new Serializer();
 		ser.MakeSerialiseClean();
-
 	}
 
 
