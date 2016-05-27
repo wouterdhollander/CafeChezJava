@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 
@@ -35,7 +34,6 @@ public class Ober implements Serializable{
 		this.setLastName("no");
 		this.setFirstName("one");
 		this.setPassword("password");
-		logger.info(this.toString() + " created" );
 	}
 	
 	
@@ -46,13 +44,11 @@ public class Ober implements Serializable{
 	
 	public boolean makeOrder(Liquid liquid, int quantity, Table table) throws QuantityToLowException
 	{
-		
 		if (isTableAllowed(table))
 		{
 			Order order;
 			try {
 				order = new Order(liquid, quantity,this);
-
 				return table.getOrders().add(order);
 			} catch (QuantityZeroException e) {
 				// TODO Auto-generated catch block
@@ -143,11 +139,4 @@ public class Ober implements Serializable{
 	private void setPassword(String password) {
 		this.password = password;
 	}
-
-
-
-
-
-
-
 }

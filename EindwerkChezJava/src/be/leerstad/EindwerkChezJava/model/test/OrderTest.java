@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
 import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
@@ -53,7 +52,7 @@ public class OrderTest {
 
 	@Test 
 	public void testToString() {
-		assertEquals("2 x Cola(2.0€) = 4.0€", o1.toString());
+		assertEquals("2 x Cola(2.00€) = 4.00€", o1.toString());
 	}
 
 	@Test

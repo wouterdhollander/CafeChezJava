@@ -3,6 +3,7 @@ package be.leerstad.EindwerkChezJava.model.test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -18,17 +19,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
+import com.itextpdf.text.DocumentException;
+
+import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
 import be.leerstad.EindwerkChezJava.database.test.DBInitialiser;
 import be.leerstad.EindwerkChezJava.model.*;
-
-
 
 public class CafeTest {
 	private static final float PRECISION = 0.01F;
@@ -60,20 +56,20 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testGetTables() throws ActiveOberNotSetException
+	public void testGetTables() 
 	{
 		assertEquals(9, cafe.getTables().size());	 
 	}
 	
 	@Test
-	public void testSetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
+	public void testSetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
 
 	@Test
-	public void testGetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
+	public void testGetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
@@ -86,7 +82,7 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testCalculateUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testCalculateUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		cafe.setActiveTable(Tables.get(1));
 		Table tableActive = cafe.getActiveTable();
@@ -126,7 +122,7 @@ public class CafeTest {
 	}
 	
 	@Test 	
-	public void testGetUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testGetUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
 		OrderSet ordersOber1 = new OrderSet();
@@ -171,7 +167,7 @@ public class CafeTest {
 	}
 
 	@Test 	
-	public void testGetPayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testGetPayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
 		cafe.setActiveTable(Tables.get(1));
@@ -204,7 +200,7 @@ public class CafeTest {
 	}
 	
 	@Test 	
-	public void testCalculatePayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testCalculatePayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
@@ -234,13 +230,24 @@ public class CafeTest {
 	
 
 	
+	@Test
+	public void testCreatePDF() throws FileNotFoundException, DocumentException
+	{
+		ArrayList<Order> orders = new ArrayList<>();
+		orders.add(o1);
+		orders.add(o2);
+		orders.add(o3);
+		
+		String Filename = cafe.createPDF(orders,false);
+		  
+		File f = new File(Filename);
+		assertTrue(f.exists() && !f.isDirectory());
+	}
 	
-	//@Test
+	@Test
 	public void testSendMail() throws MessagingException
 	{
-
-		cafe.SendMail("src/be/leerstad/03_-_Java_Basics_-_Classes_and_objects.pdf", ober1);
-
+		cafe.SendMail("src/be/leerstad/03_-_Java_Basics_-_Classes_and_objects.pdf");
 	}
 	
 	@Test
@@ -250,7 +257,7 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testClose() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
+	public void testClose() throws QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
 
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
@@ -307,8 +314,4 @@ public class CafeTest {
 		DBInitialiser dbInitialiser = new DBInitialiser();
 		dbInitialiser.Initialise();
     }	
-
-
-
-
 }

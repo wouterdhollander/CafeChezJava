@@ -75,7 +75,7 @@ public class LiquidTest {
 	}
 	@Test 
 	public void testToString() {
-		assertEquals("Cola(2.0€)", l1.toString());
+		assertEquals("Cola(2.00€)", l1.toString());
 	}
 
 }

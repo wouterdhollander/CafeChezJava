@@ -19,7 +19,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Overview">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#overview" text="Watch overview" />
+                  <MenuItem mnemonicParsing="false" onAction="#cafeOverview" text="Watch table overview" />
+              <MenuItem mnemonicParsing="false" onAction="#totalOverview" text="Watch total overview" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

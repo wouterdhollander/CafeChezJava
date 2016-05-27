@@ -1,6 +1,7 @@
 package be.leerstad.EindwerkChezJava;
 
 import javafx.application.Application;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 
 import javafx.collections.ObservableList;
@@ -27,13 +28,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-
-
 import be.leerstad.EindwerkChezJava.view.RootLayoutController;
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
+import be.leerstad.EindwerkChezJava.Exceptions.*;
+
 import be.leerstad.EindwerkChezJava.model.*;
 
 public class View extends Application {
@@ -45,7 +42,6 @@ public class View extends Application {
     //private AnchorPane cafeOverview;
    // private TitledPane menuBar;
     private ObservableList<Liquid> liquidsData;
-    
 
 	private ObservableSet<Table> TablesData;
     private Cafe cafe;
@@ -75,10 +71,7 @@ public class View extends Application {
 	            alert.setHeaderText("ERROR");
 	            alert.setContentText(e.getMessage());
 	            primaryStage.close();
-			//e.printStackTrace();
 		}
-
-
 	}
 
 	@Override
@@ -92,7 +85,12 @@ public class View extends Application {
 				cafe.close();
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 Alert alert = new Alert(AlertType.ERROR);
+		            alert.initOwner(primaryStage);
+		            alert.setTitle("Invalid Fields");
+		            alert.setHeaderText("ERROR");
+		            alert.setContentText(e.getMessage());
+		            //primaryStage.close();
 			}
         }
     });
@@ -115,8 +113,13 @@ public class View extends Application {
             controller.setModel(cafe);
             controller.setView(this);
 		}
-			catch (IOException e) {
-	        e.printStackTrace();
+		catch (IOException e) {
+			 Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(primaryStage);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("ERROR");
+            alert.setContentText(e.getMessage());
+            //primaryStage.close();
 		}
 	}
 
@@ -133,24 +136,26 @@ public class View extends Application {
     }
 	public LinkedHashMap<Ober, Double> topDrieObers()
 	{
-		//oberAllowed();
-		//LinkedHashMap<Ober, Double> topDrieOber = new LinkedHashMap<>();;
+		LinkedHashMap<Ober, Double> topDrieOber = new LinkedHashMap<>();;
 		try {
-			return cafe.topDrieObers();
-		} catch (ActiveOberNotSetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			topDrieOber = cafe.topDrieObers();
+		} catch (DAOException e) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText(e.getMessage());// .printStackTrace();
+		    alert.showAndWait();
 		}
-		return null;
+		
+		return topDrieOber;
 	}
  
 	public ObservableList<Liquid> getLiquidsData() {
 		return  FXCollections.observableArrayList(cafe.getLiquids());
 	}
 	
-	public OrderSet getDailyIncome(LocalDate date) {
+	public OrderSet income(LocalDate date) {
 		try {
-			return cafe.getDailyIncome(date);
+			return cafe.getIncome(date);
 		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
@@ -159,29 +164,58 @@ public class View extends Application {
 		}
 		return null;
 	}
-	public ObservableList<Order> getOrdersData() throws ActiveOberNotSetException {
-		return  FXCollections.observableArrayList(cafe.getActiveTable().getOrders());//
-	}
-	public ObservableList<Order> getOrdersUnpayedActiveOber() throws ActiveOberNotSetException {
-		return  FXCollections.observableArrayList(cafe.getActiveTable().getOrders());//
-	}
 	
-	public ObservableList<Order> getOrdersPayedActiveOber() throws ActiveOberNotSetException {
-		return FXCollections.observableArrayList(cafe.getActiveOber().getPayedOrders());
-	}
-
-	public ObservableList<Table> getTablesData() {
-		ObservableList<Table> tables = null;
+	public ObservableList<Order> incomeActiveOber() {
+		OrderSet orders = new OrderSet();
 		try {
-			List<Table> list = new ArrayList<>();
-			list.addAll(cafe.getTables());
-			tables = FXCollections.observableList(list);
-		} catch (ActiveOberNotSetException e) {
+			orders =  cafe.getIncome(cafe.getActiveOber());
+		} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();
 		    alert.showAndWait();
 		}
+		return FXCollections.observableArrayList(orders);
+	}
+	public String calculateUnpayedActiveTable()
+	{
+		return String.format("%.2f",cafe.getActiveTable().getOrders().calcutateOrders());
+	}
+	public String calculateUnpayedActiveOber()
+	{
+		return String.format("%.2f",cafe.calculateUnpayedOrders(cafe.getActiveOber()));
+	}
+	public String calculatePayedActiveOber()
+	{
+		return String.format("%.2f", cafe.getActiveOber().getPayedOrders().calcutateOrders());
+	}
+	public ObservableList<Order> getOrdersData() {
+		return  FXCollections.observableArrayList(cafe.getActiveTable().getOrders());//
+	}
+	public ObservableList<Order> getOrdersUnpayedActiveOber() {
+		OrderSet  orders = cafe.getUnpayedOrders(cafe.getActiveOber());
+		return  FXCollections.observableArrayList(orders);//
+	}
+	
+	public ObservableList<Order> getOrdersPayedActiveOber() {
+		return FXCollections.observableArrayList(cafe.getActiveOber().getPayedOrders());
+	}
+
+	public ObservableList<Table> getTablesData() {
+		ObservableList<Table> tables = null;
+		List<Table> list = cafe.getTables();
+		if (list.contains(new Table(-5)))
+		{			
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText("Active Ober not set");// .printStackTrace();
+		    alert.showAndWait();
+		}
+		else
+		{
+			tables = FXCollections.observableList(list);
+		}
+
 		return tables;
 	}
 

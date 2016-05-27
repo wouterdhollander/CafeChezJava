@@ -1,9 +1,13 @@
 package be.leerstad.EindwerkChezJava.model;
 
 import java.lang.invoke.MethodHandles;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Collection;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -44,10 +48,11 @@ public class OrderSet extends HashSet<Order> {
 		}
 		b.append("Tafel besteld door ").append(this.iterator().next().getOber()).append("\n");
 
-		//Set<Order> orders = this.getOrders();
 		this.stream()
 		.forEach(e -> b.append(e).append("\n"));
-		b.append("totaal (€) = " + this.calcutateOrders());
+		DecimalFormat f = new DecimalFormat("##.00");
+		f.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		b.append("totaal (€) = " +f.format(this.calcutateOrders()));
 		logger.info(b);
 		
 		return b.toString();

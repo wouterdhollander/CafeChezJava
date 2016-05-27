@@ -29,10 +29,11 @@ import be.leerstad.EindwerkChezJava.model.test.OrderSetTest;
 public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static final String GET_ORDERS_DAY = "SELECT * from tblorders where date=?";
     private static final String INSERT_ORDER = "INSERT into tblorders (idLiquid, qty, date, idOber) VALUES (?, ?, ?,?)";
-    private static final String INSERT_ORDERS = "INSERT into tblorders (idLiquid, qty, date, idOber) VALUES (?, ?, ?,?)";
+    //private static final String INSERT_ORDERS = "INSERT into tblorders (idLiquid, qty, date, idOber) VALUES (?, ?, ?,?)";
     private static final String GET_ALL_OBERS = "SELECT * from tblober";
     private static final String  GET_ALL_LIQUIDS = "SELECT * from tblliquids";
-    private static final String  Login = "SELECT * from tblober where lastName = ? And firstName = ? and password = ?"; 
+    private static final String  LOGIN = "SELECT * from tblober where lastName = ? And firstName = ? and password = ?"; 
+    private static final String GET_ORDERS_OBER = "SELECT * from tblorders where idOber=?"; 
 
     //private static final String DELETE_OBER = "DELETE FROM tblorders where id =?";
     //private static final String UPDATE_OBER= "UPDATE tblorders SET firstName= ?, lastName = ? ,password = ? WHERE id = ? ";
@@ -41,7 +42,6 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static ChezJavaDAOImpl instance;
 
     private ChezJavaDAOImpl(){}
-
 
     public synchronized static ChezJavaDAO getInstance(){
         if (instance == null){
@@ -92,21 +92,55 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
               pStatement.addBatch();
 		}
     	  int [] numInserts = pStatement.executeBatch();
-          //result = pStatement.executeUpdate();
-
     	  bool = numInserts.length ==  orders.size();
 
       } catch (Exception e) {
     	  throw new DAOException("Error getting obers. " + e.getMessage()); 
       }
-
       return bool;
   }
+	
+
+	@Override
+	public OrderSet getOrder(Ober ober) throws DAOException {
+		//Date date = Date.valueOf(localdate);
+
+		//express niet met sql berekend (geen zin om innerjoins te gebruiken)
+		Set<Liquid> liquidsDAO = this.getLiquids();
+		List<Ober> obersDAO = this.getObers();
+		
+		OrderSet orders = new OrderSet();
+        
+        try (Connection connection = getConnection();
+             PreparedStatement pStatement = connection
+                     .prepareStatement(GET_ORDERS_OBER);){
+        	pStatement.setInt(1, ober.getId());
+             ResultSet resultSet = pStatement.executeQuery();
+            while (resultSet.next()) {
+            int idliquid =	resultSet.getInt("idLiquid");
+            	Liquid liquid = liquidsDAO.stream()
+            			.filter(e -> e.getId() == idliquid)
+            			.findFirst().get();
+					Date date = resultSet.getDate("date");
+					LocalDate localDate = date.toLocalDate();
+					try {
+						Order order = new Order(liquid, resultSet.getInt("qty"), ober, localDate);
+						orders.add(order);
+					} catch (QuantityToLowException | QuantityZeroException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            }
+        } catch (SQLException e) {
+            throw new DAOException(
+                    "Error getting orders. " + e.getMessage());
+        }
+        return orders;
+    }
 	
 	@Override
 	public OrderSet getOrder(LocalDate localdate) throws DAOException 
 	{
-
 		Date date = Date.valueOf(localdate);
 
 		//express niet met sql berekend (geen zin om innerjoins te gebruiken)
@@ -121,7 +155,6 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         	pStatement.setDate(1, date);
              ResultSet resultSet = pStatement.executeQuery();
             while (resultSet.next()) {
-            	//public Order(Liquid liquid, int quantity, Ober ober) {
             int idliquid =	resultSet.getInt("idLiquid");
             	Liquid liquid = liquidsDAO.stream()
             			.filter(e -> e.getId() == idliquid)
@@ -133,13 +166,10 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 				try {
 					Order order = new Order(liquid, resultSet.getInt("qty"), ober, localdate);
 					orders.add(order);
-				} catch (QuantityToLowException e1) {
+				} catch (QuantityToLowException | QuantityZeroException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (QuantityZeroException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
+				}		
             }
         } catch (SQLException e) {
             throw new DAOException(
@@ -147,13 +177,15 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         }
         return orders;
     }
+	
+	
 	@Override
 	public Ober Login(String lastName, String firstName, String password) throws DAOException, DAOloginNotAllowed {
 		// TODO Auto-generated method stub
         List<Ober> obers = new ArrayList<>();
         try (
             Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(Login);
+            PreparedStatement preparedStatement = connection.prepareStatement(LOGIN);
         ){
         	preparedStatement.setString(1, lastName);
         	preparedStatement.setString(2, firstName);
@@ -244,14 +276,6 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 	        return mapTopDrie;
 	}
 	
-	
-	
-//	@SuppressWarnings("deprecation")
-//	private Date toDate(LocalDate localdate)
-//	{
-//		return new Date(localdate.getYear()-1900, localdate.getMonth().ordinal(), localdate.getDayOfMonth());
-//	}
-	
     private List<Ober> getObers(String statement) throws DAOException {
         List<Ober> obers = new ArrayList<>();
         try (
@@ -272,4 +296,5 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         }
         return obers;
     }
+
 }

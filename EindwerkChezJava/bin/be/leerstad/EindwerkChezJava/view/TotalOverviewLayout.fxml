@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.leerstad.EindwerkChezJava.view.TotalOverviewController">
+  <tabs>
+    <Tab text="Daily Income">
+         <content>
+            <AnchorPane>
+               <children>
+                  <GridPane alignment="BOTTOM_LEFT">
+                    <columnConstraints>
+                      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="TOP_CENTER" text="Select Date" GridPane.halignment="CENTER" />
+                        <DatePicker fx:id="datepicker" onAction="#getDailyIncome" prefHeight="25.0" prefWidth="163.0" GridPane.columnIndex="1" />
+                        <Button fx:id="CreatePDF" mnemonicParsing="false" onAction="#createPDF" text="Create PDF" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button fx:id="verstuurPDF" mnemonicParsing="false" onAction="#sendMail" prefHeight="25.0" prefWidth="100.0" text="Send PDF " GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                     </children>
+                  </GridPane>
+                  <TableView fx:id="tableDailyIncome" layoutX="14.0" layoutY="49.0" prefHeight="198.0" prefWidth="410.0">
+                    <columns>
+                      <TableColumn fx:id="collumDailyIncome" prefWidth="409.0" text="Daily Income" />
+                    </columns>
+                  </TableView>
+                  <CheckBox fx:id="chckboxCreateOpen" layoutX="219.0" layoutY="30.0" mnemonicParsing="false" text="Create and open" />
+               </children>
+            </AnchorPane>
+         </content>
+    </Tab>
+      <Tab fx:id="tabTopDrie1" text="Top Drie">
+         <content>
+            <AnchorPane fx:id="anchorTopDrie1" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <MenuButton layoutX="47.0" layoutY="61.0" mnemonicParsing="false" text="MenuButton">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Action 1" />
+                        <MenuItem mnemonicParsing="false" text="Action 2" />
+                     </items>
+                  </MenuButton>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>

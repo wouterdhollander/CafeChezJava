@@ -41,7 +41,6 @@ public class Table implements Serializable{
 	
 	public Ober getActiveOber()
 	{
-		System.out.println(orders);
 		if (orders.size() != 0)
 		{
 			return orders.iterator().next().getOber();

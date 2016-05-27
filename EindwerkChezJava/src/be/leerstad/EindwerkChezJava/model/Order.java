@@ -5,7 +5,10 @@ package be.leerstad.EindwerkChezJava.model;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -69,7 +72,11 @@ public class Order implements Serializable{
 
 	@Override
 	public String toString() {
-		return this.getQuantity() + " x " + this.getLiquid() + " = " + this.getPrice() + "€";
+		DecimalFormat f = new DecimalFormat("##.00");
+		f.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		
+		//String price = 
+		return this.getQuantity() + " x " + this.getLiquid() + " = " + f.format(this.getPrice()) + "€";
 	}
 
 	public Liquid getLiquid() {

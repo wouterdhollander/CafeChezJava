@@ -60,7 +60,7 @@ public class OrderSetTest {
 		orders.add(o1);
 		orders.add(o1);
 		orders.add(o2);
-		String expected = "Tafel besteld door Ober: Peters Wout" + "\n" + "4 x Cola(2.0€) = 8.0€" + "\n" + "2 x Bier(3.0€) = 6.0€"+ "\n" + "totaal (€) = 14.0";
+		String expected = "Tafel besteld door Ober: Peters Wout" + "\n" + "4 x Cola(2.00€) = 8.00€" + "\n" + "2 x Bier(3.00€) = 6.00€"+ "\n" + "totaal (€) = 14.00";
 		
 		assertEquals(expected, orders.printOutPayment());	
 	}

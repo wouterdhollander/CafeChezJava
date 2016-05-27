@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 public class Liquid implements Serializable{
 	/**
 	 * 
@@ -46,7 +49,9 @@ public class Liquid implements Serializable{
 	
 	@Override
 	public String toString() {
-		return  liquidName + "(" + Price + "€)";
+		DecimalFormat f = new DecimalFormat("##.00");
+		f.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		return  liquidName + "(" + f.format(Price) + "€)";
 	}
 	@Override
 	public int hashCode() {

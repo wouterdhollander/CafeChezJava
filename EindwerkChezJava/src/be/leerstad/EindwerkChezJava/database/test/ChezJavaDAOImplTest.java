@@ -19,17 +19,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
-import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
-import be.leerstad.EindwerkChezJava.model.Liquid;
-import be.leerstad.EindwerkChezJava.model.Ober;
-import be.leerstad.EindwerkChezJava.model.Order;
-import be.leerstad.EindwerkChezJava.model.OrderSet;
+
+import be.leerstad.EindwerkChezJava.database.*;
+import be.leerstad.EindwerkChezJava.model.*;
+import be.leerstad.EindwerkChezJava.Exceptions.*;
+
 
 
 
@@ -110,22 +104,21 @@ public class ChezJavaDAOImplTest {
 			ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 
 				assertEquals(true, ChezJavaDAOimpl.insertOrders(orders));
-
 	}
 	
 	@Test
 	public void testGetOrder() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
-
 		LocalDate ld = LocalDate.of(2009, 12, 25);
-
 		OrderSet lstOrder = new OrderSet();
-
-			lstOrder = ChezJavaDAOimpl.getOrder(ld);
-
+		lstOrder = ChezJavaDAOimpl.getOrder(ld);
 		assertEquals(2, lstOrder.size());
-
+		
+		Ober ober = new Ober(1, "Peters", "Wout","password");
+		lstOrder = ChezJavaDAOimpl.getOrder(ober);
+		assertEquals(7, lstOrder.size());
 	}
+	
 	
 	@Test
 	public void testLogin() throws DAOException, DAOloginNotAllowed

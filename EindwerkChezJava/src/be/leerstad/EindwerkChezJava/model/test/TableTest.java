@@ -63,7 +63,7 @@ public class TableTest {
 	{
 		t1.getOrders().add(o1);
 
-		assertEquals("Table [id=1, orders=[1 x Cola(2.0€) = 2.0€], activeOber=Ober: Peters Wout]", t1.toString());
+		assertEquals("Table [id=1, orders=[1 x Cola(2.00€) = 2.00€], activeOber=Ober: Peters Wout]", t1.toString());
 	}
 
 	@Test

@@ -1,9 +1,7 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
+
+import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.model.Cafe;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -30,20 +28,16 @@ private boolean okClicked = false;
     public void setModel(Cafe model){
         this.cafe = model;
     }
-    public void setDialogStage(Stage dialogStage) throws TableNotAllowedException, ActiveOberNotSetException {
-        this.dialogStage = dialogStage;
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage; 
 
 		lblPayOrders.setText(cafe.getActiveOber().payOrders(cafe.getActiveTable()));
-
     }
     @FXML
     private void handleOk() {
-
 			//cafe.payOrders();
             okClicked = true;
             dialogStage.close();
-
-
     }
     
     public boolean isOkClicked() {
