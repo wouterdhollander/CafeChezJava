@@ -68,10 +68,7 @@ public class TotalOverviewController {
 		//ObservableList<Order> ordersDay = tableDailyIncome.getItems();
 		if (cafe.SendMail(Filename))
 		{
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("GOED");
-			alert.setContentText("De mail is goed verzonden");// .printStackTrace();
-		    alert.showAndWait();
+			 view.showMessageDialog("Verzending mail","De mail is goed verzonden");
 		}
 		else
 		{

@@ -7,7 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.EventHandler;
-
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.fxml.FXML;
@@ -28,6 +28,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import be.leerstad.EindwerkChezJava.view.MessageDialogController;
 import be.leerstad.EindwerkChezJava.view.RootLayoutController;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 
@@ -134,6 +136,41 @@ public class View extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+    
+	 public boolean showMessageDialog(String Title, String text) 
+	 {
+	 	try{
+           // Load the fxml file and create a new stage for the popup dialog.
+           FXMLLoader loader = new FXMLLoader();
+           loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/MessageDialog.fxml"));
+           AnchorPane page = (AnchorPane) loader.load();
+
+           // Create the dialog Stage.
+           Stage dialogStage = new Stage();
+           dialogStage.setTitle(Title);
+           
+           dialogStage.initModality(Modality.WINDOW_MODAL);
+           dialogStage.initOwner(this.getPrimaryStage());//??
+           Scene scene = new Scene(page);
+           dialogStage.setScene(scene);
+
+           // Set the person into the controller.
+           MessageDialogController controller = loader.getController();
+           controller.setModel(cafe);
+           controller.setDialogStage(dialogStage);
+           controller.setText(text);
+           // Show the dialog and wait until the user closes it
+           dialogStage.showAndWait();
+           return controller.isOkClicked();
+		} catch ( IOException e) {
+			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText(e.getMessage());// .printStackTrace();
+		    alert.showAndWait();
+		}
+	 	return false;
+	 }
 	public LinkedHashMap<Ober, Double> topDrieObers()
 	{
 		LinkedHashMap<Ober, Double> topDrieOber = new LinkedHashMap<>();;

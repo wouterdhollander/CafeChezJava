@@ -198,7 +198,7 @@ public class CafeLayoutController {
     
 	 @FXML
     private void payOrder() {
-	 boolean okClicked = showPayOrderDialog();
+	 boolean okClicked = view.showMessageDialog("Pay Orders", cafe.getActiveOber().payOrders(cafe.getActiveTable()));
 	 if (okClicked && !cafe.getActiveTable().equals(new Table(-5)))
 	 { 
 		circles.get(cafe.getActiveTable().getId()).setFill(Color.DODGERBLUE);
@@ -217,39 +217,6 @@ public class CafeLayoutController {
 	 }
 		
 	}
-	 
-	 public boolean showPayOrderDialog() 
-	 {
-	 	try{
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/PayOrderDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
-
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Pay Orders");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(view.getPrimaryStage());//??
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-            // Set the person into the controller.
-            PayOrderController controller = loader.getController();
-            controller.setModel(cafe);
-            controller.setDialogStage(dialogStage);
-            // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
-            return controller.isOkClicked();
-		} catch ( IOException e) {
-			// TODO Auto-generated catch block
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("WARNING");
-			alert.setContentText(e.getMessage());// .printStackTrace();
-		    alert.showAndWait();
-		}
-	 	return false;
-	 }
 
     @FXML
     private void removeOrder() {

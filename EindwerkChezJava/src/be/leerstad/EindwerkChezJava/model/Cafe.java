@@ -194,28 +194,28 @@ public class Cafe {
 	
 	public boolean SendMail(String attachment)
 	{
-		if (oberAllowed())
+//		if (oberAllowed())
+//		{
+		//attachment = "src/be/leerstad/03_-_Java_Basics_-_Classes_and_objects.pdf";
+		String message = "Beste, \n Hier vindt U het overzicht van de inkomsten van: \n Groeten \n";
+		MultipartChezJava multipartChezJava= new MultipartChezJava();
+		Multipart multipart = new MimeMultipart();
+		try
 		{
-			//attachment = "src/be/leerstad/03_-_Java_Basics_-_Classes_and_objects.pdf";
-			String message = "Beste, \n Hier vindt U het overzicht van de inkomsten van: \n Groeten \n" + activeOber;
-			MultipartChezJava multipartChezJava= new MultipartChezJava();
-			Multipart multipart = new MimeMultipart();
-			try
-			{
-				multipart.addBodyPart(multipartChezJava.addSimpleBodyPart(message, "text/html; charset=utf-8"));
-				multipart.addBodyPart(multipartChezJava.addAttachment(attachment));
-				multipartChezJava.sendMail(multipart, "cvoleerstadB1@gmail.com", attachment);
-				return true;
-			}
-			catch (MessagingException e)
-			{
-				return false;
-			}
+			multipart.addBodyPart(multipartChezJava.addSimpleBodyPart(message, "text/html; charset=utf-8"));
+			multipart.addBodyPart(multipartChezJava.addAttachment(attachment));
+			multipartChezJava.sendMail(multipart, "cvoleerstadB1@gmail.com", attachment);
+			return true;
 		}
-		else
+		catch (MessagingException e)
 		{
 			return false;
 		}
+//		}
+//		else
+//		{
+//			return false;
+//		}
 	}
 	
 	public OrderSet getIncome(Ober ober) throws DAOException
