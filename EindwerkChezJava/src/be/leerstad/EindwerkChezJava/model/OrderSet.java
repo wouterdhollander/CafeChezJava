@@ -14,7 +14,11 @@ import org.apache.log4j.Logger;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-
+/**
+ * @author wouter
+ * @version 0.1
+ * @since 30/05/2016
+ */
 public class OrderSet extends HashSet<Order> {
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	public OrderSet()

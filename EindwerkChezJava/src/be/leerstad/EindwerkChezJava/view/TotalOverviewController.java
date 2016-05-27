@@ -78,7 +78,7 @@ public class TotalOverviewController {
 			 try {
 				 Filename = cafe.createPDF(ordersDay, chckboxCreateOpen.isSelected());
 				 verstuurPDF.setVisible(true);
-			} catch (FileNotFoundException | DocumentException e) {
+			} catch (InternalException e) {
 				// TODO Auto-generated catch block
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("WARNING");

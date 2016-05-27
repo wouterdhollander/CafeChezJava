@@ -20,10 +20,10 @@ public interface ChezJavaDAO {
     boolean insertOrder(Order p); //afrekenen
     OrderSet getOrder(LocalDate localdate) throws DAOException; //bepaalde dag de inkomsten
     OrderSet getOrder(Ober ober) throws DAOException; //bepaalde dag de inkomsten
-    LinkedHashMap<Ober, Double> topDrieOber() throws DAOException;
+    LinkedHashMap<Ober, Double> topObers(int number) throws DAOException;
     List<Ober> getObers() throws DAOException;
 	Set<Liquid> getLiquids() throws DAOException;
-	Ober Login(String lastName, String firstName, String password) throws DAOException, DAOloginNotAllowed;
+	Ober Login(String lastName, String firstName, String password) throws DAOException;
 	boolean insertOrders(Set<Order> set) throws DAOException; //afloggen
 
 

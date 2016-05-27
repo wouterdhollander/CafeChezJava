@@ -33,7 +33,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-
+/**
+ * @author wouter
+ * @version 0.1
+ * @since 30/05/2016
+ */
 public class PDFgenerator {
 	//private URL filename = CreatePDF.class.getResource("/lib/PDF.sql");
   //private String FILE;//= CreatePDF.class.getResource("/lib/PDF.sql").toString();
@@ -52,42 +56,8 @@ public class PDFgenerator {
   private String author;
   private LocalDate date;
   private String fileLocation;
-
  private Document document = new Document();
-  public static void main(String[] args) {
-	  Ober  ober1 = new Ober(1, "Peters", "Wout","password");
-	  Ober ober2 = new Ober(2, "Segers", "Nathalie", "password");
-		Liquid l1 = new Liquid(1, "Cola", 2.0);
-		Liquid l2 = new Liquid(2, "Bier", 3.0); 
-		 ArrayList<Order> orders = new ArrayList<>();
-		Order o1;
-		Order o2;
-		Order o3;
-		try {
-			o1 = new Order(l1, 2, ober1);
-			o2 = new Order(l2, 2, ober1);
-			o3 = new Order(l1, 1, ober2);	
-			 
-		  orders.add(o1);
-		  orders.add(o2);
-		  orders.add(o3);
-		} catch (QuantityToLowException | QuantityZeroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-      try {
-    	  PDFgenerator pdfgen = new PDFgenerator("CafeOverview", "Wouter Dhollander");
-    	  pdfgen.addTitlePage("Cafe Overview");
-    	  pdfgen.addContent("Overzicht Order", orders);
-    	  pdfgen.Create();
-	} catch (DocumentException | FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}  
-  }
-  
+   
   public PDFgenerator(String fileName, String author) throws DocumentException, FileNotFoundException
   {
 	  fileName = fileName.replaceAll("\\s+","");

@@ -35,6 +35,7 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static final String  LOGIN = "SELECT * from tblober where lastName = ? And firstName = ? and password = ?"; 
     private static final String GET_ORDERS_OBER = "SELECT * from tblorders where idOber=?"; 
 
+    
     //private static final String DELETE_OBER = "DELETE FROM tblorders where id =?";
     //private static final String UPDATE_OBER= "UPDATE tblorders SET firstName= ?, lastName = ? ,password = ? WHERE id = ? ";
 
@@ -180,7 +181,7 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 	
 	
 	@Override
-	public Ober Login(String lastName, String firstName, String password) throws DAOException, DAOloginNotAllowed {
+	public Ober Login(String lastName, String firstName, String password) throws DAOException {
 		// TODO Auto-generated method stub
         List<Ober> obers = new ArrayList<>();
         try (
@@ -206,7 +207,7 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         }
         else if(obers.size() == 0)
         {
-        	throw new DAOloginNotAllowed();
+        	return new Ober();
         }
   
         return obers.get(0);
@@ -241,8 +242,8 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 	}
 
 	@Override
-	public LinkedHashMap<Ober, Double> topDrieOber() throws DAOException {
-	    int aantal = 3;
+	public LinkedHashMap<Ober, Double> topObers(int number) throws DAOException {
+	    int aantal = number;
 	     String GET_TOP =  MessageFormat.format("select idober, tblober.firstname, tblober.lastName,tblober.password, sum(totalprice) as sumtotalprice from"
 	    		+ "(Select tblorderlqd.idober as idober, price * qty as totalprice "
 	    		+ "from(Select orders.idOber as idober, t.price as price, orders.qty as qty "

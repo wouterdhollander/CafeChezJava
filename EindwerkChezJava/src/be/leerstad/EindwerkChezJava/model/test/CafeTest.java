@@ -231,7 +231,7 @@ public class CafeTest {
 
 	
 	@Test
-	public void testCreatePDF() throws FileNotFoundException, DocumentException
+	public void testCreatePDF() throws InternalException
 	{
 		ArrayList<Order> orders = new ArrayList<>();
 		orders.add(o1);
@@ -258,7 +258,7 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testClose() throws QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
+	public void testClose() throws QuantityToLowException, QuantityZeroException, InternalException{
 
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
@@ -286,20 +286,22 @@ public class CafeTest {
 		cafe2.login("Segers", "Nathalie", "password");
 		assertEquals(unpayedOrders, cafe2.calculateUnpayedOrders(),PRECISION);
 		assertEquals(cafe.calculateUnpayedOrders(ober1), cafe2.calculateUnpayedOrders(ober1),PRECISION);
-		//assertTrue(cafe2.getTables().equals(setTables));
 	}
 	
 	@Test
-	public void testLogin() throws DAOException, DAOloginNotAllowed {
-
-		cafe.login("Peters", "Wout","password");
+	public void testLogin() throws InternalException {
+		Boolean bool = cafe.login("Peters", "Wout","password");
+		assertTrue(bool);
 		assertEquals(cafe.getActiveOber(), ober1); 
 
-		cafe.login("Segers", "Nathalie", "password");
+		bool = cafe.login("Segers", "Nathalie", "password");
 		assertEquals(cafe.getActiveOber(), ober2);
-
-		cafe.login("Peters", "Wout","password");
+		assertTrue(bool);
+		bool = cafe.login("Peters", "Wout","password");
 		assertEquals(cafe.getActiveOber(), ober1);
+		assertTrue(bool);
+		bool =	cafe.login("Verkeerd", "Nathalie", "password");
+		assertFalse(bool);
 	}
 
 	@After

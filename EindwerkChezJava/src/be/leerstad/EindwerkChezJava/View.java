@@ -63,16 +63,19 @@ public class View extends Application {
     @FXML
     private Label lblTest;
     
-	public View() {
+	public View() throws Exception {
 		try {
 		cafe = new Cafe();
-		} catch (DAOException e) {
+		} catch (InternalException e) {
+			//InternalException intException = new InternalException();
 			 Alert alert = new Alert(AlertType.ERROR);
-	            alert.initOwner(primaryStage);
+	            //alert.initOwner(primaryStage);
 	            alert.setTitle("Invalid Fields");
 	            alert.setHeaderText("ERROR");
 	            alert.setContentText(e.getMessage());
-	            primaryStage.close();
+	            alert.showAndWait();
+	            throw e;
+	            //primaryStage.close();
 		}
 	}
 
@@ -85,13 +88,14 @@ public class View extends Application {
         public void handle(WindowEvent we) {
             try {
 				cafe.close();
-			} catch (DAOException e) {
+			} catch (InternalException e) {
 				// TODO Auto-generated catch block
 				 Alert alert = new Alert(AlertType.ERROR);
 		            alert.initOwner(primaryStage);
 		            alert.setTitle("Invalid Fields");
 		            alert.setHeaderText("ERROR");
 		            alert.setContentText(e.getMessage());
+		            alert.showAndWait();
 		            //primaryStage.close();
 			}
         }
@@ -121,6 +125,7 @@ public class View extends Application {
             alert.setTitle("Invalid Fields");
             alert.setHeaderText("ERROR");
             alert.setContentText(e.getMessage());
+            alert.showAndWait();
             //primaryStage.close();
 		}
 	}
@@ -176,7 +181,7 @@ public class View extends Application {
 		LinkedHashMap<Ober, Double> topDrieOber = new LinkedHashMap<>();;
 		try {
 			topDrieOber = cafe.topDrieObers();
-		} catch (DAOException e) {
+		} catch (InternalException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();
@@ -193,7 +198,7 @@ public class View extends Application {
 	public OrderSet income(LocalDate date) {
 		try {
 			return cafe.getIncome(date);
-		} catch (DAOException e) {
+		} catch (InternalException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();
@@ -206,7 +211,7 @@ public class View extends Application {
 		OrderSet orders = new OrderSet();
 		try {
 			orders =  cafe.getIncome(cafe.getActiveOber());
-		} catch (DAOException e) {
+		} catch (InternalException e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setContentText(e.getMessage());// .printStackTrace();

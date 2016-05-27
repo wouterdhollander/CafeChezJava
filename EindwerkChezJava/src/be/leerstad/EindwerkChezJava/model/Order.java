@@ -17,11 +17,10 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-//import java.sql.Date;
-
 /**
  * @author wouter
- *
+ * @version 0.1
+ * @since 30/05/2016
  */
 public class Order implements Serializable{
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -32,13 +31,6 @@ public class Order implements Serializable{
 	
 	private StringProperty printout;
 
-	/**
-	 * @param idOrder
-	 * @param idLiquid
-	 * @param quality
-	 * @throws QuantityZeroException 
-	 * @throws QuantityToLowException 
-	 */
 	public Order(Liquid liquid, int quantity, Ober ober) throws QuantityToLowException, QuantityZeroException {
 		this.setIdLiquid(liquid);
 		this.setQuantity(quantity);

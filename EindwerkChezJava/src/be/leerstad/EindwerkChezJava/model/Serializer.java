@@ -11,7 +11,11 @@ import javax.sql.rowset.serial.SerialException;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-
+/**
+ * @author wouter
+ * @version 0.1
+ * @since 30/05/2016
+ */
 public class Serializer {
 	private static final String  PATH = "SerialiseCafe.ser";
 	public Serializer() {

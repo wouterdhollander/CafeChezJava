@@ -2,7 +2,6 @@ package be.leerstad.EindwerkChezJava.Exceptions;
 
 /**
  * @author wouter
- *Exception for internal error
  */
 public class QuantityToLowException extends Exception{
 

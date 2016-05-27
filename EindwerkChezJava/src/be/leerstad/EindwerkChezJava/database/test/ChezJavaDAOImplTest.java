@@ -2,30 +2,19 @@ package be.leerstad.EindwerkChezJava.database.test;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import be.leerstad.EindwerkChezJava.database.*;
 import be.leerstad.EindwerkChezJava.model.*;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
-
-
-
 
 public class ChezJavaDAOImplTest {
 	private ChezJavaDAO ChezJavaDAOimpl;
@@ -154,18 +143,18 @@ public class ChezJavaDAOImplTest {
 		assertEquals(liquidsDAO.iterator().next(), new Liquid(1, "Cola", 1.5));
 		assertEquals(13, liquidsDAO.size());
 	}
-	
-	//TODO
-	//@Test
-	public void topDrieOber() throws DAOException {
+
+	@Test
+	public void topObers() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 		//linke
 		
 		LinkedHashMap<Ober, Double> mapTopDrie = new LinkedHashMap<>();
 
-			mapTopDrie = ChezJavaDAOimpl.topDrieOber();
+			mapTopDrie = ChezJavaDAOimpl.topObers(3);
 			Set set = mapTopDrie.entrySet();
 			//set.
+			assertEquals(3, mapTopDrie.size());
 
 	}
 	
