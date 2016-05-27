@@ -1,31 +1,18 @@
 package be.leerstad.EindwerkChezJava.view;
 
 import java.io.FileNotFoundException;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-
-import org.jfree.chart.*;
-import org.jfree.chart.demo.PieChartDemo1;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.ui.RefineryUtilities;
 
 import com.itextpdf.text.DocumentException;
 
 import be.leerstad.EindwerkChezJava.View;
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
-import be.leerstad.EindwerkChezJava.model.Cafe;
-import be.leerstad.EindwerkChezJava.model.Ober;
-import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.Exceptions.*;
+import be.leerstad.EindwerkChezJava.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;

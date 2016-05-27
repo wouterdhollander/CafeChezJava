@@ -55,33 +55,33 @@ public class CafeTest {
 		o3 = new Order(l1, 1, ober2);	
 	}
 	
-	//@Test
+	@Test
 	public void testGetTables() 
 	{
 		assertEquals(9, cafe.getTables().size());	 
 	}
 	
-	//@Test
+	@Test
 	public void testSetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
 
-	//@Test
+	@Test
 	public void testGetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
 	
-	//@Test
+	@Test
 	public void testGetActiveOber() {
 		assertEquals(1, cafe.getActiveOber().getId());
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCalculateUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		cafe.setActiveTable(Tables.get(1));
@@ -121,7 +121,7 @@ public class CafeTest {
 		assertEquals(0, cafe.calculateUnpayedOrders(ober1),PRECISION);
 	}
 	
-	//@Test 	
+	@Test 	
 	public void testGetUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
@@ -166,7 +166,7 @@ public class CafeTest {
 		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
 	}
 
-	//@Test 	
+	@Test 	
 	public void testGetPayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
@@ -199,7 +199,7 @@ public class CafeTest {
 		assertNotEquals(ordersTotal, cafe.getPayedOrders());
 	}
 	
-	//@Test 	
+	@Test 	
 	public void testCalculatePayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
@@ -230,7 +230,7 @@ public class CafeTest {
 	
 
 	
-	//@Test
+	@Test
 	public void testCreatePDF() throws FileNotFoundException, DocumentException
 	{
 		ArrayList<Order> orders = new ArrayList<>();
@@ -251,13 +251,13 @@ public class CafeTest {
 		assertTrue(bool);
 	}
 	
-	//@Test
+	@Test
 	public void testLogout(){
 		cafe.logOut();
 		assertTrue(new Ober().equals(cafe.getActiveOber()));
 	}
 	
-	//@Test
+	@Test
 	public void testClose() throws QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
 
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
@@ -289,7 +289,7 @@ public class CafeTest {
 		//assertTrue(cafe2.getTables().equals(setTables));
 	}
 	
-	//@Test
+	@Test
 	public void testLogin() throws DAOException, DAOloginNotAllowed {
 
 		cafe.login("Peters", "Wout","password");
