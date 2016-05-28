@@ -21,6 +21,7 @@ public interface ChezJavaDAO {
     OrderSet getOrder(LocalDate localdate) throws DAOException; //bepaalde dag de inkomsten
     OrderSet getOrder(Ober ober) throws DAOException; //bepaalde dag de inkomsten
     LinkedHashMap<Ober, Double> topObers(int number) throws DAOException;
+    LinkedHashMap<Ober, Double> topObers() throws DAOException;
     List<Ober> getObers() throws DAOException;
 	Set<Liquid> getLiquids() throws DAOException;
 	Ober Login(String lastName, String firstName, String password) throws DAOException;

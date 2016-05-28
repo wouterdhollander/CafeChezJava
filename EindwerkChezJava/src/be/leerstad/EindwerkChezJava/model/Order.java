@@ -32,7 +32,7 @@ public class Order implements Serializable{
 	private StringProperty printout;
 
 	public Order(Liquid liquid, int quantity, Ober ober) throws QuantityToLowException, QuantityZeroException {
-		this.setIdLiquid(liquid);
+		this.setLiquid(liquid);
 		this.setQuantity(quantity);
 		LocalDate now = LocalDate.now();
 		this.date = now;
@@ -41,7 +41,7 @@ public class Order implements Serializable{
 	}
 	
 	public Order(Liquid liquid, int quantity, Ober ober, LocalDate date) throws QuantityToLowException, QuantityZeroException {
-		this.setIdLiquid(liquid);
+		this.setLiquid(liquid);
 		this.setQuantity(quantity);
 		LocalDate now = LocalDate.now();
 		this.date = date;
@@ -74,7 +74,7 @@ public class Order implements Serializable{
 	public Liquid getLiquid() {
 		return liquid;
 	}
-	private void setIdLiquid(Liquid liquid) {
+	public void setLiquid(Liquid liquid) {
 		this.liquid = liquid;
 	}
 	public int getQuantity() {
@@ -110,6 +110,7 @@ public class Order implements Serializable{
 		if (obj instanceof Order) {
 			Order o = (Order) obj;
 			return (liquid.equals(o.liquid) && date.equals(o.date) && ober.equals(o.ober));
+			//return (liquid.equals(o.liquid));
 		}
 		return false;
 

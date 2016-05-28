@@ -47,6 +47,8 @@ public class OberTest
 		assertTrue(isAllowed);
 		boolean isNotAllowed = ober2.makeOrder(l1, 2, table1);
 		assertFalse(isNotAllowed);
+		isNotAllowed = ober2.makeOrder(l1, 2, new Table(-5));
+		assertFalse(isNotAllowed);
 	}
 	
 	@Test

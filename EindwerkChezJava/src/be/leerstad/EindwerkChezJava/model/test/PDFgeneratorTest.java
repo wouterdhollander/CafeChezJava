@@ -70,6 +70,6 @@ public class PDFgeneratorTest {
 	public void testOpen() throws DocumentException, FileNotFoundException 
 	{
 		PDFgenerator pdfgen = new PDFgenerator("CafeOverview", "Wouter Dhollander");
-		pdfgen.Open();
+		//pdfgen.Open();
 	}
 }

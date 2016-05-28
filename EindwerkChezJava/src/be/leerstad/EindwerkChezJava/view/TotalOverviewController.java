@@ -2,14 +2,17 @@ package be.leerstad.EindwerkChezJava.view;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.Map;
-
+import java.util.Map.Entry;
 
 import com.itextpdf.text.DocumentException;
 
 import be.leerstad.EindwerkChezJava.View;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.model.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,12 +21,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class TotalOverviewController {
 	private View view;
 	private Cafe cafe;
 	private Stage dialogStage;
 	private ObservableList<Order> ordersOverview;
+    
+	private ObservableList<Order> obsOrdersUnpayed;
+	private ObservableList<Order> obsOrdersPayed;
 	@FXML
 	private DatePicker datepicker;
 	@FXML
@@ -32,14 +39,38 @@ public class TotalOverviewController {
 	private TableView<Order> tableDailyIncome;
 	@FXML
     private TableColumn<Order, String> collumDailyIncome;
+    @FXML
+    private TableColumn<Order, String> collumUnpayed;
+    @FXML
+    private TableColumn<Order, String> collumUnpayedOber;
+    @FXML
+    private TableColumn<Order, String> collumUnpayedLiquid;
+    @FXML
+    private TableColumn<Order, String> collumInWalletOber;
+    @FXML
+    private TableColumn<Order, String> collumInWallet;
+    @FXML
+    private TableColumn<Order, String> collumInWalletLiquid;
 	@FXML
     private AnchorPane anchorTopDrie;
 	@FXML
     private Tab tabTopDrie;
 	@FXML
-    private Button verstuurPDF;
+    private Button btnVerstuurPDF;
 	@FXML
-    private Button CreatePDF;
+    private Button btnCreatePDF;
+	@FXML
+    private Button btnCreatePieChart;
+	@FXML
+	TableView<Order> tableUnpayed = new TableView<>();
+	@FXML
+	TableView<Order> tableInWallet = new TableView<>();
+	@FXML
+	Label lblTotalUnpayed;
+	@FXML
+	Label lblTotalInWallet;
+
+
 	public TotalOverviewController() {
 		// TODO Auto-generated constructor stub
 	}
@@ -47,6 +78,13 @@ public class TotalOverviewController {
     private void initialize() {
     	collumDailyIncome.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
 
+    	collumUnpayed.setCellValueFactory(celldata -> new SimpleStringProperty(String.format("%.2f",celldata.getValue().getPrice())));
+    	collumUnpayedOber.setCellValueFactory(celldata -> new SimpleStringProperty( celldata.getValue().getOber().toString()));
+    	collumUnpayedLiquid.setCellValueFactory(celldata -> new SimpleStringProperty( celldata.getValue().getLiquid().toString()));
+    	
+    	collumInWallet.setCellValueFactory(celldata -> new SimpleStringProperty(String.format("%.2f",celldata.getValue().getPrice())));
+    	collumInWalletOber.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getOber().toString()));
+    	collumInWalletLiquid.setCellValueFactory(celldata -> new SimpleStringProperty( celldata.getValue().getLiquid().toString()));
     }
     
 	@FXML
@@ -55,7 +93,7 @@ public class TotalOverviewController {
 		//ObservableList<Order> ordersDay = tableDailyIncome.getItems();
 		if (cafe.SendMail(Filename))
 		{
-			 view.showMessageDialog("Verzending mail","De mail is goed verzonden");
+			 view.showMessageDialogOkCancel("Verzending mail","De mail is goed verzonden");
 		}
 		else
 		{
@@ -77,7 +115,7 @@ public class TotalOverviewController {
 			ObservableList<Order> ordersDay = tableDailyIncome.getItems();
 			 try {
 				 Filename = cafe.createPDF(ordersDay, chckboxCreateOpen.isSelected());
-				 verstuurPDF.setVisible(true);
+				 btnVerstuurPDF.setVisible(true);
 			} catch (InternalException e) {
 				// TODO Auto-generated catch block
 				Alert alert = new Alert(AlertType.WARNING);
@@ -93,11 +131,27 @@ public class TotalOverviewController {
 		LocalDate ld = datepicker.getValue();
 		//datepicker.getd
 		//ordersOverview = view.getOrdersOverview();
-		ordersOverview = FXCollections.observableArrayList(view.income(ld));
+		OrderSet orders = view.income(ld);
+		ordersOverview = FXCollections.observableArrayList(orders);
         tableDailyIncome.setItems(ordersOverview);
-        verstuurPDF.setVisible(false);
+        btnVerstuurPDF.setVisible(false);
 	}
 	
+	@FXML
+	private void bereken()
+	{
+	    OrderSet  ordersUnpayed = cafe.getUnpayedOrders();
+	    obsOrdersUnpayed =  FXCollections.observableArrayList(ordersUnpayed);  
+	    tableUnpayed.setItems(obsOrdersUnpayed);
+
+	    OrderSet  ordersPayed = cafe.getPayedOrders();
+	    obsOrdersPayed =  FXCollections.observableArrayList(ordersPayed);  
+	    tableInWallet.setItems(obsOrdersPayed);
+	   		
+		lblTotalUnpayed.setText(String.format("%.2f",cafe.calculateUnpayedOrders()));
+		lblTotalInWallet.setText(String.format("%.2f",cafe.calculatePayedOrders()));
+	}
+	@FXML
 	private void createPieChart()
 	{
         Map<Ober, Double> topDrie = view.topDrieObers();
@@ -117,12 +171,13 @@ public class TotalOverviewController {
 //        //demo.autosize();
         demo.setVisible(true);
 	}
-	
+
     public void setView(View view)
     {
         this.view = view;
-        createPieChart();
-        verstuurPDF.setVisible(false);
+        btnVerstuurPDF.setVisible(false);
+        
+        bereken();
     }
     
     public void setModel(Cafe model){

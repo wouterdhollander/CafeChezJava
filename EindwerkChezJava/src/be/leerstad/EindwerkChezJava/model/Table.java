@@ -24,6 +24,8 @@ public class Table implements Serializable{
 	private int id;
 	private OrderSet orders = new OrderSet();
 
+	private double positionX;
+	private double positionY;
 	/**
 	 * @param id the id of the table
 	 */
@@ -36,9 +38,29 @@ public class Table implements Serializable{
 	 * @return the Orders of the Table Object
 	 */
 	public OrderSet getOrders() {
+		//als er een order veranderd wordt naar een order dat al in de set wordt dit niet samengevoegd
+		// trukje => terug door orderset laten gaan.
+		OrderSet orders2 = new OrderSet(orders);
+		orders = orders2;
 		return orders;
 	}
-	
+
+	public double getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(double positionX) {
+		this.positionX = positionX;
+	}
+
+	public double getPositionY() {
+		return positionY;
+	}
+
+	public void setPositionY(double positionY) {
+		this.positionY = positionY;
+	}
+
 	private void setOrders(OrderSet orders) {
 		this.orders = orders;
 	}

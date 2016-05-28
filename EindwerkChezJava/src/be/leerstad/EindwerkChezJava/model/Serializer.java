@@ -40,17 +40,17 @@ public class Serializer {
 	{
 		List<Table> tables = null;
 
-			FileInputStream fis;
+		FileInputStream fis;
 
-			try {
-				fis = new FileInputStream(PATH);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				tables = (List<Table>) ois.readObject();
-				ois.close();
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				throw new SerialException();
-			}
+		try {
+			fis = new FileInputStream(PATH);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			tables = (List<Table>) ois.readObject();
+			ois.close();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			throw new SerialException();
+		}
 
 		return tables;
 	}

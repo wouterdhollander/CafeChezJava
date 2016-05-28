@@ -7,25 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="rootLayout" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.leerstad.EindwerkChezJava.view.RootLayoutController">
+<BorderPane fx:id="rootLayout" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.leerstad.EindwerkChezJava.view.RootLayoutController">
    <top>
       <MenuBar>
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Inlog">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#login" text="Login" />
-                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Logout" />
+              <MenuItem mnemonicParsing="false" onAction="#login" text="Log in" />
+                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Log uit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Overview">
+          <Menu mnemonicParsing="false" text="Overzicht">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#cafeOverview" text="Watch table overview" />
-              <MenuItem mnemonicParsing="false" onAction="#totalOverview" text="Watch total overview" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#cafeOverview" text="Cafe" />
+              <MenuItem mnemonicParsing="false" onAction="#totalOverview" text="Obers" />
             </items>
           </Menu>
         </menus>
@@ -35,7 +30,7 @@
       <AnchorPane fx:id="anchorCenter" />
    </center>
    <bottom>
-      <AnchorPane fx:id="anchorBottom" prefHeight="46.0" prefWidth="600.0">
+      <AnchorPane fx:id="anchorBottom">
          <children>
             <Label fx:id="lblActiveOber" layoutX="211.0" layoutY="15.0" prefHeight="46.0" text="Active Ober" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>

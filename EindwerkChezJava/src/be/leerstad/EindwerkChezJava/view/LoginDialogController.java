@@ -64,6 +64,7 @@ public class LoginDialogController {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("WARNING");
 				alert.setContentText(e.getMessage());// .printStackTrace();
+				e.printStackTrace();
 			    alert.showAndWait();
 			}
         }

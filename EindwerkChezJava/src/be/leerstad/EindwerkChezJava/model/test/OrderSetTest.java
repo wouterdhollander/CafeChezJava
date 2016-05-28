@@ -105,6 +105,9 @@ public class OrderSetTest {
 		ordersarraylist.add(o2);
 		orders.addAll(ordersarraylist);
 		assertEquals(2, orders.size());
+		ordersarraylist.add(o1);
+		orders.addAll(ordersarraylist);
+		assertEquals(2, orders.size());
 		//assertEquals(5, orders.get(0).getQuantity());
 	}
 	

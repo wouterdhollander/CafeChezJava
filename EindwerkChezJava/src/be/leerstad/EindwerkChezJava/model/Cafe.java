@@ -6,9 +6,11 @@ import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -210,9 +212,9 @@ public class Cafe {
 	 * if you are not logged in an empty set is givin
 	 * @return an OrdersSet object with all payed orders of the obers
 	 */
-	public Set<Order> getPayedOrders() 
+	public OrderSet getPayedOrders() 
 	{
-		Set<Order> orders = new HashSet<>();
+		OrderSet orders = new OrderSet();
 		if (oberAllowed())
 		{
 			for (Ober ober : obers)
@@ -244,6 +246,8 @@ public class Cafe {
 		}
 		return totaal;
 	}
+	
+	
 	//getest
 	/**
 	 * @param orders the collection of orders you want to have in your PDF
@@ -308,6 +312,23 @@ public class Cafe {
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Return a linkedHashmap the all obers order by highest income
+	 * the keys are the representing Obers
+	 * the values are the representing sums of the orders in the cashdesk
+	 * @return the three best obers
+	 * @throws InternalException  if an internal error occurred (DB errors,...)
+	 */
+	public LinkedHashMap<Ober, Double> topObers() throws InternalException
+	{
+		LinkedHashMap<Ober, Double> mapTop = new LinkedHashMap<>();
+		if (oberAllowed())
+		{
+			mapTop = ChezJavaDAOimpl.topObers();
+		}
+		return mapTop;
 	}
 	
 	/**
@@ -415,10 +436,10 @@ public class Cafe {
 	 */
 	public void close() throws InternalException
 	{
-		logOut();
+		
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 		ChezJavaDAOimpl.insertOrders(getPayedOrders());
-
+		logOut();
 		removePayedOrders();
 		
 		Serializer ser = new Serializer();

@@ -26,10 +26,17 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collector;
 
-import be.leerstad.EindwerkChezJava.view.MessageDialogController;
+import be.leerstad.EindwerkChezJava.view.CafeLayoutController;
+import be.leerstad.EindwerkChezJava.view.EditOrdersController;
+import be.leerstad.EindwerkChezJava.view.LoginDialogController;
+import be.leerstad.EindwerkChezJava.view.MessageDialogOkCancelController;
 import be.leerstad.EindwerkChezJava.view.RootLayoutController;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 
@@ -41,11 +48,6 @@ public class View extends Application {
     private Stage primaryStage;     
     @FXML
     private BorderPane rootLayout;
-    //private AnchorPane cafeOverview;
-   // private TitledPane menuBar;
-    private ObservableList<Liquid> liquidsData;
-
-	private ObservableSet<Table> TablesData;
     private Cafe cafe;
     @FXML
     private javafx.scene.control.Label activeOberLabel;
@@ -87,21 +89,71 @@ public class View extends Application {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
         public void handle(WindowEvent we) {
             try {
-				cafe.close();
+            	OrderSet unpayedOrders = cafe.getUnpayedOrders();
+            	if (unpayedOrders.size() == 0)
+            	{
+            		cafe.close();
+            	}
+            	else
+            	{
+            		StringBuilder stringbuilder = new StringBuilder();
+            		stringbuilder.append("Niet alle obers hebben hun tafels afgerekend! \n");
+            		Set<Ober> obers = new HashSet<>();
+            		for (Order order : unpayedOrders) {
+            			obers.add(order.getOber());
+					}
+            		for (Ober ober : obers)
+            		{
+            			stringbuilder.append(ober.toString() + "\n");
+            		}
+            		
+            		stringbuilder.append("Deze bestellingen worden bewaard. \n Wilt U doorgaan?");
+            		if (showMessageDialogOkCancel("Afsluiten", stringbuilder.toString()))
+            		{
+            			cafe.close();
+            		}
+            		else
+            		{
+            			we.consume();
+            		}
+            	}
 			} catch (InternalException e) {
 				// TODO Auto-generated catch block
 				 Alert alert = new Alert(AlertType.ERROR);
 		            alert.initOwner(primaryStage);
-		            alert.setTitle("Invalid Fields");
+		            alert.setTitle("oopsie");
 		            alert.setHeaderText("ERROR");
 		            alert.setContentText(e.getMessage());
 		            alert.showAndWait();
-		            //primaryStage.close();
 			}
         }
     });
 		 initRootLayout(); 
 	}
+    
+    public void showCafeOverview() {
+        
+		try {
+			cafe.setActiveTable(new Table(-5));
+			FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/CafeLayout.fxml"));
+
+			AnchorPane newPane = (AnchorPane) loader.load();
+	        rootLayout.setCenter(newPane);//.getChildren().add(newPane);
+	
+	        CafeLayoutController controller = loader.getController();
+	        controller.setModel(cafe);
+	        controller.setView(this);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText(e.getMessage());// e.printStackTrace();
+			e.printStackTrace();
+		    alert.showAndWait();
+		}
+
+    }
 	
 	public void  initRootLayout()
 	{
@@ -129,7 +181,44 @@ public class View extends Application {
             //primaryStage.close();
 		}
 	}
+    /**
+     * Opens a dialog to edit details for the specified order. If the user
+     * clicks OK, the changes are saved into the provided person object and true
+     * is returned.
+     *
+     * @param person the person object to be edited
+     * @return true if the user clicked OK, false otherwise.
+     */
+    public boolean showEditOrdersDialog(Order order) {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/EditOrdersDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
 
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit Order ");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            EditOrdersController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setOrder(order, this.getLiquidsData());
+            controller.setModel(cafe);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static void main(String[] args) {
         launch(args);
     }
@@ -142,12 +231,12 @@ public class View extends Application {
         return primaryStage;
     }
     
-	 public boolean showMessageDialog(String Title, String text) 
+	 public boolean showMessageDialogOkCancel(String Title, String text) 
 	 {
 	 	try{
            // Load the fxml file and create a new stage for the popup dialog.
            FXMLLoader loader = new FXMLLoader();
-           loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/MessageDialog.fxml"));
+           loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/MessageDialogOkCancle.fxml"));
            AnchorPane page = (AnchorPane) loader.load();
 
            // Create the dialog Stage.
@@ -160,7 +249,48 @@ public class View extends Application {
            dialogStage.setScene(scene);
 
            // Set the person into the controller.
-           MessageDialogController controller = loader.getController();
+           MessageDialogOkCancelController controller = loader.getController();
+           controller.setModel(cafe);
+           controller.setDialogStage(dialogStage);
+           controller.setText(text);
+           // Show the dialog and wait until the user closes it
+           dialogStage.showAndWait();
+           Boolean bool = controller.isOkClicked();
+           return bool;
+		} catch ( IOException e) {
+			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText(e.getMessage());// .printStackTrace();
+		    alert.showAndWait();
+		}
+	 	return false;
+	 }
+	 
+	 public boolean showMessageDialogTableNotAllowed()
+	 {
+		 return this.showMessageDialogOk("Cafe Chez Java", "U mag deze Tafel niet besteller! \n Selecteer een tafel. \n Of vind uw tafel! \n hover over te tafels om de actieve obers te zien.");
+	 }
+	 
+	 public boolean showMessageDialogOk(String Title, String text) 
+	 {
+	 	try{
+           // Load the fxml file and create a new stage for the popup dialog.
+           FXMLLoader loader = new FXMLLoader();
+           loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/MessageDialogOk.fxml"));
+           AnchorPane page = (AnchorPane) loader.load();
+
+           // Create the dialog Stage.
+           Stage dialogStage = new Stage();
+           dialogStage.setTitle(Title);
+           
+           dialogStage.initModality(Modality.WINDOW_MODAL);
+           dialogStage.initOwner(this.getPrimaryStage());//??
+           Scene scene = new Scene(page);
+           dialogStage.setScene(scene);
+
+           // Set the person into the controller.
+           MessageDialogOkCancelController controller = loader.getController();
            controller.setModel(cafe);
            controller.setDialogStage(dialogStage);
            controller.setText(text);
@@ -176,6 +306,7 @@ public class View extends Application {
 		}
 	 	return false;
 	 }
+	 
 	public LinkedHashMap<Ober, Double> topDrieObers()
 	{
 		LinkedHashMap<Ober, Double> topDrieOber = new LinkedHashMap<>();;
@@ -219,6 +350,20 @@ public class View extends Application {
 		}
 		return FXCollections.observableArrayList(orders);
 	}
+	public String calculateIncomeActiveOber()
+	{
+		String income = "";
+		try {
+			 income = String.format("%.2f",cafe.getIncome(cafe.getActiveOber()).calcutateOrders());
+		} catch (InternalException e) {
+			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("WARNING");
+			alert.setContentText(e.getMessage());// .printStackTrace();
+		    alert.showAndWait();
+		}
+		return income;
+	}
 	public String calculateUnpayedActiveTable()
 	{
 		return String.format("%.2f",cafe.getActiveTable().getOrders().calcutateOrders());
@@ -250,7 +395,7 @@ public class View extends Application {
 		{			
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
-			alert.setContentText("Active Ober not set");// .printStackTrace();
+			alert.setContentText("Actieve Ober niet geset!");// .printStackTrace();
 		    alert.showAndWait();
 		}
 		else

@@ -46,20 +46,7 @@ public class ChezJavaDAOImplTest {
 		  obers.add(o3);
 		  obers.add(o4);
 	}
-	@Test (expected = DAOloginNotAllowed.class)
-	public void testLoginInvallid() throws DAOloginNotAllowed
-	{
-		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 
-		Ober ober;
-		try {
-			ober = ChezJavaDAOimpl.Login("Peters","Wout","Fout password");
-			assertEquals(ober, o1);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	@Test
 	public void testGetInstance() {
 		assertTrue(ChezJavaDAOimpl == null);
@@ -116,11 +103,14 @@ public class ChezJavaDAOImplTest {
 
 		Ober ober;
 
-			ober = ChezJavaDAOimpl.Login("Peters","Wout","password");
-			assertEquals(ober, o1);
+		ober = ChezJavaDAOimpl.Login("Peters","Wout","password");
+		assertEquals(ober, o1);
 
-	}
 		
+		ober = ChezJavaDAOimpl.Login("Peters","Wout","Fout password");
+		assertEquals(ober, new Ober());
+	}
+			
 	@Test
 	public void testGetObers() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
@@ -147,15 +137,15 @@ public class ChezJavaDAOImplTest {
 	@Test
 	public void topObers() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
-		//linke
-		
+
 		LinkedHashMap<Ober, Double> mapTopDrie = new LinkedHashMap<>();
 
-			mapTopDrie = ChezJavaDAOimpl.topObers(3);
-			Set set = mapTopDrie.entrySet();
-			//set.
-			assertEquals(3, mapTopDrie.size());
-
+		mapTopDrie = ChezJavaDAOimpl.topObers(3);
+		assertEquals(3, mapTopDrie.size());
+		assertEquals(192.1, mapTopDrie.entrySet().iterator().next().getValue(), PRECISION);
+		
+		mapTopDrie = ChezJavaDAOimpl.topObers();
+		assertEquals(4, mapTopDrie.size());
 	}
 	
 	@After

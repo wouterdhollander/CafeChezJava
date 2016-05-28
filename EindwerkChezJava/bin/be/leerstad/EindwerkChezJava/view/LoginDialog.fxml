@@ -23,9 +23,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="First Name" />
-            <Label text="Last Name" GridPane.rowIndex="1" />
-            <Label text="Password" GridPane.rowIndex="2" />
+            <Label text="Voornaam" />
+            <Label text="Achternaam" GridPane.rowIndex="1" />
+            <Label text="Passwoord" GridPane.rowIndex="2" />
             <TextField fx:id="firstNameField" text="Wout" GridPane.columnIndex="1" />
             <TextField fx:id="lastNameField" text="Peters" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <PasswordField fx:id="passwordField" text="password" GridPane.columnIndex="1" GridPane.rowIndex="2" />

@@ -50,9 +50,11 @@ public class RootLayoutController{
     @FXML
     public void login() 
     {
+    	logout();
     	boolean okClicked = showLoginDialog();
     	if( okClicked)
     	{
+    		
     		lblActiveOber.setText(cafe.getActiveOber().toString());
     		//showCafeOverview();
     	}
@@ -81,7 +83,7 @@ public class RootLayoutController{
     	}
     	if (!cafe.getActiveOber().equals(new Ober()))
     	{
-    		showCafeOverview();
+    		view.showCafeOverview();
     	}
 
     }
@@ -113,35 +115,14 @@ public class RootLayoutController{
 		    alert.showAndWait();
         }
     }
-    
-    public void showCafeOverview() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/CafeLayout.fxml"));
 
-        SplitPane newPane;
-		try {
-			newPane = (SplitPane) loader.load();
-	        rootLayout.setCenter(newPane);//.getChildren().add(newPane);
-	
-	        CafeLayoutController controller = loader.getController();
-	        controller.setModel(cafe);
-	        controller.setView(view);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("WARNING");
-			alert.setContentText(e.getMessage());// .printStackTrace();
-		    alert.showAndWait();
-		}
-
-    }
 
     /**
-     * Opens a dialog to edit details for the specified person. If the user
+     * Opens a dialog login the person. If the user
      * clicks OK, the changes are saved into the provided person object and true
      * is returned.
      *
-     * @param person the person object to be edited
+     * @param person the person object to be logged in
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showLoginDialog() {
@@ -163,7 +144,6 @@ public class RootLayoutController{
             LoginDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setModel(cafe);
-
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

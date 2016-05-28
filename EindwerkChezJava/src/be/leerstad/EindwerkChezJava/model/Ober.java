@@ -52,7 +52,7 @@ public class Ober implements Serializable{
 	
 	private boolean isTableAllowed(Table table)
 	{
-		return table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this);
+		return (!table.equals(new Table(-5))) &&( table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this));
 	}
 	
 	/**

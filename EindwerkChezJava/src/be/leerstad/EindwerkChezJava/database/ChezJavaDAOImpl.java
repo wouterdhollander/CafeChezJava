@@ -35,10 +35,14 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static final String  LOGIN = "SELECT * from tblober where lastName = ? And firstName = ? and password = ?"; 
     private static final String GET_ORDERS_OBER = "SELECT * from tblorders where idOber=?"; 
 
-    
-    //private static final String DELETE_OBER = "DELETE FROM tblorders where id =?";
-    //private static final String UPDATE_OBER= "UPDATE tblorders SET firstName= ?, lastName = ? ,password = ? WHERE id = ? ";
-
+	private static final String GET_TOP = "select idober, tblober.firstname, tblober.lastName,tblober.password, sum(totalprice) as sumtotalprice from"
+    		+ "(Select tblorderlqd.idober as idober, price * qty as totalprice "
+    		+ "from(Select orders.idOber as idober, t.price as price, orders.qty as qty "
+    		+ "from tblorders orders left join tblliquids t on t.idLiquid= orders.idLiquid"
+    		+ ") as tblorderlqd"
+    		+ ") as tblsumoberInner "
+    		+ "join tblober ON tblober.id = idober "
+    		+ "group by idober Order by sumtotalprice DESC ";
 
     private static ChezJavaDAOImpl instance;
 
@@ -240,26 +244,35 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         }
         return liquids;
 	}
+	@Override
+	public LinkedHashMap<Ober, Double> topObers() throws DAOException {
+		return this.topObers(-5);
+		
+	}
+	
 
+	
 	@Override
 	public LinkedHashMap<Ober, Double> topObers(int number) throws DAOException {
 	    int aantal = number;
-	     String GET_TOP =  MessageFormat.format("select idober, tblober.firstname, tblober.lastName,tblober.password, sum(totalprice) as sumtotalprice from"
-	    		+ "(Select tblorderlqd.idober as idober, price * qty as totalprice "
-	    		+ "from(Select orders.idOber as idober, t.price as price, orders.qty as qty "
-	    		+ "from tblorders orders left join tblliquids t on t.idLiquid= orders.idLiquid"
-	    		+ ") as tblorderlqd"
-	    		+ ") as tblsumoberInner "
-	    		+ "join tblober ON tblober.id = idober "
-	    		+ "group by idober Order by sumtotalprice DESC LIMIT {0,number,integer}", aantal);
-	     
+	    String GET_TOP_Count = GET_TOP +  "LIMIT ?" ;
+	    if (number == -5)
+	    {
+	    	GET_TOP_Count = GET_TOP;
+	    }
+ 
 	        //List<Ober> obers = new ArrayList<>();
 	     LinkedHashMap<Ober, Double> mapTopDrie = new LinkedHashMap<>();
 	        
 	        try (
 	            Connection connection = getConnection();
-	            PreparedStatement preparedStatement = connection.prepareStatement(GET_TOP);
+	            PreparedStatement preparedStatement = connection.prepareStatement(GET_TOP_Count);	
 	        ){
+	        	if (number != -5)
+	        	{
+	        		preparedStatement.setInt(1, aantal);
+	        	}
+	        	
 	            ResultSet resultSet = preparedStatement.executeQuery();
 	            while (resultSet.next()){
 	            	String idDB = resultSet.getString(1);

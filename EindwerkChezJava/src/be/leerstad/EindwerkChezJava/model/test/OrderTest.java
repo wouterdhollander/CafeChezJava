@@ -62,6 +62,13 @@ public class OrderTest {
 	}
 
 	@Test
+	public void testSetLiquid() {
+		o1.setLiquid(l2);
+		assertTrue(o1.getLiquid().equals(l2));
+		assertFalse(o1.getLiquid().equals(l1));
+	}
+	
+	@Test
 	public void testGetQuantity() {
 		assertEquals(2, o1.getQuantity());
 	}
