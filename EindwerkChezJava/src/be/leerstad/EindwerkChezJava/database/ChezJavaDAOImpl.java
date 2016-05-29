@@ -1,16 +1,17 @@
 package be.leerstad.EindwerkChezJava.database;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
-
 import java.util.ArrayList;
-
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-
 
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
@@ -19,7 +20,11 @@ import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.model.OrderSet;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ */
 public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static final String GET_ORDERS_DAY = "SELECT * from tblorders where date=?";
     private static final String INSERT_ORDER = "INSERT into tblorders (idLiquid, qty, date, idOber) VALUES (?, ?, ?,?)";
@@ -40,8 +45,14 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 
     private static ChezJavaDAOImpl instance;
 
+    /**
+     * 
+     */
     private ChezJavaDAOImpl(){}
 
+    /**
+     * @return a ChezJAvaDAO object
+     */
     public synchronized static ChezJavaDAO getInstance(){
         if (instance == null){
             instance = new ChezJavaDAOImpl();
@@ -49,6 +60,9 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         return instance;
     }
 
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#insertOrder(be.leerstad.EindwerkChezJava.model.Order)
+	 */
 	@Override
 	public boolean insertOrder(Order order) {
       int result = 0;
@@ -74,9 +88,11 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
       return bool;
   }
 
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#insertOrders(java.util.Set)
+	 */
 	@Override
 	public boolean insertOrders(Set<Order> orders) throws DAOException {
-      int[] result;
       boolean bool = false;
       try (Connection connection = getConnection();
            PreparedStatement pStatement = connection
@@ -100,16 +116,16 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
   }
 	
 
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#getOrder(be.leerstad.EindwerkChezJava.model.Ober)
+	 */
 	@Override
 	public OrderSet getOrder(Ober ober) throws DAOException {
 		//Date date = Date.valueOf(localdate);
 
 		//express niet met sql berekend (geen zin om innerjoins te gebruiken)
 		Set<Liquid> liquidsDAO = this.getLiquids();
-		List<Ober> obersDAO = this.getObers();
-		
 		OrderSet orders = new OrderSet();
-        
         try (Connection connection = getConnection();
              PreparedStatement pStatement = connection
                      .prepareStatement(GET_ORDERS_OBER);){
@@ -137,6 +153,9 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         return orders;
     }
 	
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#getOrder(java.time.LocalDate)
+	 */
 	@Override
 	public OrderSet getOrder(LocalDate localdate) throws DAOException 
 	{
@@ -178,6 +197,9 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     }
 	
 	
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#Login(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Ober Login(String lastName, String firstName, String password) throws DAOException {
 		// TODO Auto-generated method stub
@@ -210,12 +232,36 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
   
         return obers.get(0);
 	}
+    /* (non-Javadoc)
+     * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#getObers()
+     */
     @Override
     public List<Ober> getObers() throws DAOException
     {
-    	return getObers(GET_ALL_OBERS);
+        List<Ober> obers = new ArrayList<>();
+        try (
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_OBERS);
+        ){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+            	String idDB = resultSet.getString(1);
+            	int id = Integer.parseInt(idDB);
+
+            	Ober ober = new Ober(id,resultSet.getString("lastName"),resultSet.getString("firstName"),resultSet.getString("password"));
+                obers.add(ober);
+            }
+        } catch (Exception e) {
+        	throw new DAOException("Error getting obers. " + e.getMessage());
+            
+        }
+        return obers;
+    	
     }
 
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#getLiquids()
+	 */
 	@Override
 	public Set<Liquid> getLiquids() throws DAOException {
 		Set<Liquid> liquids = new HashSet<>();
@@ -238,6 +284,9 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
         }
         return liquids;
 	}
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#topObers()
+	 */
 	@Override
 	public LinkedHashMap<Ober, Double> topObers() throws DAOException {
 		return this.topObers(-5);
@@ -246,6 +295,9 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 	
 
 	
+	/* (non-Javadoc)
+	 * @see be.leerstad.EindwerkChezJava.database.ChezJavaDAO#topObers(int)
+	 */
 	@Override
 	public LinkedHashMap<Ober, Double> topObers(int number) throws DAOException {
 	    int aantal = number;
@@ -254,55 +306,33 @@ public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
 	    {
 	    	GET_TOP_Count = GET_TOP;
 	    }
- 
-	        //List<Ober> obers = new ArrayList<>();
 	     LinkedHashMap<Ober, Double> mapTopDrie = new LinkedHashMap<>();
 	        
-	        try (
-	            Connection connection = getConnection();
-	            PreparedStatement preparedStatement = connection.prepareStatement(GET_TOP_Count);	
-	        ){
-	        	if (number != -5)
-	        	{
-	        		preparedStatement.setInt(1, aantal);
-	        	}
-	        	
-	            ResultSet resultSet = preparedStatement.executeQuery();
-	            while (resultSet.next()){
-	            	String idDB = resultSet.getString(1);
-	            	int id = Integer.parseInt(idDB);
-
-	            	Ober ober = new Ober(id,resultSet.getString("lastName"),resultSet.getString("firstName"),resultSet.getString("password"));
-	                double sum = resultSet.getDouble("sumtotalprice");
-	            	mapTopDrie.put(ober, sum);
-	            	//obers.add(ober);
-	            }
-	        } catch (Exception e) {
-	        	throw new DAOException("Error getting obers. " + e.getMessage());
-	            
-	        }
-	        return mapTopDrie;
-	}
-	
-    private List<Ober> getObers(String statement) throws DAOException {
-        List<Ober> obers = new ArrayList<>();
         try (
             Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_TOP_Count);	
         ){
+        	if (number != -5)
+        	{
+        		preparedStatement.setInt(1, aantal);
+        	}
+        	
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
             	String idDB = resultSet.getString(1);
             	int id = Integer.parseInt(idDB);
 
             	Ober ober = new Ober(id,resultSet.getString("lastName"),resultSet.getString("firstName"),resultSet.getString("password"));
-                obers.add(ober);
+                double sum = resultSet.getDouble("sumtotalprice");
+            	mapTopDrie.put(ober, sum);
+            	//obers.add(ober);
             }
         } catch (Exception e) {
         	throw new DAOException("Error getting obers. " + e.getMessage());
             
         }
-        return obers;
-    }
+        return mapTopDrie;
+	}
+
 
 }

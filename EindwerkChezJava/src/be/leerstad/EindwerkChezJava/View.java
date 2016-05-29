@@ -1,47 +1,45 @@
 package be.leerstad.EindwerkChezJava;
 
-import javafx.application.Application;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
-import javafx.event.EventHandler;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
-
-import javafx.scene.layout.BorderPane;
-
-
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
+import be.leerstad.EindwerkChezJava.model.Table;
 import be.leerstad.EindwerkChezJava.view.CafeLayoutController;
 import be.leerstad.EindwerkChezJava.view.EditOrdersController;
-import be.leerstad.EindwerkChezJava.view.LoginDialogController;
 import be.leerstad.EindwerkChezJava.view.MessageDialogOkCancelController;
 import be.leerstad.EindwerkChezJava.view.RootLayoutController;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-
-import be.leerstad.EindwerkChezJava.model.*;
-
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class View extends Application {
 	
 	@FXML
@@ -96,6 +94,7 @@ public class View extends Application {
             	}
             	else
             	{
+            		//een beetje gepruts
             		StringBuilder stringbuilder = new StringBuilder();
             		stringbuilder.append("Niet alle obers hebben hun tafels afgerekend! \n");
             		Set<Ober> obers = new HashSet<>();
@@ -119,12 +118,12 @@ public class View extends Application {
             	}
 			} catch (InternalException e) {
 				// TODO Auto-generated catch block
-				 Alert alert = new Alert(AlertType.ERROR);
-		            alert.initOwner(primaryStage);
-		            alert.setTitle("oopsie");
-		            alert.setHeaderText("ERROR");
-		            alert.setContentText(e.getMessage());
-		            alert.showAndWait();
+				Alert alert = new Alert(AlertType.ERROR);
+	            alert.initOwner(primaryStage);
+	            alert.setTitle("oopsie");
+	            alert.setHeaderText("ERROR");
+	            alert.setContentText(e.getMessage());
+	            alert.showAndWait();
 			}
         }
     });
@@ -157,36 +156,36 @@ public class View extends Application {
 	
 	public void  initRootLayout()
 	{
-		try{
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/RootLayout.fxml")); 
-			rootLayout = (BorderPane) loader.load();
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            
-            RootLayoutController controller = loader.getController();
-            controller.setDialogStage(primaryStage);
-            controller.setModel(cafe);
-            controller.setView(this);
-		}
-		catch (IOException e) {
-			 Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(primaryStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("ERROR");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            //primaryStage.close();
-		}
+	try{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(View.class.getResource("/be/leerstad/EindwerkChezJava/view/RootLayout.fxml")); 
+		rootLayout = (BorderPane) loader.load();
+        // Show the scene containing the root layout.
+        Scene scene = new Scene(rootLayout);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        
+        RootLayoutController controller = loader.getController();
+        controller.setDialogStage(primaryStage);
+        controller.setModel(cafe);
+        controller.setView(this);
+	}
+	catch (IOException e) {
+		 Alert alert = new Alert(AlertType.ERROR);
+        alert.initOwner(primaryStage);
+        alert.setTitle("Invalid Fields");
+        alert.setHeaderText("ERROR");
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
+        //primaryStage.close();
+	}
 	}
     /**
      * Opens a dialog to edit details for the specified order. If the user
      * clicks OK, the changes are saved into the provided person object and true
      * is returned.
      *
-     * @param person the person object to be edited
+     * @param order the person object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showEditOrdersDialog(Order order) {
@@ -207,9 +206,10 @@ public class View extends Application {
             // Set the person into the controller.
             EditOrdersController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setOrder(order, this.getLiquidsData());
-            controller.setModel(cafe);
             controller.setView(this);
+            controller.setOrder(order);
+            controller.setModel(cafe);
+           
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
@@ -225,7 +225,7 @@ public class View extends Application {
     /**
      * Returns the main stage.
      *
-     * @return
+     * @return the primarystage
      */
     public Stage getPrimaryStage() {
         return primaryStage;

@@ -1,16 +1,15 @@
 package be.leerstad.EindwerkChezJava.model.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -19,15 +18,24 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.itextpdf.text.DocumentException;
-
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
-import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
 import be.leerstad.EindwerkChezJava.database.test.DBInitialiser;
-import be.leerstad.EindwerkChezJava.model.*;
-
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
+import be.leerstad.EindwerkChezJava.model.Table;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class CafeTest {
 	private ChezJavaSerialiser ser;
 	private static final float PRECISION = 0.01F;

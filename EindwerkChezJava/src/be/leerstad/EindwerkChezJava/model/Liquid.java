@@ -1,16 +1,14 @@
 package be.leerstad.EindwerkChezJava.model;
 
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 /**
- * @author wouter
- * @version 0.1
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
 public class Liquid implements Serializable{
 	private static final long serialVersionUID = 1L;

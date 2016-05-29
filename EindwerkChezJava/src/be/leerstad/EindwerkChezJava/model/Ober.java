@@ -2,20 +2,16 @@ package be.leerstad.EindwerkChezJava.model;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
- * @author wouter
+ * @author Wouter
  * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
 public class Ober implements Serializable{
 	private static final long serialVersionUID = 1L;

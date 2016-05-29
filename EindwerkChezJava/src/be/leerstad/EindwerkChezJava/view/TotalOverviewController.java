@@ -1,28 +1,37 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.itextpdf.text.DocumentException;
+import java.time.LocalDate;
+import java.util.Map;
 
 import be.leerstad.EindwerkChezJava.View;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-import be.leerstad.EindwerkChezJava.model.*;
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class TotalOverviewController {
 	private View view;
 	private Cafe cafe;

@@ -1,6 +1,7 @@
 package be.leerstad.EindwerkChezJava.database.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,14 +9,26 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.database.*;
-import be.leerstad.EindwerkChezJava.model.*;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-
+import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
+import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
+import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class ChezJavaDAOImplTest {
 	private ChezJavaDAO ChezJavaDAOimpl;
 	private Liquid l1;

@@ -1,15 +1,23 @@
 package be.leerstad.EindwerkChezJava.view;
 
 import be.leerstad.EindwerkChezJava.View;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-import be.leerstad.EindwerkChezJava.model.*;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.textfieldCustom.NumberTextfield;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class EditOrdersController {
     @FXML
     private NumberTextfield txtFieldQuantity;
@@ -31,20 +39,21 @@ public class EditOrdersController {
     /**
      * Sets the stage of this dialog.
      * 
-     * @param dialogStage
+     * @param dialogStage the dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
     
     /**
-     * Sets the person to be edited in the dialog.
+     * Sets the order to be edited in the dialog.
      * 
-     * @param person
+     * @param order the order to be edited
      */
-    public void setOrder(Order order, ObservableList<Liquid> liquids) {
+    public void setOrder(Order order) {
         this.Order = order;
-
+        
+        ObservableList<Liquid> liquids = view.getLiquidsData();
         txtFieldQuantity.setInt(order.getQuantity());
         cmbLiquids.setItems(liquids);
         cmbLiquids.getSelectionModel().select(order.getLiquid());

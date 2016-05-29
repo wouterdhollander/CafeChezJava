@@ -44,8 +44,8 @@ public class MultipartChezJava {
 	/**
 	 * @param tekst the text that's writin in the mail
 	 * @param contentType "text/html; charset=utf-8"
-	 * @return
-	 * @throws MessagingException
+	 * @return the bodypart object
+	 * @throws MessagingException fout!
 	 */
 	public BodyPart addSimpleBodyPart(String tekst, String contentType)
 			throws MessagingException {
@@ -56,8 +56,8 @@ public class MultipartChezJava {
 
 	/**
 	 * @param stringdirectory the fildirectory of the attachment
-	 * @return
-	 * @throws MessagingException
+	 * @return bodypart object
+	 * @throws MessagingException a exception when its not possible to send the mail (communication errors,...)
 	 */
 	public BodyPart addAttachment(String stringdirectory) throws MessagingException {
 		File file = new File(stringdirectory);
@@ -74,7 +74,7 @@ public class MultipartChezJava {
 	 * @param multipart multipart object
 	 * @param reciever the reciever mail adres of the mail
 	 * @param subject the subject of the mail
-	 * @throws MessagingException 
+	 * @throws MessagingException a exception when its not possible to send the mail (communication errors,...)
 	 */
 
 	public void sendMail(Multipart multipart, String reciever, String subject ) throws MessagingException {

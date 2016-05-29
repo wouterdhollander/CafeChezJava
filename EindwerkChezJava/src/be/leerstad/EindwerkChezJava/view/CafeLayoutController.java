@@ -1,33 +1,39 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import be.leerstad.EindwerkChezJava.View;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-import be.leerstad.EindwerkChezJava.model.*;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.ObersTableStatus;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.Position;
+import be.leerstad.EindwerkChezJava.model.Table;
 import be.leerstad.EindwerkChezJava.textfieldCustom.NumberTextfield;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class CafeLayoutController {
 	private View view;
 	private Cafe cafe;

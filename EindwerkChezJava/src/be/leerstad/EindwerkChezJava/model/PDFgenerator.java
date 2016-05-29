@@ -5,12 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.*;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BadElementException;
@@ -21,23 +17,18 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
- * aangepast van bestaande code
- * @author wouter everything is visible on github https://github.com/wouterdhollander/CafeChezJava
- * @version 0.1
+ * aangepast van bestaande code thanks to the real author somewhere on the world wide web!
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
 public class PDFgenerator {
 	//private URL filename = CreatePDF.class.getResource("/lib/PDF.sql");
@@ -62,8 +53,8 @@ public class PDFgenerator {
   /**
  * @param fileName the filename of the pdf 
  * @param author the autor of the pdf
- * @throws DocumentException
- * @throws FileNotFoundException
+ * @throws DocumentException doc error
+ * @throws FileNotFoundException file not found error
  */
 public PDFgenerator(String fileName, String author) throws DocumentException, FileNotFoundException
   {
@@ -133,8 +124,8 @@ public void Create()
   }
 
   /**
- * @param titleName
- * @throws DocumentException
+ * @param titleName the title of the front page
+ * @throws DocumentException docexeption
  */
 public void addTitlePage(String titleName)
       throws DocumentException {
@@ -161,7 +152,7 @@ public void addTitlePage(String titleName)
   /**
  * @param titleName the head title of this section list
  * @param list a collection object that will be printed in the pdf.
- * @throws DocumentException
+ * @throws DocumentException document exception
  */
 public void addContent(String titleName, Collection<Order> list) throws DocumentException {
 	  

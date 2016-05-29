@@ -1,30 +1,27 @@
 package be.leerstad.EindwerkChezJava.textfieldCustom;
 
 import javafx.scene.control.TextField;
-
+/**
+ * Found and adaptied on the world wide web
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class NumberTextfield extends TextField {
 	
 	public NumberTextfield() {
-		
 		// TODO Auto-generated constructor stub
 		this.setPromptText("hoeveelheid");
 	}
 	
-
-
-
-//	public NumberTextfield(String arg0) {
-//		super(arg0);
-//		// TODO Auto-generated constructor stub
-//	}
 	@Override
 	public void replaceText(int start, int end, String text) {
 
 		if ((text.matches("[0-9)]*")))// && this.getText().length()< 2 ))// || text.isEmpty())
 		{
 			super.replaceText(start, end, text);
-		}
-		
+		}	
 	}
 	
 	public void setInt(int number)

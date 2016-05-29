@@ -1,15 +1,19 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
 import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
-import be.leerstad.EindwerkChezJava.model.*;
+import be.leerstad.EindwerkChezJava.model.Cafe;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class LoginDialogController {
     @FXML
     private TextField firstNameField;
@@ -33,7 +37,7 @@ public class LoginDialogController {
     /**
      * Sets the stage of this dialog.
      * 
-     * @param dialogStage
+     * @param dialogStage the dialogstage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;

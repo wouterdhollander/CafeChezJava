@@ -6,13 +6,10 @@ import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -23,14 +20,16 @@ import org.apache.log4j.Logger;
 
 import com.itextpdf.text.DocumentException;
 
+import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
 import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
 /**
  * @author Wouter
  * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
 public class Cafe {
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -129,7 +128,7 @@ public class Cafe {
 		return !this.activeOber.equals(nulober);
 
 	}
-//getest
+
 	/**
 	 * Return the active Ober of the Cafe
 	 * @return the Active logged in Ober (Ober-object).
@@ -138,10 +137,10 @@ public class Cafe {
 	{
 		return activeOber;
 	}
-	//getest
+
 	/**
 	 * Return a value of all unpayed orders of all tables of an ober
-	 * @param the Ober-object
+	 * @param ober the Ober-object
 	 * @return the sum of all unpayed orders of a the specific ober
 	 */
 	public double calculateUnpayedOrders(Ober ober)
@@ -149,7 +148,7 @@ public class Cafe {
 		return tables.stream().filter(t -> t.getActiveOber().equals(ober)).mapToDouble(t -> t.getOrders().calcutateOrders()).sum();
 	}
 
-	//getest
+
 	/**
 	 * Return a value of all unpayed orders of all tables
 	 * if you are not logged in -10000 is givin
@@ -169,7 +168,6 @@ public class Cafe {
 		return totaal;
 	}
 	
-	//getest
 	/**
 	 * Return all unpayed orders of a specific ober
 	 * if you are not logged in an empty set is givin
@@ -191,7 +189,7 @@ public class Cafe {
 		}
 		return orderset ;
 	}
-	//getest
+
 	/**
 	 * Return all unpayed orders of all tables, Obers
 	 * if you are not logged in an empty set is givin
@@ -210,7 +208,6 @@ public class Cafe {
 		return orders;
 	}
 
-	//getest
 	/**
 	 * Return all payed orders of all Obers. 
 	 * These are the orders that still are in the possesion of the obers.
@@ -230,8 +227,7 @@ public class Cafe {
 		}
 		return orders;
 	}
-	
-	//getest
+
 	/**
 	 * Return the sum of all payed orders of all tables
 	 * These are the orders that still are in the possesion of the obers.
@@ -252,14 +248,11 @@ public class Cafe {
 		}
 		return totaal;
 	}
-	
-	
-	//getest
+
 	/**
 	 * @param orders the collection of orders you want to have in your PDF
 	 * @param openAfterCreation true if you want to open the createdPDF
 	 * @return A string that is the path of the file
-	 * @throws InternalException 
 	 * @throws InternalException  if an internal error occurred (File is open, document not found,...)
 	 */
 	public String createPDF(Collection<Order> orders, boolean openAfterCreation) throws InternalException
@@ -393,7 +386,7 @@ public class Cafe {
 		return mapTopDrie;
 	}
 
-	//getest
+	
 	/**
 	 * Login system in the Cafe Applicatie
 	 * @param lastName the last name

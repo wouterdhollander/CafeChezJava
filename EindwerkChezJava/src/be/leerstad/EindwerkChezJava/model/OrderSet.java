@@ -1,23 +1,18 @@
 package be.leerstad.EindwerkChezJava.model;
 
-import java.lang.invoke.MethodHandles;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.Collection;
-
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
- * @author wouter
+ * @author Wouter
  * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
 public class OrderSet extends HashSet<Order> {
 	//private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());

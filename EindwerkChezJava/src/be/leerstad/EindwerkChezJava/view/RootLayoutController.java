@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import be.leerstad.EindwerkChezJava.View;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.model.Cafe;
 import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
@@ -16,13 +15,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class RootLayoutController{
 	private View view;
 
@@ -121,8 +124,6 @@ public class RootLayoutController{
      * Opens a dialog login the person. If the user
      * clicks OK, the changes are saved into the provided person object and true
      * is returned.
-     *
-     * @param person the person object to be logged in
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showLoginDialog() {

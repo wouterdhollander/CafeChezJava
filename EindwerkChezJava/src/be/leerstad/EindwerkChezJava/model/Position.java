@@ -7,7 +7,9 @@ import java.io.Serializable;
  * @author wouter everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @version 0.1
  * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
  */
+
 public class Position implements Serializable {
 	/**
 	 * 
