@@ -14,13 +14,12 @@ import be.leerstad.EindwerkChezJava.Exceptions.*;
 
 /**
  * @author wouter
- * @version 0.1
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
  */
 public class Table implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private int id;
 	private OrderSet orders = new OrderSet();
 	private Position position;

@@ -35,7 +35,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
  * aangepast van bestaande code
- * @author wouter
+ * @author wouter everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @version 0.1
  * @since 30/05/2016
  */

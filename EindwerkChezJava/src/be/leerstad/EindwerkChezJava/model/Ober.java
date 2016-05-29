@@ -14,7 +14,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
  * @author wouter
- * @version 0.1
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
  */
 public class Ober implements Serializable{

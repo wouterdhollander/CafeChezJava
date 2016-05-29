@@ -18,7 +18,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * @author wouter
+ * @author wouter everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @version 0.1
  * @since 30/05/2016
  */

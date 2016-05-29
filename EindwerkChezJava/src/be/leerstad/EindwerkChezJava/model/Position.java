@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * I make this as an extra ;-) so tables can move!
- * @author wouter
+ * @author wouter everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @version 0.1
  * @since 30/05/2016
  */

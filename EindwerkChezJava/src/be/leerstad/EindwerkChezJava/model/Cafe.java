@@ -29,7 +29,7 @@ import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 /**
  * @author Wouter
- * @version 0.1
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
  * @since 30/05/2016
  */
 public class Cafe {
