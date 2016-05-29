@@ -21,12 +21,12 @@ public class ChezJavaDAOImplTest {
 	private Liquid l1;
 	private Liquid l2;
 	private Liquid l3;
-	 private Ober o1;
-	 private Ober o2;
-	 private Ober o3;
-	 private Ober o4;
-	 private List<Ober> obers = new ArrayList<>();
-	 private DBInitialiser dbInitialiser;
+	private Ober o1;
+	private Ober o2;
+	private Ober o3;
+	private Ober o4;
+	private List<Ober> obers = new ArrayList<>();
+	private DBInitialiser dbInitialiser;
 	private static final float PRECISION = 0.01F;
 	@Before
 	public void setUp() throws Exception {

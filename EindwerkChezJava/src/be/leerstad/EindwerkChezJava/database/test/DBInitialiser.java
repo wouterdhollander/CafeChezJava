@@ -25,8 +25,8 @@ private Connection con;
 		 try {
 			 //File file = new File("C:/Users/wouter/Documents/2015-16 Avondschool/Programmeren III/workspaceOefeningen/EindwerkChezJava/src/lib/cafe.sql");	 
 			 
-			URL filename = DBInitialiser.class.getResource("/lib/cafe.sql");
-			
+			//URL filename = DBInitialiser.class.getResource("/lib/cafe.sql");
+			URL filename = DBInitialiser.class.getResource("/be/leerstad/EindwerkChezJava/database/test/cafe.sql");
 			File file2 = new File(filename.toURI());
 			 ScriptRunner scriptrunner = new ScriptRunner(con, false, false);
 			scriptrunner.runScript(new BufferedReader(new FileReader(file2)));

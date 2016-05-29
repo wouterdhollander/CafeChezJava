@@ -1,10 +1,13 @@
 package be.leerstad.EindwerkChezJava.view;
 
+import be.leerstad.EindwerkChezJava.View;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.model.*;
 import be.leerstad.EindwerkChezJava.textfieldCustom.NumberTextfield;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class EditOrdersController {
@@ -44,8 +47,13 @@ public class EditOrdersController {
 
         txtFieldQuantity.setInt(order.getQuantity());
         cmbLiquids.setItems(liquids);
-        cmbLiquids.getSelectionModel().select(0);
+        cmbLiquids.getSelectionModel().select(order.getLiquid());
         
+    }
+    private View view;
+    public void setView(View view)
+    {
+    	this.view = view;
     }
     
 	/**
@@ -54,15 +62,30 @@ public class EditOrdersController {
     @FXML
     private void handleOk() {
 		Liquid m = cmbLiquids.getSelectionModel().getSelectedItem();
-		Order.setLiquid(m);
+
 		try {
 			Order.setQuantity(txtFieldQuantity.getInt());
-		} catch (QuantityToLowException | QuantityZeroException e) { 
-			//not possible because numbertextbox doesn't provide values below zero
-			e.printStackTrace();
-		}
-        okClicked = true;
-        dialogStage.close();
+			Order.setLiquid(m);
+			okClicked = true;
+	        dialogStage.close();
+		} catch (QuantityToLowException e) { //not possible because the specific customtextbox doesn't allowed values below zero
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("internal Error");
+			alert.setContentText("heb je iets raar uitgespoken?");// .printStackTrace();
+		    alert.showAndWait();
+		} catch (QuantityZeroException e) {
+			if (m.equals(Order.getLiquid()))
+			{
+				cafe.getActiveOber().removeOrder(Order, cafe.getActiveTable());
+				okClicked = true;
+		        dialogStage.close();
+			}
+			else
+			{
+				view.showMessageDialogOkCancel("Edit Order", "De drank " + m + " zit niet in de oorspronkelijke orders \n en kan dus niet op 0 gezet worden.");
+			
+			}	
+		}    
     }
     
     public boolean isOkClicked() {

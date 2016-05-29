@@ -5,11 +5,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import be.leerstad.EindwerkChezJava.Exceptions.test.*;
-import be.leerstad.EindwerkChezJava.database.test.AllDatabaseTest;
+import be.leerstad.EindwerkChezJava.database.test.AllDatabaseTests;
 import be.leerstad.EindwerkChezJava.model.test.AllModelTests;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AllDatabaseTest.class, AllExcepstionTests.class, AllModelTests.class })
+@SuiteClasses({ AllDatabaseTests.class, AllExcepstionTests.class, AllModelTests.class })
 public class AllTests {
 
 }

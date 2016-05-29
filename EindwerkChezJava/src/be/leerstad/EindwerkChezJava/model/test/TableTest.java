@@ -1,5 +1,4 @@
 package be.leerstad.EindwerkChezJava.model.test;
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -38,9 +37,7 @@ public class TableTest {
 
 		assertTrue(ober1.equals(t1.getActiveOber()));
 	}
-	
 
-	
 	@Test
 	public void testGetOrders() {
 		Set<Order> orders = new HashSet<Order>();
@@ -57,7 +54,6 @@ public class TableTest {
 		}
 	}
 
-	
 	@Test
 	public void testToString()
 	{

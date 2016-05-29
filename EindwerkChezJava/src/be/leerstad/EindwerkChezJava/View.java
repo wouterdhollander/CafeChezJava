@@ -209,7 +209,7 @@ public class View extends Application {
             controller.setDialogStage(dialogStage);
             controller.setOrder(order, this.getLiquidsData());
             controller.setModel(cafe);
-
+            controller.setView(this);
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 

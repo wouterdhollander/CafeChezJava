@@ -75,9 +75,7 @@ public class OrderTest {
 
 	@Test
 	public void testSetQuantity() throws QuantityToLowException, QuantityZeroException {
-
 		o1.setQuantity(4);
-
 		assertEquals(4, o1.getQuantity());
 	}
 

@@ -73,7 +73,7 @@ public PDFgenerator(String fileName, String author) throws DocumentException, Fi
 	  this.date = LocalDate.now();
 	  fileLocation = "./" + fileName + ".pdf";
 	  
-	  File f = new File(fileLocation);
+	 // File f = new File(fileLocation);
 	  
 	  FileOutputStream fileoutput = new FileOutputStream(fileLocation);
 	  

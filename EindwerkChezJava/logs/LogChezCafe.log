@@ -18,3 +18,189 @@
 29 mei 2016 11:18 ERROR MultipartChezJava:109 - Could not convert socket to TLS
 29 mei 2016 11:18  INFO Ober:58 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
 29 mei 2016 11:18  INFO Ober:58 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:05  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:05  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:10  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:10  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:10  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:10  INFO Ober:79 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:27  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:27  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:27  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:28  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:28  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 14:28  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:29  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:30  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 14:38  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:39  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:39  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:39  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:43  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:44  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:44  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:44  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:45  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 14:46  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 14:48  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:411 - verkeerde passwoord door persoon :Verkeerd, Nathalie met passwoord password
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=3, orders=[2 x Cola(2.00€) = 4.00€], activeOber=Ober: Segers Nathalie]
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:48 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 14:48  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:48  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 14:57  INFO Cafe:57 - old cafe opened
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:411 - verkeerde passwoord door persoon :Verkeerd, Nathalie met passwoord password
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=3, orders=[2 x Cola(2.00€) = 4.00€], activeOber=Ober: Segers Nathalie]
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:57 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 14:57  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 14:57  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 14:57  INFO Cafe:62 - completly new cafe created
+29 mei 2016 14:58  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 15:06  INFO Cafe:62 - completly new cafe created
+29 mei 2016 15:06  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:07  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:08  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:09  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:13  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:20  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:24  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:26  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:26  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:32  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:32  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:33  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:39  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:40  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:42  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:43  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]
+29 mei 2016 15:43  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:44  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:47  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:48  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:49  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:50  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:51  INFO Cafe:57 - old cafe opened
+29 mei 2016 15:53  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:53  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:55  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 15:56 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 15:57  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:57  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 15:57  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 16:00  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 16:00  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 16:00  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 16:00  INFO Cafe:98 - Ober: Segers Nathalie tried setting a table 
+29 mei 2016 16:00  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 16:06  INFO Cafe:57 - old cafe opened
+29 mei 2016 16:06  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 16:06  INFO Cafe:98 - Ober: Peters Wout tried setting a table 
+29 mei 2016 16:06  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 16:06  INFO Cafe:57 - old cafe opened
+29 mei 2016 16:08  INFO Cafe:57 - old cafe opened
+29 mei 2016 16:12  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 16:12  INFO Cafe:57 - old cafe opened
+29 mei 2016 16:12  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 17:51  INFO Cafe:62 - completly new cafe created
+29 mei 2016 17:51  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 18:05  INFO Cafe:57 - old cafe opened
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:411 - verkeerde passwoord door persoon :Verkeerd, Nathalie met passwoord password
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=3, orders=[2 x Cola(2.00€) = 4.00€], activeOber=Ober: Segers Nathalie]
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:05 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 18:10  INFO Cafe:57 - old cafe opened
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:411 - verkeerde passwoord door persoon :Verkeerd, Nathalie met passwoord password
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:10  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=3, orders=[2 x Cola(2.00€) = 4.00€], activeOber=Ober: Segers Nathalie]
+29 mei 2016 18:11  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:11 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:452 - Sluiten van cafe
+29 mei 2016 18:14  INFO Cafe:57 - old cafe opened
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:411 - verkeerde passwoord door persoon :Verkeerd, Nathalie met passwoord password
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Ober:85 - Ober: Peters Wout tried using tableTable [id=3, orders=[2 x Cola(2.00€) = 4.00€], activeOber=Ober: Segers Nathalie]
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14  INFO Cafe:62 - completly new cafe created
+29 mei 2016 18:14 ERROR MultipartChezJava:109 - Could not convert socket to TLS
+29 mei 2016 18:14  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=1, orders=[6 x Cola(2.00€) = 12.00€], activeOber=Ober: D'hollander Wouter]
+29 mei 2016 18:14  INFO Ober:85 - Ober: Demuynck Fleur tried using tableTable [id=-5, orders=[], activeOber=Ober: no one]

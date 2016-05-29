@@ -18,7 +18,6 @@ public class OberTest
 	private Table table1;
 	private Order o1;
 	private Order o2;
-	private Order o3;
 	private Liquid l1;
 	private Liquid l2;
 	@Before
@@ -31,10 +30,21 @@ public class OberTest
 		l2 = new Liquid(2, "Bier", 3.0); 
 		
 		o1 = new Order(l1, 2, ober1);
-		o2 = new Order(l2, 2, ober1);
-		o3 = new Order(l1, 1, ober2);	
+		o2 = new Order(l2, 2, ober1);	
 		table1 = new Table(1);
 	}
+	@Test
+	public void testTableStatus() throws QuantityToLowException
+	{
+		ObersTableStatus status = ober1.tableStatus(table1);
+		assertEquals(ObersTableStatus.FREE, status);
+		ober1.makeOrder(l1, 2, table1);
+		status = ober1.tableStatus(table1);
+		assertEquals(ObersTableStatus.ACTIVE, status);
+		status = ober2.tableStatus(table1);
+		assertEquals(ObersTableStatus.NOTALLOWED, status);
+	}
+
 	
 	@Test
 	public void testMakeOrder() throws QuantityToLowException

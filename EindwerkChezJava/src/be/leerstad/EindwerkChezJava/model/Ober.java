@@ -18,6 +18,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
  * @since 30/05/2016
  */
 public class Ober implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private int id;
 	private String lastName;
@@ -49,15 +50,46 @@ public class Ober implements Serializable{
 		this.setPassword("password");
 	}
 	
+	/**
+	 * Return if the table is active for this ober, not allowed or free
+	 * @param table the table-object
+	 * @return active if the table is active, not allowed or free for this ober,
+	 */
+	public ObersTableStatus tableStatus(Table table)
+	{
+		ObersTableStatus status = ObersTableStatus.NOTALLOWED;
+		if ((table.equals(new Table(-5))))
+		{
+			status = ObersTableStatus.NOTALLOWED;
+		}
+		else if (table.getActiveOber().equals(new Ober())) 
+		{
+			status = ObersTableStatus.FREE;
+		}
+		else if (table.getActiveOber().equals(this))
+		{
+			status = ObersTableStatus.ACTIVE;
+		}
+
+		return status;
+	}
 	
 	private boolean isTableAllowed(Table table)
 	{
-		boolean allowed = (!table.equals(new Table(-5))) &&( table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this));
-		if (!allowed)
+		
+		//boolean allowed = (!table.equals(new Table(-5))) &&( table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this));
+		ObersTableStatus status = tableStatus(table);
+		switch (status)
 		{
-			logger.info(this.toString() + " tried using table" + table);
+			case NOTALLOWED:
+				logger.info(this.toString() + " tried using table" + table);
+				return false;
+				//break;
+			default:
+				return true;
+	
 		}
-		return allowed;
+		//return allowed;
 	}
 	
 	/**
