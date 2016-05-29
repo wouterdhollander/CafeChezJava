@@ -1,6 +1,9 @@
 package be.leerstad.EindwerkChezJava.model.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 
@@ -9,11 +12,15 @@ import org.junit.Test;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
 import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class OrderTest {
 
 	private static final float PRECISION = 0.01F;
@@ -53,7 +60,7 @@ public class OrderTest {
 
 	@Test 
 	public void testToString() {
-		assertEquals("2 x Cola(2.0€) = 4.0€", o1.toString());
+		assertEquals("2 x Cola(2.00€) = 4.00€", o1.toString());
 	}
 
 	@Test
@@ -63,41 +70,38 @@ public class OrderTest {
 	}
 
 	@Test
+	public void testSetLiquid() {
+		o1.setLiquid(l2);
+		assertTrue(o1.getLiquid().equals(l2));
+		assertFalse(o1.getLiquid().equals(l1));
+	}
+	
+	@Test
 	public void testGetQuantity() {
 		assertEquals(2, o1.getQuantity());
 	}
 
 	@Test
 	public void testSetQuantity() throws QuantityToLowException, QuantityZeroException {
-
 		o1.setQuantity(4);
-
 		assertEquals(4, o1.getQuantity());
 	}
 
 	@Test (expected = QuantityToLowException.class)
-	public void testSetQuantityInvallidQuantityLow() throws QuantityToLowException {
-		try {
-			o1.setQuantity(-2);
-		} catch (QuantityZeroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void testSetQuantityInvallidQuantityLow() throws QuantityZeroException, QuantityToLowException {
+		o1.setQuantity(-2);
 		assertEquals(4, o1.getQuantity());
 	}
 	
 	@Test (expected = QuantityZeroException.class)
 	public void testSetQuantityInvallidQuantityZero() throws QuantityZeroException, QuantityToLowException {
-
-			o1.setQuantity(0);
-
+		o1.setQuantity(0);
 		assertEquals(4, o1.getQuantity());
 	}
 	
 	@Test
 	public void testGetDate() {
 		LocalDate now = LocalDate.now();
-		
 		assertEquals(now, o1.getDate());
 	}
 

@@ -1,15 +1,15 @@
 package be.leerstad.EindwerkChezJava.model.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -18,19 +18,26 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-import be.leerstad.EindwerkChezJava.Exceptions.TableNotAllowedException;
-import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
 import be.leerstad.EindwerkChezJava.database.test.DBInitialiser;
-import be.leerstad.EindwerkChezJava.model.*;
-
-
-
+import be.leerstad.EindwerkChezJava.model.Cafe;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
+import be.leerstad.EindwerkChezJava.model.Table;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class CafeTest {
+	private ChezJavaSerialiser ser;
 	private static final float PRECISION = 0.01F;
 	private Cafe cafe;
 	private Liquid l1;
@@ -60,20 +67,20 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testGetTables() throws ActiveOberNotSetException
+	public void testGetTables() 
 	{
 		assertEquals(9, cafe.getTables().size());	 
 	}
 	
 	@Test
-	public void testSetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
+	public void testSetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
 	}
 
 	@Test
-	public void testGetActiveTable() throws ActiveOberNotSetException, TableNotAllowedException
+	public void testGetActiveTable()
 	{
 		cafe.setActiveTable(Tables.get(1));
 		assertEquals(Tables.get(1), cafe.getActiveTable());
@@ -86,7 +93,7 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testCalculateUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testCalculateUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		cafe.setActiveTable(Tables.get(1));
 		Table tableActive = cafe.getActiveTable();
@@ -106,7 +113,6 @@ public class CafeTest {
 		ober2.makeOrder(l1, 2, tableActive);
 		assertEquals(16, cafe.calculateUnpayedOrders(),PRECISION);
 		assertEquals(12, cafe.calculateUnpayedOrders(ober1),PRECISION);
-		assertEquals(4, cafe.calculateUnpayedOrders(ober2),PRECISION);
 		
 		ober2.removeOrder(tableActive.getOrders().iterator().next(), tableActive);
 		assertEquals(0, cafe.calculateUnpayedOrders(ober2),PRECISION);
@@ -118,15 +124,45 @@ public class CafeTest {
 		tableActive = cafe.getActiveTable();
 		ober1.payOrders(tableActive);
 		assertEquals(8, cafe.calculateUnpayedOrders(),PRECISION);
-		assertEquals(8, cafe.calculateUnpayedOrders(ober1),PRECISION);
 		
 		ober1.payOrders(Tables.get(1));
 		assertEquals(0, cafe.calculateUnpayedOrders(),PRECISION);
+	}
+	
+	@Test
+	public void testCalculateUnpayedOrdersOber() throws  QuantityToLowException, QuantityZeroException
+	{
+		cafe.setActiveTable(Tables.get(1));
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		assertEquals(8, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		assertEquals(12, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		assertEquals(12, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		assertEquals(4, cafe.calculateUnpayedOrders(ober2),PRECISION);
+		
+		ober2.removeOrder(tableActive.getOrders().iterator().next(), tableActive);
+		assertEquals(0, cafe.calculateUnpayedOrders(ober2),PRECISION);
+
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.payOrders(tableActive);
+		assertEquals(8, cafe.calculateUnpayedOrders(ober1),PRECISION);
+		
+		ober1.payOrders(Tables.get(1));
 		assertEquals(0, cafe.calculateUnpayedOrders(ober1),PRECISION);
 	}
 	
 	@Test 	
-	public void testGetUnpayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testGetUnpayedOrders() throws  QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
 		OrderSet ordersOber1 = new OrderSet();
@@ -169,9 +205,43 @@ public class CafeTest {
 		assertEquals(ordersTotal, cafe.getUnpayedOrders());
 		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
 	}
+	
+	@Test 	
+	public void testGetUnpayedOrdersOber() throws  QuantityToLowException, QuantityZeroException
+	{
+		OrderSet ordersOber1 = new OrderSet();
+		OrderSet ordersOber2 = new OrderSet();
+		cafe.setActiveTable(Tables.get(1));
+		Table tableActive = cafe.getActiveTable();
+		Ober ober1 = cafe.getActiveOber();
+		ober1.makeOrder(l1, 2, tableActive);
+		ober1.makeOrder(l1, 2, tableActive);
+		Order order1 = new Order(l1,2,ober1);
+		ordersOber1.add(order1);
+		ordersOber1.add(order1);
+
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
+
+		cafe.setActiveTable(Tables.get(2));
+		tableActive = cafe.getActiveTable();
+		ober1.makeOrder(l1, 2, tableActive);
+		ordersOber1.add(order1);
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
+		cafe.setActiveTable(Tables.get(3));
+		tableActive = cafe.getActiveTable();
+		ober2.makeOrder(l1, 2, tableActive);
+		Order order2 = new Order(l1,2,ober2);
+		ordersOber2.add(order2);
+		assertEquals(ordersOber2, cafe.getUnpayedOrders(ober2));
+		
+		ober1.payOrders(Tables.get(1));
+		ordersOber1.remove(order1);
+		ordersOber1.remove(order1);
+		assertEquals(ordersOber1, cafe.getUnpayedOrders(ober1));
+	}
 
 	@Test 	
-	public void testGetPayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testGetPayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		OrderSet ordersTotal = new OrderSet();
 		cafe.setActiveTable(Tables.get(1));
@@ -204,7 +274,7 @@ public class CafeTest {
 	}
 	
 	@Test 	
-	public void testCalculatePayedOrders() throws ActiveOberNotSetException, TableNotAllowedException, QuantityToLowException, QuantityZeroException
+	public void testCalculatePayedOrders() throws QuantityToLowException, QuantityZeroException
 	{
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
@@ -232,15 +302,62 @@ public class CafeTest {
 
 	}
 	
-
+	@Test
+	public void testCreatePDF() throws InternalException, IOException
+	{
+		ArrayList<Order> orders = new ArrayList<>();
+		orders.add(o1);
+		orders.add(o2);
+		orders.add(o3);
+		String Filename = cafe.createPDF(orders,false);
+		  
+		File f = new File(Filename);
+		assertTrue(f.exists() && !f.isDirectory());
+		Files.delete(f.toPath());
+	}
 	
-	
-	//@Test
+	@Test
 	public void testSendMail() throws MessagingException
 	{
+		Boolean bool =	cafe.SendMail("src/be/leerstad/Eindwerk_Project_Chez_Java.pdf");
+		assertTrue(bool);
+	}
+	
+	@Test
+	public void testTopObers() throws InternalException {
+		assertEquals(4, cafe.topObers().size());
+	}
 
-		cafe.SendMail("src/be/leerstad/03_-_Java_Basics_-_Classes_and_objects.pdf", ober1);
 
+	@Test
+	public void testGetIncomeOber() {
+		//zijn getest in ChezJavaDAOimplTest
+	}
+
+	@Test
+	public void testGetIncomeLocalDate() {
+		//zijn getest in ChezJavaDAOimplTest
+	}
+
+	@Test
+	public void testTopDrieObers() throws InternalException {
+		assertEquals(3, cafe.topDrieObers().size());
+	}
+	
+	@Test
+	public void testLogin() throws InternalException {
+		Boolean bool = cafe.login("Peters", "Wout","password");
+		assertTrue(bool);
+		assertEquals(cafe.getActiveOber(), ober1); 
+
+		bool = cafe.login("Segers", "Nathalie", "password");
+		assertEquals(cafe.getActiveOber(), ober2);
+		assertTrue(bool);
+		bool = cafe.login("Peters", "Wout","password");
+		assertEquals(cafe.getActiveOber(), ober1);
+		assertTrue(bool);
+		bool =	cafe.login("Verkeerd", "Nathalie", "password");
+		assertFalse(bool);
 	}
 	
 	@Test
@@ -250,7 +367,7 @@ public class CafeTest {
 	}
 	
 	@Test
-	public void testClose() throws TableNotAllowedException, ActiveOberNotSetException, QuantityToLowException, QuantityZeroException, DAOException, DAOloginNotAllowed{
+	public void testClose() throws QuantityToLowException, QuantityZeroException, InternalException{
 
 		assertEquals(0, cafe.calculatePayedOrders(),PRECISION);
 		cafe.setActiveTable(Tables.get(1));
@@ -272,32 +389,21 @@ public class CafeTest {
 		ober2.makeOrder(l1, 2, tableActive);
 		
 		double unpayedOrders = cafe.calculateUnpayedOrders();
-		double unpayedOber1 = cafe.calculateUnpayedOrders(ober1);
 		cafe.close();
 		Cafe cafe2 = new Cafe();
 		cafe2.login("Segers", "Nathalie", "password");
 		assertEquals(unpayedOrders, cafe2.calculateUnpayedOrders(),PRECISION);
 		assertEquals(cafe.calculateUnpayedOrders(ober1), cafe2.calculateUnpayedOrders(ober1),PRECISION);
-		//assertTrue(cafe2.getTables().equals(setTables));
 	}
-	
 	@Test
-	public void testLogin() throws DAOException, DAOloginNotAllowed {
-
-		cafe.login("Peters", "Wout","password");
-		assertEquals(cafe.getActiveOber(), ober1); 
-
-		cafe.login("Segers", "Nathalie", "password");
-		assertEquals(cafe.getActiveOber(), ober2);
-
-		cafe.login("Peters", "Wout","password");
-		assertEquals(cafe.getActiveOber(), ober1);
+	public void testGetLiquids() {
+		assertEquals(13, cafe.getLiquids().size());
 	}
 
 	@After
 	public void MakeSerialiseClean()
 	{
-		Serializer ser = new Serializer();
+		ser = ser.getInstance();// new Serializer();
 		ser.MakeSerialiseClean();
 
 	}
@@ -307,8 +413,4 @@ public class CafeTest {
 		DBInitialiser dbInitialiser = new DBInitialiser();
 		dbInitialiser.Initialise();
     }	
-
-
-
-
 }

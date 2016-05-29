@@ -1,15 +1,27 @@
 package be.leerstad.EindwerkChezJava.model.test;
 
-import static org.junit.Assert.*;
-
-import java.time.LocalDate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
-import be.leerstad.EindwerkChezJava.model.*;
-
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.ObersTableStatus;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.OrderSet;
+import be.leerstad.EindwerkChezJava.model.Table;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class OberTest
 {
 	private Ober ober1;
@@ -18,7 +30,6 @@ public class OberTest
 	private Table table1;
 	private Order o1;
 	private Order o2;
-	private Order o3;
 	private Liquid l1;
 	private Liquid l2;
 	@Before
@@ -31,10 +42,21 @@ public class OberTest
 		l2 = new Liquid(2, "Bier", 3.0); 
 		
 		o1 = new Order(l1, 2, ober1);
-		o2 = new Order(l2, 2, ober1);
-		o3 = new Order(l1, 1, ober2);	
+		o2 = new Order(l2, 2, ober1);	
 		table1 = new Table(1);
 	}
+	@Test
+	public void testTableStatus() throws QuantityToLowException
+	{
+		ObersTableStatus status = ober1.tableStatus(table1);
+		assertEquals(ObersTableStatus.FREE, status);
+		ober1.makeOrder(l1, 2, table1);
+		status = ober1.tableStatus(table1);
+		assertEquals(ObersTableStatus.ACTIVE, status);
+		status = ober2.tableStatus(table1);
+		assertEquals(ObersTableStatus.NOTALLOWED, status);
+	}
+
 	
 	@Test
 	public void testMakeOrder() throws QuantityToLowException
@@ -46,6 +68,8 @@ public class OberTest
 		isAllowed = ober1.makeOrder(l1, 2, table1);
 		assertTrue(isAllowed);
 		boolean isNotAllowed = ober2.makeOrder(l1, 2, table1);
+		assertFalse(isNotAllowed);
+		isNotAllowed = ober2.makeOrder(l1, 2, new Table(-5));
 		assertFalse(isNotAllowed);
 	}
 	

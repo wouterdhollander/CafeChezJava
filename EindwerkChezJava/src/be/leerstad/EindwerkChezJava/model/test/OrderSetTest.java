@@ -1,10 +1,10 @@
 package be.leerstad.EindwerkChezJava.model.test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,12 @@ import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.model.OrderSet;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class OrderSetTest {
 	private static final float PRECISION = 0.01F;
 	private Liquid l1;
@@ -60,7 +65,7 @@ public class OrderSetTest {
 		orders.add(o1);
 		orders.add(o1);
 		orders.add(o2);
-		String expected = "Tafel besteld door Ober: Peters Wout" + "\n" + "4 x Cola(2.0€) = 8.0€" + "\n" + "2 x Bier(3.0€) = 6.0€"+ "\n" + "totaal (€) = 14.0";
+		String expected = "Tafel besteld door Ober: Peters Wout" + "\n" + "4 x Cola(2.00€) = 8.00€" + "\n" + "2 x Bier(3.00€) = 6.00€"+ "\n" + "totaal (€) = 14.00";
 		
 		assertEquals(expected, orders.printOutPayment());	
 	}
@@ -105,6 +110,9 @@ public class OrderSetTest {
 		ordersarraylist.add(o2);
 		orders.addAll(ordersarraylist);
 		assertEquals(2, orders.size());
+		ordersarraylist.add(o1);
+		orders.addAll(ordersarraylist);
+		assertEquals(2, orders.size());
 		//assertEquals(5, orders.get(0).getQuantity());
 	}
 	
@@ -138,12 +146,5 @@ public class OrderSetTest {
 		
 		//assertEquals(5, orders.get(0).getQuantity());
 	}
-	@Test
-	public void testContains()
-	{
-		orders.add(o1);
-		
-		
-		assertFalse(orders.contains(o1_2));
-	}
+
 }

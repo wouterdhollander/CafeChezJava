@@ -15,7 +15,13 @@ import org.jfree.util.Rotation;
 import be.leerstad.EindwerkChezJava.model.Ober;
 
 
-
+/**
+ * adapted from some code on the world wide web
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class PieChartChezJava extends JFrame {
 
   private static final long serialVersionUID = 1L;

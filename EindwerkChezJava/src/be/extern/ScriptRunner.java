@@ -33,6 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Found somewhere on the world wide web. Thanks to the real author :p
  * Tool to run database scripts
  */
 public class ScriptRunner {
@@ -57,9 +58,7 @@ public class ScriptRunner {
     private String delimiter = DEFAULT_DELIMITER;
     private boolean fullLineDelimiter = false;
 
-    /**
-     * Default constructor
-     */
+
     public ScriptRunner(Connection connection, boolean autoCommit,
             boolean stopOnError) {
         this.connection = connection;
@@ -90,10 +89,12 @@ public class ScriptRunner {
         this.errorLogWriter = errorLogWriter;
     }
 
+
     /**
      * Runs an SQL script (read in using the Reader parameter)
-     *
-     * @param reader - the source of the script
+     * @param reader reader - the source of the script
+     * @throws IOException an internal error
+     * @throws SQLException an internal error
      */
     public void runScript(Reader reader) throws IOException, SQLException {
         try {

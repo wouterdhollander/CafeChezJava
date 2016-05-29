@@ -1,16 +1,19 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
+import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
 import be.leerstad.EindwerkChezJava.model.Cafe;
-import be.leerstad.EindwerkChezJava.model.Ober;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class LoginDialogController {
     @FXML
     private TextField firstNameField;
@@ -34,7 +37,7 @@ public class LoginDialogController {
     /**
      * Sets the stage of this dialog.
      * 
-     * @param dialogStage
+     * @param dialogStage the dialogstage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -47,14 +50,24 @@ public class LoginDialogController {
     private void handleOk() {
         if (isInputValid()) {
         	try {
-				model.login(lastNameField.getText(), firstNameField.getText(), passwordField.getText());
-	            okClicked = true;
-	            dialogStage.close();
-			} catch (DAOloginNotAllowed | DAOException e) {
+				if (!model.login(lastNameField.getText(), firstNameField.getText(), passwordField.getText()))
+				{
+					okClicked = false;
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("WARNING");
+					alert.setContentText("Login Not allowed! \n wrong username and/or password" );// .printStackTrace();
+				    alert.showAndWait();
+				}
+				else{
+					okClicked = true;
+					dialogStage.close();
+				}
+			} catch (InternalException e) {
 				// TODO Auto-generated catch block
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("WARNING");
 				alert.setContentText(e.getMessage());// .printStackTrace();
+				e.printStackTrace();
 			    alert.showAndWait();
 			}
         }

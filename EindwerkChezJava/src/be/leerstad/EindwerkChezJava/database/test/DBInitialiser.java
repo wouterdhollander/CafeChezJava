@@ -12,7 +12,12 @@ import java.sql.SQLException;
 import be.extern.ScriptRunner;
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
 import be.leerstad.EindwerkChezJava.database.BaseDAO;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class DBInitialiser {
 private BaseDAO base;
 private Connection con;
@@ -23,18 +28,15 @@ private Connection con;
 	public void Initialise() 
 	{
 		 try {
-			 //File file = new File("C:/Users/wouter/Documents/2015-16 Avondschool/Programmeren III/workspaceOefeningen/EindwerkChezJava/src/lib/cafe.sql");	 
-			 
-			URL filename = DBInitialiser.class.getResource("/lib/cafe.sql");
-			
+			URL filename = DBInitialiser.class.getResource("/be/leerstad/EindwerkChezJava/database/test/cafe.sql");
 			File file2 = new File(filename.toURI());
-			 ScriptRunner scriptrunner = new ScriptRunner(con, false, false);
+			ScriptRunner scriptrunner = new ScriptRunner(con, false, false);
 			scriptrunner.runScript(new BufferedReader(new FileReader(file2)));
 
 		 } catch (IOException | SQLException | URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+		}
 	}
 	
 

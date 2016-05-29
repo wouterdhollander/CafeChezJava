@@ -1,20 +1,27 @@
 package be.leerstad.EindwerkChezJava.model.test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.model.*;
-import be.leerstad.EindwerkChezJava.Exceptions.*;
-
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
+import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
+import be.leerstad.EindwerkChezJava.model.Liquid;
+import be.leerstad.EindwerkChezJava.model.Ober;
+import be.leerstad.EindwerkChezJava.model.Order;
+import be.leerstad.EindwerkChezJava.model.Table;
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class TableTest {
 	private static final float PRECISION = 0.01F;
 	private Liquid l1;
@@ -38,9 +45,7 @@ public class TableTest {
 
 		assertTrue(ober1.equals(t1.getActiveOber()));
 	}
-	
 
-	
 	@Test
 	public void testGetOrders() {
 		Set<Order> orders = new HashSet<Order>();
@@ -57,13 +62,12 @@ public class TableTest {
 		}
 	}
 
-	
 	@Test
 	public void testToString()
 	{
 		t1.getOrders().add(o1);
 
-		assertEquals("Table [id=1, orders=[1 x Cola(2.0€) = 2.0€], activeOber=Ober: Peters Wout]", t1.toString());
+		assertEquals("Table [id=1, orders=[1 x Cola(2.00€) = 2.00€], activeOber=Ober: Peters Wout]", t1.toString());
 	}
 
 	@Test

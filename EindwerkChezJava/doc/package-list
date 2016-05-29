@@ -1,0 +1,11 @@
+be.extern
+be.leerstad.EindwerkChezJava
+be.leerstad.EindwerkChezJava.AllTests
+be.leerstad.EindwerkChezJava.Exceptions
+be.leerstad.EindwerkChezJava.Exceptions.test
+be.leerstad.EindwerkChezJava.database
+be.leerstad.EindwerkChezJava.database.test
+be.leerstad.EindwerkChezJava.model
+be.leerstad.EindwerkChezJava.model.test
+be.leerstad.EindwerkChezJava.textfieldCustom
+be.leerstad.EindwerkChezJava.view

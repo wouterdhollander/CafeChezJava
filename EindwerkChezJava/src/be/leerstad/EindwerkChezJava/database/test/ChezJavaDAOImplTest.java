@@ -1,27 +1,20 @@
 package be.leerstad.EindwerkChezJava.database.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.leerstad.EindwerkChezJava.Exceptions.ActiveOberNotSetException;
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
@@ -30,20 +23,23 @@ import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.model.OrderSet;
-
-
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class ChezJavaDAOImplTest {
 	private ChezJavaDAO ChezJavaDAOimpl;
 	private Liquid l1;
 	private Liquid l2;
 	private Liquid l3;
-	 private Ober o1;
-	 private Ober o2;
-	 private Ober o3;
-	 private Ober o4;
-	 private List<Ober> obers = new ArrayList<>();
-	 private DBInitialiser dbInitialiser;
+	private Ober o1;
+	private Ober o2;
+	private Ober o3;
+	private Ober o4;
+	private List<Ober> obers = new ArrayList<>();
+	private DBInitialiser dbInitialiser;
 	private static final float PRECISION = 0.01F;
 	@Before
 	public void setUp() throws Exception {
@@ -63,20 +59,7 @@ public class ChezJavaDAOImplTest {
 		  obers.add(o3);
 		  obers.add(o4);
 	}
-	@Test (expected = DAOloginNotAllowed.class)
-	public void testLoginInvallid() throws DAOloginNotAllowed
-	{
-		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 
-		Ober ober;
-		try {
-			ober = ChezJavaDAOimpl.Login("Peters","Wout","Fout password");
-			assertEquals(ober, o1);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	@Test
 	public void testGetInstance() {
 		assertTrue(ChezJavaDAOimpl == null);
@@ -110,35 +93,37 @@ public class ChezJavaDAOImplTest {
 			ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 
 				assertEquals(true, ChezJavaDAOimpl.insertOrders(orders));
-
 	}
 	
 	@Test
 	public void testGetOrder() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
-
 		LocalDate ld = LocalDate.of(2009, 12, 25);
-
 		OrderSet lstOrder = new OrderSet();
-
-			lstOrder = ChezJavaDAOimpl.getOrder(ld);
-
+		lstOrder = ChezJavaDAOimpl.getOrder(ld);
 		assertEquals(2, lstOrder.size());
-
+		
+		Ober ober = new Ober(1, "Peters", "Wout","password");
+		lstOrder = ChezJavaDAOimpl.getOrder(ober);
+		assertEquals(7, lstOrder.size());
 	}
 	
+	
 	@Test
-	public void testLogin() throws DAOException, DAOloginNotAllowed
+	public void testLogin() throws DAOException
 	{
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 
 		Ober ober;
 
-			ober = ChezJavaDAOimpl.Login("Peters","Wout","password");
-			assertEquals(ober, o1);
+		ober = ChezJavaDAOimpl.Login("Peters","Wout","password");
+		assertEquals(ober, o1);
 
-	}
 		
+		ober = ChezJavaDAOimpl.Login("Peters","Wout","Fout password");
+		assertEquals(ober, new Ober());
+	}
+			
 	@Test
 	public void testGetObers() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
@@ -161,19 +146,19 @@ public class ChezJavaDAOImplTest {
 		assertEquals(liquidsDAO.iterator().next(), new Liquid(1, "Cola", 1.5));
 		assertEquals(13, liquidsDAO.size());
 	}
-	
-	//TODO
-	//@Test
-	public void topDrieOber() throws DAOException {
+
+	@Test
+	public void topObers() throws DAOException {
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
-		//linke
-		
+
 		LinkedHashMap<Ober, Double> mapTopDrie = new LinkedHashMap<>();
 
-			mapTopDrie = ChezJavaDAOimpl.topDrieOber();
-			Set set = mapTopDrie.entrySet();
-			//set.
-
+		mapTopDrie = ChezJavaDAOimpl.topObers(3);
+		assertEquals(3, mapTopDrie.size());
+		assertEquals(192.1, mapTopDrie.entrySet().iterator().next().getValue(), PRECISION);
+		
+		mapTopDrie = ChezJavaDAOimpl.topObers();
+		assertEquals(4, mapTopDrie.size());
 	}
 	
 	@After

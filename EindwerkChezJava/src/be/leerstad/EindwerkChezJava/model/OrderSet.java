@@ -1,32 +1,43 @@
 package be.leerstad.EindwerkChezJava.model;
 
-import java.lang.invoke.MethodHandles;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collection;
-
 import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.Locale;
 
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
-
+/**
+ * @author Wouter
+ * @version 0.1 everything is visible on github https://github.com/wouterdhollander/CafeChezJava
+ * @since 30/05/2016
+ * @see <a href="https://github.com/wouterdhollander/CafeChezJava">GithubAccount</a>
+ */
 public class OrderSet extends HashSet<Order> {
-	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	//private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	/**
+	 * creates an empty orderset
+	 */
 	public OrderSet()
 	{
 		super();
 	}
 	
+	/**
+	 * @param col a collection that will be added to the orderset
+	 */
 	public OrderSet(Collection col)
 	{
 		this.addAll(col);
 	}
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * return the total price of all the orders
+	 * @return the total price of all the orders
+	 */
 	public double calcutateOrders(){
 		double total =this
 				.stream()
@@ -35,6 +46,11 @@ public class OrderSet extends HashSet<Order> {
 		return total;
 	}
 	
+	/**
+	 * gives the printout of all the orders in this class
+	 * if no orders are in this class "geen bestellingen" is returned;
+	 * @return a string thats the printout of all the orders
+	 */
 	public String printOutPayment()
 	{
 		StringBuilder b = new StringBuilder();
@@ -44,14 +60,18 @@ public class OrderSet extends HashSet<Order> {
 		}
 		b.append("Tafel besteld door ").append(this.iterator().next().getOber()).append("\n");
 
-		//Set<Order> orders = this.getOrders();
 		this.stream()
 		.forEach(e -> b.append(e).append("\n"));
-		b.append("totaal (€) = " + this.calcutateOrders());
-		logger.info(b);
+		DecimalFormat f = new DecimalFormat("##.00");
+		f.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		b.append("totaal (€) = " +f.format(this.calcutateOrders()));
+		//logger.info(b);
 		
 		return b.toString();
 	}
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#add(java.lang.Object)
+	 */
 	@Override
 	public boolean add(Order o)
 	{
@@ -86,6 +106,9 @@ public class OrderSet extends HashSet<Order> {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(Object obj)
 	{
@@ -119,31 +142,40 @@ public class OrderSet extends HashSet<Order> {
 		return false; //als orderset object leeg is
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractCollection#addAll(java.util.Collection)
+	 */
 	@Override
 	public boolean addAll(Collection col)
 	{
 		return super.addAll(col);
 	}
 	
-	@Override
-	public boolean contains(Object obj) 
-	{
-		if (!(obj instanceof  Order))
-		{
-			return false;
-		}
-		
-		for (Order order : this) 
-		{
-			Order o = (Order) obj;
-			if (!(order.equals(o) && order.getQuantity() == o.getQuantity()))
-			{
-				return false;
-			}
-		}	
-		return true;	
-	}
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#contains(java.lang.Object)
+	 */
+//	@Override
+//	public boolean contains(Object obj) 
+//	{
+//		if (!(obj instanceof  Order))
+//		{
+//			return false;
+//		}
+//		
+//		for (Order order : this) 
+//		{
+//			Order o = (Order) obj;
+//			if (!(order.equals(o) && order.getQuantity() == o.getQuantity()))
+//			{
+//				return false;
+//			}
+//		}	
+//		return true;	
+//	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractCollection#containsAll(java.util.Collection)
+	 */
 	@Override
 	public boolean containsAll(Collection col)
 	{
@@ -160,13 +192,19 @@ public class OrderSet extends HashSet<Order> {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractSet#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
-		
 		return obj.toString().equals(this.toString());
 	}
 	
+	/* (non-Javadoc)
+	 * It's only possible to remove the collection if the collection if the ordersset completly envelops the collections
+	 * @see java.util.AbstractSet#removeAll(java.util.Collection)
+	 */
 	@Override
 	public boolean removeAll(Collection col)
 	{
