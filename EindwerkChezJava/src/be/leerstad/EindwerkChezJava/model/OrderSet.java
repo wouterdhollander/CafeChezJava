@@ -20,7 +20,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
  * @since 30/05/2016
  */
 public class OrderSet extends HashSet<Order> {
-	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	//private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	/**
 	 * creates an empty orderset
 	 */
@@ -70,7 +70,7 @@ public class OrderSet extends HashSet<Order> {
 		DecimalFormat f = new DecimalFormat("##.00");
 		f.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
 		b.append("totaal (€) = " +f.format(this.calcutateOrders()));
-		logger.info(b);
+		//logger.info(b);
 		
 		return b.toString();
 	}
