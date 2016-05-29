@@ -23,10 +23,12 @@ import com.itextpdf.text.DocumentException;
 
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
 import be.leerstad.EindwerkChezJava.database.test.DBInitialiser;
 import be.leerstad.EindwerkChezJava.model.*;
 
 public class CafeTest {
+	private ChezJavaSerialiser ser;
 	private static final float PRECISION = 0.01F;
 	private Cafe cafe;
 	private Liquid l1;
@@ -307,7 +309,7 @@ public class CafeTest {
 	@After
 	public void MakeSerialiseClean()
 	{
-		Serializer ser = new Serializer();
+		ser = ser.getInstance();// new Serializer();
 		ser.MakeSerialiseClean();
 
 	}

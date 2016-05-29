@@ -26,7 +26,7 @@
          <children>
             <Label text="Drank" />
             <Label text="Aantal" GridPane.rowIndex="1" />
-            <NumberTextfield fx:id="txtFieldQuantity" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <NumberTextfield fx:id="txtFieldQuantity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="cmbLiquids" prefWidth="150.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>

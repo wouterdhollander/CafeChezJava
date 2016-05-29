@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 public class Liquid implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	//private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private int id;
 	private String liquidName;
 	Double Price;
@@ -27,7 +27,7 @@ public class Liquid implements Serializable{
 		this.setId(id);
 		this.setLiquidName(liquidName);
 		this.setPrice(price); 
-		logger.info(this.toString() + " created" );
+		//logger.info(this.toString() + " created" );
 	}
 
 	/**

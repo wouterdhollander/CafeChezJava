@@ -97,7 +97,7 @@ public class ChezJavaDAOImplTest {
 	
 	
 	@Test
-	public void testLogin() throws DAOException, DAOloginNotAllowed
+	public void testLogin() throws DAOException
 	{
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 

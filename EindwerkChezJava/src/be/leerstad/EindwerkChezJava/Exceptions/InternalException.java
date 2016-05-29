@@ -11,16 +11,17 @@ public class InternalException extends Exception{
 		//this(message);
 	}
 	public InternalException(String arg0) {
-		super(arg0);
+		this.setMessage(arg0);
 	}
     public String getMessage() {
         return message;
     }
-    public void setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
     }
     protected String message = "An internal error occurred!" + "\n" + "Please report this so we can fix this";
     
+    @Override
     public String toString() {
         return message;
     }

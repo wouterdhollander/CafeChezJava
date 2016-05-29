@@ -11,5 +11,6 @@ public class QuantityToLowException extends Exception{
 	}
 	public QuantityToLowException(String arg0) {
 		super(arg0);
+		
 	}
 }

@@ -21,20 +21,28 @@ import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
  */
 public class OrderSet extends HashSet<Order> {
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	/**
+	 * creates an empty orderset
+	 */
 	public OrderSet()
 	{
 		super();
 	}
 	
+	/**
+	 * @param col a collection that will be added to the orderset
+	 */
 	public OrderSet(Collection col)
 	{
 		this.addAll(col);
 	}
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * return the total price of all the orders
+	 * @return the total price of all the orders
+	 */
 	public double calcutateOrders(){
 		double total =this
 				.stream()
@@ -43,6 +51,11 @@ public class OrderSet extends HashSet<Order> {
 		return total;
 	}
 	
+	/**
+	 * gives the printout of all the orders in this class
+	 * if no orders are in this class "geen bestellingen" is returned;
+	 * @return a string thats the printout of all the orders
+	 */
 	public String printOutPayment()
 	{
 		StringBuilder b = new StringBuilder();
@@ -61,6 +74,9 @@ public class OrderSet extends HashSet<Order> {
 		
 		return b.toString();
 	}
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#add(java.lang.Object)
+	 */
 	@Override
 	public boolean add(Order o)
 	{
@@ -95,6 +111,9 @@ public class OrderSet extends HashSet<Order> {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(Object obj)
 	{
@@ -128,31 +147,40 @@ public class OrderSet extends HashSet<Order> {
 		return false; //als orderset object leeg is
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractCollection#addAll(java.util.Collection)
+	 */
 	@Override
 	public boolean addAll(Collection col)
 	{
 		return super.addAll(col);
 	}
 	
-	@Override
-	public boolean contains(Object obj) 
-	{
-		if (!(obj instanceof  Order))
-		{
-			return false;
-		}
-		
-		for (Order order : this) 
-		{
-			Order o = (Order) obj;
-			if (!(order.equals(o) && order.getQuantity() == o.getQuantity()))
-			{
-				return false;
-			}
-		}	
-		return true;	
-	}
+	/* (non-Javadoc)
+	 * @see java.util.HashSet#contains(java.lang.Object)
+	 */
+//	@Override
+//	public boolean contains(Object obj) 
+//	{
+//		if (!(obj instanceof  Order))
+//		{
+//			return false;
+//		}
+//		
+//		for (Order order : this) 
+//		{
+//			Order o = (Order) obj;
+//			if (!(order.equals(o) && order.getQuantity() == o.getQuantity()))
+//			{
+//				return false;
+//			}
+//		}	
+//		return true;	
+//	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractCollection#containsAll(java.util.Collection)
+	 */
 	@Override
 	public boolean containsAll(Collection col)
 	{
@@ -169,13 +197,19 @@ public class OrderSet extends HashSet<Order> {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.AbstractSet#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
-		
 		return obj.toString().equals(this.toString());
 	}
 	
+	/* (non-Javadoc)
+	 * It's only possible to remove the collection if the collection if the ordersset completly envelops the collections
+	 * @see java.util.AbstractSet#removeAll(java.util.Collection)
+	 */
 	@Override
 	public boolean removeAll(Collection col)
 	{

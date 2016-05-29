@@ -34,6 +34,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 /**
+ * aangepast van bestaande code
  * @author wouter
  * @version 0.1
  * @since 30/05/2016
@@ -58,7 +59,13 @@ public class PDFgenerator {
   private String fileLocation;
  private Document document = new Document();
    
-  public PDFgenerator(String fileName, String author) throws DocumentException, FileNotFoundException
+  /**
+ * @param fileName the filename of the pdf 
+ * @param author the autor of the pdf
+ * @throws DocumentException
+ * @throws FileNotFoundException
+ */
+public PDFgenerator(String fileName, String author) throws DocumentException, FileNotFoundException
   {
 	  fileName = fileName.replaceAll("\\s+","");
 	  this.title = fileName;
@@ -76,23 +83,35 @@ public class PDFgenerator {
   }
   
   
-  public void Open()
+  /**
+ * Show the pdf document
+ */
+public void Open()
   {
   if (Desktop.isDesktopSupported()) {
 	    try {
 	        File myFile = new File(fileLocation);
-	        Desktop.getDesktop().open(myFile);
+	        if (myFile.exists())
+	        {
+	        	Desktop.getDesktop().open(myFile);
+	        }
 	    } catch (IOException ex) {
 	        // no application registered for PDFs
 	    }
 	}
   }
-  public String getFileLocation()
+  /**
+ * @return gets the location where the file is writtin to
+ */
+public String getFileLocation()
   {
 	  return fileLocation;
   }
 
-  public void Create()
+  /**
+ * 
+ */
+public void Create()
   {
     try {
       document.close();
@@ -113,7 +132,11 @@ public class PDFgenerator {
     //document.addCreationDate() = true;
   }
 
-  public void addTitlePage(String titleName)
+  /**
+ * @param titleName
+ * @throws DocumentException
+ */
+public void addTitlePage(String titleName)
       throws DocumentException {
     Paragraph preface = new Paragraph();
     // We add one empty line
@@ -135,7 +158,12 @@ public class PDFgenerator {
     document.newPage();
   }
 
-  public void addContent(String titleName, Collection<Order> list) throws DocumentException {
+  /**
+ * @param titleName the head title of this section list
+ * @param list a collection object that will be printed in the pdf.
+ * @throws DocumentException
+ */
+public void addContent(String titleName, Collection<Order> list) throws DocumentException {
 	  
     Anchor anchor = new Anchor("Overzicht", catFont);
     Chapter catPart = new Chapter(new Paragraph(anchor), 1);
@@ -153,7 +181,7 @@ public class PDFgenerator {
     document.add(catPart);
   }
 
-  private static void createTable(Section subCatPart, Collection<Order> orders)
+  private void createTable(Section subCatPart, Collection<Order> orders)
       throws BadElementException {
     PdfPTable table = new PdfPTable(4);
 

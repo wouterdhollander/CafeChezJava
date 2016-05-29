@@ -82,28 +82,20 @@ public class OrderTest {
 	}
 
 	@Test (expected = QuantityToLowException.class)
-	public void testSetQuantityInvallidQuantityLow() throws QuantityToLowException {
-		try {
-			o1.setQuantity(-2);
-		} catch (QuantityZeroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void testSetQuantityInvallidQuantityLow() throws QuantityZeroException, QuantityToLowException {
+		o1.setQuantity(-2);
 		assertEquals(4, o1.getQuantity());
 	}
 	
 	@Test (expected = QuantityZeroException.class)
 	public void testSetQuantityInvallidQuantityZero() throws QuantityZeroException, QuantityToLowException {
-
-			o1.setQuantity(0);
-
+		o1.setQuantity(0);
 		assertEquals(4, o1.getQuantity());
 	}
 	
 	@Test
 	public void testGetDate() {
 		LocalDate now = LocalDate.now();
-		
 		assertEquals(now, o1.getDate());
 	}
 

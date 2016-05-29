@@ -27,6 +27,10 @@ public class NumberTextfield extends TextField {
 		
 	}
 	
+	public void setInt(int number)
+	{
+		this.setText(Integer.toString(number));
+	}
 	
 	public int getInt() {
 		// TODO Auto-generated method stub

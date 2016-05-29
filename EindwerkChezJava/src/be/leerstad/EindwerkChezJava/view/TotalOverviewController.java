@@ -76,7 +76,7 @@ public class TotalOverviewController {
 	}
     @FXML
     private void initialize() {
-    	collumDailyIncome.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
+    	collumDailyIncome.setCellValueFactory(celldata -> celldata.getValue().printout());
 
     	collumUnpayed.setCellValueFactory(celldata -> new SimpleStringProperty(String.format("%.2f",celldata.getValue().getPrice())));
     	collumUnpayedOber.setCellValueFactory(celldata -> new SimpleStringProperty( celldata.getValue().getOber().toString()));

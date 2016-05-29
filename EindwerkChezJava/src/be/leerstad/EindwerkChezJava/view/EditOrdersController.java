@@ -1,19 +1,10 @@
 package be.leerstad.EindwerkChezJava.view;
 
-import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
-import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
-import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
+import be.leerstad.EindwerkChezJava.Exceptions.*;
 import be.leerstad.EindwerkChezJava.model.*;
 import be.leerstad.EindwerkChezJava.textfieldCustom.NumberTextfield;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class EditOrdersController {
@@ -51,7 +42,7 @@ public class EditOrdersController {
     public void setOrder(Order order, ObservableList<Liquid> liquids) {
         this.Order = order;
 
-        txtFieldQuantity.setText(Double.toString(order.getQuantity()));
+        txtFieldQuantity.setInt(order.getQuantity());
         cmbLiquids.setItems(liquids);
         cmbLiquids.getSelectionModel().select(0);
         

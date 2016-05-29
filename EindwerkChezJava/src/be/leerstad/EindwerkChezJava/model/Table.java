@@ -23,9 +23,9 @@ public class Table implements Serializable{
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private int id;
 	private OrderSet orders = new OrderSet();
+	private Position position;
+	private Position positionDefault;
 
-	private double positionX;
-	private double positionY;
 	/**
 	 * @param id the id of the table
 	 */
@@ -44,26 +44,13 @@ public class Table implements Serializable{
 		orders = orders2;
 		return orders;
 	}
+	
 
-	public double getPositionX() {
-		return positionX;
-	}
-
-	public void setPositionX(double positionX) {
-		this.positionX = positionX;
-	}
-
-	public double getPositionY() {
-		return positionY;
-	}
-
-	public void setPositionY(double positionY) {
-		this.positionY = positionY;
-	}
 
 	private void setOrders(OrderSet orders) {
 		this.orders = orders;
 	}
+
 	
 	/**
 	 * Return an Ober object representing the Active Ober
@@ -102,6 +89,43 @@ public class Table implements Serializable{
 	private void setId(int id) {
 		this.id = id;
 	}
+	
+	/**
+	 * I make this as an extra ;-) so tables can move!
+	 * @return the actual position of the object
+	 */
+	public Position getPosition() {
+		return position;
+	}
+
+	/**
+	 * I make this as an extra ;-) so tables can move!
+	 * @param position the postion of the table
+	 */
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	
+	/**
+	 * I make this as an extra ;-) so tables can move!
+	 * @return the default position of the table
+	 */
+	public Position getPositionDefault() {
+		return positionDefault;
+	}
+
+	/**
+	 * I make this as an extra ;-) so tables can move!
+	 * @param positionDefault the default position of the table
+	 */
+	public void setPositionDefault(Position positionDefault) {
+		this.positionDefault = positionDefault;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

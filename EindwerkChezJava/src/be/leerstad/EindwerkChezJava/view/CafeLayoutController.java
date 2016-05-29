@@ -62,7 +62,7 @@ public class CafeLayoutController {
     private TableColumn<Order, String> collumOverviewInCashDesk;
 	@FXML
     private TableColumn<Order, String> collumActiveTableOrders;
-	Map<Circle,double[]> circles = new HashMap<Circle,double[]>();
+	Map<Table,Circle> tablesMap = new HashMap<Table,Circle>();
 	private ObservableList<Order> orders;
 	private ObservableList<Order> unPayedOrdersActiveOber;
 	private ObservableList<Order> ordersInWallet;
@@ -74,16 +74,14 @@ public class CafeLayoutController {
 	}
     @FXML
     private void initialize() {
-    	collumOverviewUnpayed.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
-    	collumOverviewInWallet.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
-    	collumActiveTableOrders.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
+    	collumOverviewUnpayed.setCellValueFactory(celldata -> celldata.getValue().printout());
+    	collumOverviewInWallet.setCellValueFactory(celldata -> celldata.getValue().printout());
+    	collumActiveTableOrders.setCellValueFactory(celldata -> celldata.getValue().printout());
     	
-    	collumOverviewInCashDesk.setCellValueFactory(celldata -> celldata.getValue().getPrintout());
-    	//collumOverview.setCellValueFactory(celldata -> celldata.getValue().getTablesActiveOber());
+    	collumOverviewInCashDesk.setCellValueFactory(celldata -> celldata.getValue().printout());
     	tableActiveTableOrders.getSelectionModel().selectedItemProperty().addListener(
 		(observable, oldValue, newValue) -> changeInputOrder(newValue));
-    	//choiceBoxLiquids.setItems(cafe.getLiquids());
-    	//cmbLiquids.setItems(view.getLiquidsData());
+
     }
     
     private void changeInputOrder(Order orderSelected)
@@ -97,12 +95,14 @@ public class CafeLayoutController {
 		
     	Liquid liq = orderSelected.getLiquid();
 		cmbLiquids.getSelectionModel().select(liq);
-		txtFieldQuantity.setText(Integer.toString(orderSelected.getQuantity()));
+		//txtFieldQuantity.setText(Integer.toString(orderSelected.getQuantity()));
+		txtFieldQuantity.setInt(orderSelected.getQuantity());
     }
     public void showOber(Table t)
     {
 		String id = ""+ t.getId();
-		Circle circle = circles.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
+		Circle circle = tablesMap.get(t);
+				//tablesMap.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
     	//Circle circle = circles.get(t.getId());
     	Tooltip.install(circle, new Tooltip("Tafel; "+ t.getId() + "\n"+t.getActiveOber()));
     }
@@ -141,27 +141,28 @@ public class CafeLayoutController {
 				c.setTranslateX(newTranslateX);
 			    c.setTranslateY(newTranslateY);
 			    Table table = tables.get(Integer.parseInt(c.getId()));
-			    table.setPositionX(sumX);
-			    table.setPositionY(sumY);
+			    
+			    table.getPosition().setX(sumX);
+			    table.getPosition().setY(sumY);
 			}
 	    }
 	};
 	@FXML
 	public void defaultPosition()
 	{
-		for (Map.Entry<Circle, double[]> entry : circles.entrySet())
+		for (Map.Entry<Table, Circle> entry : tablesMap.entrySet())
 		{
 			//System.out.println(entry.getValue()[0]);
-			double xOrigineel = entry.getValue()[0];
-			double yOrigineel = entry.getValue()[1];
-			Circle c = entry.getKey();
+//			double xOrigineel = entry.getKey().getPositionXDefault();// entry.getValue()[0];
+//			double yOrigineel = entry.getKey().getPositionYDefault();
+			Position defaulpos = entry.getKey().getPositionDefault();
+			Circle c = entry.getValue();
 		    Table table = tables.get(Integer.parseInt(c.getId()));
-		    table.setPositionX(xOrigineel);
-		    table.setPositionY(yOrigineel);
+		    table.setPosition(defaulpos);
+		    //table.setPositionY(yOrigineel);
 		}
 		
 		view.showCafeOverview();//is makkelijkste manier om de tafels terug naar hun oorspronkelijke positie te verschuiven
-
 	}
 	
     public void setDialogStage(Stage dialogStage) {
@@ -183,16 +184,20 @@ public class CafeLayoutController {
     		{
     			Table t = tables.get(circleCount);
     			Circle c = (Circle) node;
-    			c.setId("" + circleCount);
-    			double d[] = new double[2];
-    			System.out.println("X origineel : " + c.getLayoutX());
-    			d[0] = c.getLayoutX();
-    			d[1] = c.getLayoutY();
-    			circles.put(c, d);
-    			if (t.getPositionX() > 0  && t.getPositionY()>0)//
+    			//beetje of topic gegaan. je kan te tafels ook verplaatsen
+    			Position posDefault = new Position(c.getLayoutX(),c.getLayoutY());
+				t.setPositionDefault(posDefault);	
+    			tablesMap.put(t, c);
+    			//als er tafelobject geserialiseerd is. zoniet worden de bollen (tafels) automatisch op de default plaats gezet 
+    			if (t.getPosition() != null )//.getX() > 0  && t.getPosition().getY() >0)
     			{
-	    			c.setLayoutX(t.getPositionX());
-	    			c.setLayoutY(t.getPositionY());
+	    			c.setLayoutX(t.getPosition().getX());
+	    			c.setLayoutY(t.getPosition().getY());
+    			}
+    			else
+    			{
+    				Position pos = new Position(c.getLayoutX(),c.getLayoutY());
+    				t.setPosition(pos);
     			}
     			c.setOnMouseClicked(e -> setActiveTable(t));
     			c.setOnMouseMoved(e -> showOber(t));
@@ -215,14 +220,10 @@ public class CafeLayoutController {
     }
     
     private void setActiveTable(Table t) {
-    	
-		 
-    	//Circle circle = circles.get(t.getId()); 	
-	
 		if (!cafe.getActiveTable().equals(new Table(-5)))//veranderen van kleur. bij startup is er geen tafel (=dummytafel) geselecteerd
 		{
-			String id = ""+ cafe.getActiveTable().getId();
-			Circle circleold = circles.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
+			//String id = ""+ cafe.getActiveTable().getId();
+			Circle circleold = tablesMap.get(cafe.getActiveTable());//tablesMap.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
 	    	
 			//Circle circleold=(Circle) circles.get(cafe.getActiveTable().getId());
     		circleold.setFill(Color.DODGERBLUE);
@@ -235,8 +236,8 @@ public class CafeLayoutController {
 		}
 		else
 		{
-			String id = ""+ t.getId();
-			 Circle circle = circles.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
+			//String id = ""+ t.getId();
+			 Circle circle = tablesMap.get(cafe.getActiveTable());
 	    	
 			circle.setFill(Color.BEIGE);
 			refreshActiveTableOrders();
@@ -281,12 +282,10 @@ public class CafeLayoutController {
 	 boolean okClicked = view.showMessageDialogOk("Pay Orders", cafe.getActiveOber().payOrders(cafe.getActiveTable()));
 	 if (okClicked && !cafe.getActiveTable().equals(new Table(-5)))
 	 { 
-		 String id = ""+ cafe.getActiveTable().getId();
-		 Circle c = circles.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
+		 //String id = ""+ cafe.getActiveTable().getId();
+		 Circle c = tablesMap.get(cafe.getActiveTable());
+				 //tablesMap.keySet().stream().filter(circ -> circ.getId().equals(id)).findFirst().get();
 		 c.setFill(Color.DODGERBLUE);
-
-		
-
 		cafe.getActiveOber().payOrders(cafe.getActiveTable());
 		orders.clear();
 		tableActiveTableOrders.setItems(orders);
@@ -318,14 +317,13 @@ public class CafeLayoutController {
 				refreshActiveTableOrders();
 				refreshUnpayedOrdersActiveOber();			
             }
-
         } else {
             // Nothing selected.
             Alert alert = new Alert(AlertType.WARNING);
             alert.initOwner(view.getPrimaryStage());
             alert.setTitle("No Selection");
-            alert.setHeaderText("No Person Selected");
-            alert.setContentText("Please select a person in the table.");
+            alert.setHeaderText("No Order Selected");
+            alert.setContentText("Please select a order in the table.");
 
             alert.showAndWait();
         }

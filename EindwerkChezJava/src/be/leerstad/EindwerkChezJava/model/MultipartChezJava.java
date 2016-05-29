@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  * <P>
  * Various attributes of MultipartExample, and related behaviour used to send an email.
- * 
+ * aangepast van bestaande code
  * @author Aaron Westerlinck
  * @version 1.0
  */
@@ -41,6 +41,12 @@ public class MultipartChezJava {
 	}
 
 /// Contenttype is "text/html; charset=utf-8"
+	/**
+	 * @param tekst the text that's writin in the mail
+	 * @param contentType "text/html; charset=utf-8"
+	 * @return
+	 * @throws MessagingException
+	 */
 	public BodyPart addSimpleBodyPart(String tekst, String contentType)
 			throws MessagingException {
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
@@ -48,8 +54,13 @@ public class MultipartChezJava {
 		return messageBodyPart;
 	}
 
-	public BodyPart addAttachment(String stringFile) throws MessagingException {
-		File file = new File(stringFile);
+	/**
+	 * @param stringdirectory the fildirectory of the attachment
+	 * @return
+	 * @throws MessagingException
+	 */
+	public BodyPart addAttachment(String stringdirectory) throws MessagingException {
+		File file = new File(stringdirectory);
 		MimeBodyPart attachmentBodyPart = new MimeBodyPart();
 		DataSource source = new FileDataSource(file);
 		DataHandler handler = new DataHandler(source);
@@ -59,10 +70,13 @@ public class MultipartChezJava {
 		return attachmentBodyPart;
 	}
 	/**
-	 * Sent mail from cvoleerstadB1@gmail.com to the reciever
-	 * @param multipart
+	 * Sent mail from  cvoleerstadB1@gmail.com to the reciever
+	 * @param multipart multipart object
+	 * @param reciever the reciever mail adres of the mail
+	 * @param subject the subject of the mail
 	 * @throws MessagingException 
 	 */
+
 	public void sendMail(Multipart multipart, String reciever, String subject ) throws MessagingException {
 		
 		Properties props = new Properties();
@@ -89,11 +103,11 @@ public class MultipartChezJava {
 			message.setContent(multipart);
 			Transport.send(message);
 
-			logger.info("mail is succesfully sent!");
+			logger.info("mail is succesfully sent to " + reciever + "!");
 
 		} catch (MessagingException e ) {
-			//logger.error(e);
-			throw e ;//new RuntimeException(e);		
+			logger.error(e.getMessage());
+			throw e ;	
 		}
 
 	}

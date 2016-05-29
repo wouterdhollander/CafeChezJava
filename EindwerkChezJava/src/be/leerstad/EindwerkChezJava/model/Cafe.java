@@ -25,6 +25,7 @@ import com.itextpdf.text.DocumentException;
 
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAO;
 import be.leerstad.EindwerkChezJava.database.ChezJavaDAOImpl;
+import be.leerstad.EindwerkChezJava.database.ChezJavaSerialiser;
 import be.leerstad.EindwerkChezJava.Exceptions.*;
 /**
  * @author Wouter
@@ -34,6 +35,7 @@ import be.leerstad.EindwerkChezJava.Exceptions.*;
 public class Cafe {
 	private static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private ChezJavaDAO ChezJavaDAOimpl;
+	private ChezJavaSerialiser ChezJavaSerializer;
 	private Ober activeOber;
 	private Table activeTable = DUMMYTABLE;//in plaats van null
 	private Set<Ober> obers = new HashSet<>();
@@ -47,22 +49,22 @@ public class Cafe {
 	{
 		this.activeOber = new Ober();
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
-		Serializer ser = new Serializer();
+		ChezJavaSerializer = ChezJavaSerialiser.getInstance();
 		List<Table> setDesialiseTables;
 		try {
-			setDesialiseTables = ser.deserialise();
+			setDesialiseTables = ChezJavaSerializer.deserialise();
 			this.tables = setDesialiseTables;
+			logger.info("old cafe opened");
 		} catch (SerialException e) {
-			// TODO Auto-generated catch block
 			for (int i = 0; i < 9; i++) {
 				this.tables.add(new Table(i));
 			}
+			logger.info("completly new cafe created");
 		}
 		this.setLiquids(ChezJavaDAOimpl.getLiquids());
+		
 	}
-	
 
-	//getest
 	/**
 	 * Returns a list-object of all Table objecten in this cafe
 	 * when you are not logged in, you get a empty list in return. 
@@ -72,13 +74,12 @@ public class Cafe {
 		if (!oberAllowed())
 		{
 			List<Table> tablesDummy = new ArrayList<>();
-			//tablesDummy.add(DUMMYTABLE);
 			return tablesDummy;
 		}
 		tables.sort((t1,t2) -> t1.getId()-t2.getId());
 		return tables;
 	}
-	//getest
+
 	/**
 	 * Makes a specific Table active in the cafe
 	 * when you are not logged in,  a dummy table is set. 
@@ -94,12 +95,13 @@ public class Cafe {
 			else
 			{
 				activeTable = DUMMYTABLE;
+				logger.info(this.activeOber + " tried setting a table ");
 			}
 		}
-		else
+		else if (!t.equals(DUMMYTABLE))
 		{
+			logger.info(this.activeOber + " tried setting a table that's not in the tablelist ");
 			activeTable = DUMMYTABLE;
-			//System.out.println("FOUT");
 		}
 	}
 
@@ -120,6 +122,10 @@ public class Cafe {
 	private  boolean oberAllowed()
 	{
 		Ober nulober = new Ober();
+		if (this.activeOber.equals(nulober))
+		{
+			logger.info("no active ober is set");
+		}
 		return !this.activeOber.equals(nulober);
 
 	}
@@ -268,16 +274,17 @@ public class Cafe {
 		try {
 			pdfgen = new PDFgenerator("CafeOverview-" + datestring, activeOber.toString());
 
-	  	pdfgen.addTitlePage("Cafe Overview");
-	  	pdfgen.addContent("Overzicht Order", orders);
-	  	pdfgen.Create();
-	  	if (openAfterCreation)
-	  	{
-	  		pdfgen.Open();
-	  	}
-		} catch (FileNotFoundException | DocumentException e) {
-			// TODO Auto-generated catch block
-			throw new InternalException();
+		  	pdfgen.addTitlePage("Cafe Overview");
+		  	pdfgen.addContent("Overzicht Order", orders);
+		  	pdfgen.Create();
+		  	if (openAfterCreation)
+		  	{
+		  		pdfgen.Open();
+		  	}
+		} 
+		catch (FileNotFoundException | DocumentException e) {
+				logger.error("error generating pdf" + e.getMessage());
+				throw new InternalException();
 		}
 		
 		return pdfgen.getFileLocation();
@@ -401,13 +408,14 @@ public class Cafe {
 			Ober ober =	ChezJavaDAOimpl.Login(lastName, firstName, password);
 			if (ober.equals(new Ober()))//dummyober
 			{
+				logger.info("verkeerde passwoord door persoon :" + lastName + ", " + firstName + " met passwoord " + password);
 				return false;
 			}
 			activeOber = ober;
 			obers.add(ober);
 			activeTable = DUMMYTABLE;
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getMessage());
 			throw new InternalException();
 		}
 		return true;
@@ -436,14 +444,12 @@ public class Cafe {
 	 */
 	public void close() throws InternalException
 	{
-		
 		ChezJavaDAOimpl = ChezJavaDAOImpl.getInstance();
 		ChezJavaDAOimpl.insertOrders(getPayedOrders());
 		logOut();
 		removePayedOrders();
-		
-		Serializer ser = new Serializer();
-		ser.serialise(tables);	
+		ChezJavaSerializer.serialise(tables);	
+		logger.info("Sluiten van cafe");
 	}
 
 	/**
@@ -451,12 +457,10 @@ public class Cafe {
 	 * @return a set of liquid objects
 	 */
 	public Set<Liquid> getLiquids()  {
-		//oberAllowed();
 		return liquids;
 	}
 
 	private void setLiquids(Set<Liquid> setLiquid) {
 		this.liquids = setLiquid;
-	}
-	
+	}	
 }

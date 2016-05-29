@@ -2,29 +2,23 @@ package be.leerstad.EindwerkChezJava.database;
 
 
 import java.sql.*;
-import java.text.MessageFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+
 
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityToLowException;
 import be.leerstad.EindwerkChezJava.Exceptions.QuantityZeroException;
 import be.leerstad.EindwerkChezJava.model.Liquid;
 import be.leerstad.EindwerkChezJava.model.Ober;
 import be.leerstad.EindwerkChezJava.model.Order;
 import be.leerstad.EindwerkChezJava.model.OrderSet;
-import be.leerstad.EindwerkChezJava.model.test.OrderSetTest;
 
 public class ChezJavaDAOImpl extends BaseDAO implements ChezJavaDAO{
     private static final String GET_ORDERS_DAY = "SELECT * from tblorders where date=?";

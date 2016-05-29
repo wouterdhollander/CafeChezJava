@@ -36,7 +36,7 @@ public class Ober implements Serializable{
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setPassword(password);
-		logger.info(this.toString() + " created" );
+		//logger.info(this.toString() + " created" );
 	}
 	
 	/**
@@ -52,7 +52,12 @@ public class Ober implements Serializable{
 	
 	private boolean isTableAllowed(Table table)
 	{
-		return (!table.equals(new Table(-5))) &&( table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this));
+		boolean allowed = (!table.equals(new Table(-5))) &&( table.getActiveOber().equals(new Ober()) || table.getActiveOber().equals(this));
+		if (!allowed)
+		{
+			logger.info(this.toString() + " tried using table" + table);
+		}
+		return allowed;
 	}
 	
 	/**
@@ -97,7 +102,7 @@ public class Ober implements Serializable{
 	}
 
 	/**
-	 * gives an orderset of all payed orders that are still in the propertie of the ober
+	 * gives an orderset of all payed orders that are still in the possession of the ober
 	 * the ober didn't bring the money to the cashdesk (DB)
 	 * @return all the orders that are payed
 	 */

@@ -1,7 +1,6 @@
 package be.leerstad.EindwerkChezJava.view;
 
 import be.leerstad.EindwerkChezJava.Exceptions.DAOException;
-import be.leerstad.EindwerkChezJava.Exceptions.DAOloginNotAllowed;
 import be.leerstad.EindwerkChezJava.Exceptions.InternalException;
 import be.leerstad.EindwerkChezJava.model.*;
 import javafx.fxml.FXML;

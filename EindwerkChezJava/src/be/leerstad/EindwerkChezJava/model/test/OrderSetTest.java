@@ -141,12 +141,5 @@ public class OrderSetTest {
 		
 		//assertEquals(5, orders.get(0).getQuantity());
 	}
-	@Test
-	public void testContains()
-	{
-		orders.add(o1);
-		
-		
-		assertFalse(orders.contains(o1_2));
-	}
+
 }
