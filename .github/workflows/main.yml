@@ -11,7 +11,7 @@ jobs:
     - name: Copy single file to remote
       uses: garygrossgarten/github-action-scp@release
       with:
-        local: Nieuw tekstdocument.txt
+        local: EindwerkChezJava/Nieuw tekstdocument.txt
         remote: scp/single/Nieuw tekstdocument.txt.txt
         host: ${{ secrets.HOST }}
         username: ${{ secrets.SSH_USER }}
