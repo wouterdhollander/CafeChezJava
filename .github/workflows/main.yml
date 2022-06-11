@@ -1,0 +1,20 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  job_one:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Copy single file to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: Nieuw tekstdocument.txt
+        remote: scp/single/Nieuw tekstdocument.txt.txt
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.OMG_SECRET }}
+           
+ 
