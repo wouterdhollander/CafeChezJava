@@ -15,7 +15,7 @@ jobs:
         remote: scp/single/Nieuw tekstdocument.txt.txt
         host: ${{ secrets.HOST }}
         username: ${{ secrets.SSH_USER }}
-        password: ${{ secrets.SSH_USERPASSWORD }}
+        #password: ${{ secrets.SSH_USERPASSWORD }}
         privateKey : ${{ secrets.OMG_SECRET }}
            
  
